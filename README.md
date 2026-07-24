@@ -33,6 +33,9 @@ public/                 Static assets served as-is
   images/               All photography, logos, and badges (never imported from src/)
   downloads/            Destination for real PDF lead magnets
 
+design-assets/          Image masters — PNG originals, source logos. Versioned but
+                        never deployed, since Astro only copies public/.
+
 src/
   data/                 Single source of truth for all content data
     site.ts             Client identifiers — phone, email, NMLS, portal, form IDs, analytics
@@ -67,19 +70,34 @@ scripts/
   generate-placeholders.mjs  Builds every placeholder asset with sharp
 ```
 
-### Two rules worth keeping
+### Three rules worth keeping
 
 1. **Never hardcode a client identifier.** Phone, email, NMLS numbers, apply URL, booking URL, form IDs, and analytics IDs all live in `src/data/site.ts`. Import from there.
 2. **Never import images from `src/`.** Every image lives in `public/images/` and is referenced by absolute path with explicit `width`/`height` so there is no layout shift.
+3. **Images are WebP, with one exception.** `og-default.jpg` stays JPEG because social scrapers — Facebook, LinkedIn, X — do not reliably render WebP share images.
+
+### Image inventory
+
+| Asset | Status |
+| --- | --- |
+| `jason-headshot.webp` (800×800) | Real — transparent cutout |
+| `jason-headshot-large.webp` (1000×1250) | Real — transparent cutout |
+| `jason-headshot-hero.webp` (1100×1467) | Real — transparent cutout, homepage hero |
+| `logo-on-dark.webp` (709×180) | Real — silver-on-navy lockup, footer only |
+| `logo.svg` | Placeholder — awaiting a light-background logo export |
+| Everything else under `images/` | Placeholder |
+
+The delivered headshots are cutouts with a transparent background, which is why the templates that display them set an explicit background (`bg-gradient-to-b from-silver-light to-white`) rather than relying on the photo. Keep that in mind when swapping in any replacement that has its own backdrop.
 
 ---
 
 ## Remaining TODOs, in priority order
 
-1. **Primis marketing compliance sign-off on the full site**, including the plain-English federal-charter explanatory note on `/licensing`. They may prescribe specific disclaimer wording, logo usage rules, or limits on experience claims and testimonials.
-2. **Confirm with Primis whether the Texas Consumer Complaint and Recovery Fund Notice is required** on a bank loan officer's marketing site. If it is, add it to `/licensing` using their supplied wording.
-3. **Real photography** to replace the generated placeholders. Every `<img>` already carries correct dimensions and real descriptive alt text, so this is a straight file-for-file replacement in `public/images/` — no code changes.
-4. **Blog post hero images.** All six seed posts currently point at `/images/blog/placeholder.jpg`; update the `image` field in each post's frontmatter.
+1. **A light-background logo export.** The delivered logo is silver ink on navy, which is unreadable on the white header, so it is currently used in the footer only and the header still shows a placeholder wordmark. What is needed is a transparent-background version with dark or navy ink. Note that `design-assets/new-hbt-logo.svg` is an auto-traced monochrome silhouette — a single full-canvas black rectangle with the artwork knocked out of it — so it is not usable as a vector logo. A real vector export would be ideal.
+2. **Primis marketing compliance sign-off on the full site**, including the plain-English federal-charter explanatory note on `/licensing`. They may prescribe specific disclaimer wording, logo usage rules, or limits on experience claims and testimonials.
+3. **Confirm with Primis whether the Texas Consumer Complaint and Recovery Fund Notice is required** on a bank loan officer's marketing site. If it is, add it to `/licensing` using their supplied wording.
+4. **Real photography** for the remaining placeholders: eight program photos, four solution photos, six section heroes, six resource covers, the two-futures pair, and the blog fallback. Every `<img>` already carries correct dimensions and real descriptive alt text, so this is a straight file-for-file replacement in `public/images/` — no code changes.
+5. **Blog post hero images.** All six seed posts currently point at `/images/blog/placeholder.webp`; update the `image` field in each post's frontmatter.
 5. **Re-verify the state license table** on `/licensing` against https://primisbank.com/disclosures/ at launch. License numbers change.
 6. **Confirm the GHL form-submission message payload.** `Layout.astro` listens for `message` events from `https://link.pivotpointcrm.com` to fire lead conversions. The payload shape varies by GoHighLevel version — open the console on a live form, submit a test, and match on whatever actually arrives.
 7. **Real PDFs in `public/downloads/`.** The seven lead magnets are currently delivered by Pivot Point after email capture; if you switch to direct download links, drop the files here.
@@ -98,7 +116,7 @@ description: 'A 150-character summary that also serves as the meta description f
 pubDate: 2026-03-14
 category: 'Buying'
 author: 'Jason Herbert'
-image: '/images/blog/dti-explained.jpg'
+image: '/images/blog/dti-explained.webp'
 imageAlt: 'A borrower reviewing a debt-to-income worksheet at a kitchen table'
 featured: false
 ---
@@ -117,13 +135,14 @@ page title, which the layout renders.
 
 ## How to replace images
 
-1. Match the existing filename and path exactly — for example overwrite `public/images/hero/home-hero.jpg`.
-2. Match the aspect ratio the placeholder uses, since `width`/`height` are hardcoded in the templates. The generator script lists every path with its intended dimensions; that file is the reference.
-3. Compress before committing. Target under 300 KB for hero images and under 120 KB for cards. Hero images load eagerly with `fetchpriority="high"`, so their weight is directly on Largest Contentful Paint.
+1. Match the existing filename and path exactly, including the `.webp` extension — for example overwrite `public/images/programs/fha.webp`.
+2. Match the aspect ratio the placeholder uses, since `width`/`height` are hardcoded in the templates. The `images` array in `scripts/generate-placeholders.mjs` lists every path with its intended dimensions; that file is the reference.
+3. Compress before committing. Target under 200 KB for full-width images and under 100 KB for cards. Anything loading with `fetchpriority="high"` weighs directly on Largest Contentful Paint.
 4. If the subject of the photo changes, update the `alt` text where it is set — in the page frontmatter, or in `programs.ts` / `solutions.ts` / `resources.ts` for data-driven pages.
-5. `og-default.jpg` must stay 1200×630. Social platforms crop anything else badly.
+5. `og-default.jpg` must stay JPEG at 1200×630. Social platforms crop anything else badly and several will not render WebP at all.
+6. Keep the PNG or TIFF master in `design-assets/` so the WebP can be re-encoded later without stacking generation loss.
 
-Running `npm run placeholders` regenerates all placeholders and **will overwrite real photography**. Once real images are in, either stop running it or remove entries from the `images` array in `scripts/generate-placeholders.mjs`.
+**Delete the entry from the `images` array in `scripts/generate-placeholders.mjs` once a placeholder is replaced for good.** The script overwrites whatever is at each listed path, so an entry left behind means the next `npm run placeholders` clobbers real photography. Delivered assets are tracked in a separate `delivered` array in that file, which the script only checks for existence — it warns and exits non-zero if one has gone missing.
 
 ---
 

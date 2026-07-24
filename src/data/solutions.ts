@@ -11,8 +11,8 @@ export const solutions: Solution[] = [
     tagline: 'A first-lien HELOC — your equity, accessible on demand.',
     blurb:
       'Replace your traditional mortgage with a first-lien home equity line of credit. Your income sits in the account and reduces the balance interest is calculated on, and you can draw it back out whenever you need it.',
-    image: '/images/solutions/atm-mortgage.jpg',
-    heroImage: '/images/solutions/atm-mortgage.jpg',
+    image: '/images/solutions/atm-mortgage.webp',
+    heroImage: '/images/solutions/atm-mortgage.webp',
     seoTitle: 'ATM Mortgage | First-Lien HELOC in Texas',
     seoDescription:
       'The ATM Mortgage is a first-lien HELOC that turns your home equity into an on-demand line of credit. See how the sweep mechanic works, who it fits, and the honest risks.',
@@ -122,8 +122,8 @@ export const solutions: Solution[] = [
     tagline: 'Make a non-contingent offer without selling first.',
     blurb:
       'The classic move-up trap: you cannot buy until you sell, and you cannot sell until you know where you are going. Buy Before You Sell breaks the loop by letting you make a strong, non-contingent offer on the next house first.',
-    image: '/images/solutions/buy-before-you-sell.jpg',
-    heroImage: '/images/solutions/buy-before-you-sell.jpg',
+    image: '/images/solutions/buy-before-you-sell.webp',
+    heroImage: '/images/solutions/buy-before-you-sell.webp',
     seoTitle: 'Buy Before You Sell in Texas | Non-Contingent Offers',
     seoDescription:
       'Buy your next home before selling your current one. Make a non-contingent offer, move on your schedule, and sell without pressure. How the program works, costs, and eligibility.',
@@ -233,8 +233,8 @@ export const solutions: Solution[] = [
     tagline: 'Programs that shrink the cash you need to close.',
     blurb:
       'Texas has grant and second-lien programs that can cover most or all of a down payment, and many buyers who qualify never hear about them because the lender they called does not offer them.',
-    image: '/images/solutions/down-payment-assistance.jpg',
-    heroImage: '/images/solutions/down-payment-assistance.jpg',
+    image: '/images/solutions/down-payment-assistance.webp',
+    heroImage: '/images/solutions/down-payment-assistance.webp',
     seoTitle: 'Down Payment Assistance Texas | TSAHC & TDHCA Programs',
     seoDescription:
       'Texas down payment assistance explained: TSAHC and TDHCA grants, forgivable second liens, city programs, income limits, and how to stack assistance with FHA or conventional financing.',
@@ -344,8 +344,8 @@ export const solutions: Solution[] = [
     tagline: 'Education, budgeting, and offer strategy from preapproval to keys.',
     blurb:
       'Buying your first home is mostly an information problem. Once you know what the numbers are, what the steps are, and what each one costs, the fear drops away and it becomes a project you can manage.',
-    image: '/images/solutions/first-time-homebuyers.jpg',
-    heroImage: '/images/solutions/first-time-homebuyers.jpg',
+    image: '/images/solutions/first-time-homebuyers.webp',
+    heroImage: '/images/solutions/first-time-homebuyers.webp',
     seoTitle: 'First Time Home Buyer Texas | Programs & Guidance',
     seoDescription:
       'A first-time homebuyer guide for Texas: how much cash you really need, the seven-step process, down payment assistance, and answers to the fears that keep buyers renting.',

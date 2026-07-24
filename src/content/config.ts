@@ -16,7 +16,7 @@ const blog = defineCollection({
       'Austin Market',
       'Rates',
     ]),
-    image: z.string().default('/images/blog/placeholder.jpg'),
+    image: z.string().default('/images/blog/placeholder.webp'),
     imageAlt: z.string().default(''),
     author: z.string().default('Jason Herbert'),
     featured: z.boolean().default(false),

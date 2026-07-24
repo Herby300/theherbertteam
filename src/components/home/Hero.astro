@@ -25,52 +25,58 @@ const outcomes = [
 ---
 
 <section class="relative isolate overflow-hidden bg-navy">
-  <img
-    src="/images/hero/home-hero.jpg"
-    alt="A family standing in front of their new Texas home"
-    width="1920"
-    height="1080"
-    loading="eager"
-    fetchpriority="high"
-    decoding="async"
-    class="absolute inset-0 h-full w-full object-cover"
-  />
+  <div class="absolute inset-0 bg-gradient-to-br from-navy-light via-navy to-navy-dark" aria-hidden="true"></div>
   <div
-    class="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/70 to-navy/40"
+    class="pointer-events-none absolute -right-32 top-1/2 h-[34rem] w-[34rem] -translate-y-1/2 rounded-full bg-brandblue/20 blur-3xl"
     aria-hidden="true"
   >
   </div>
 
-  <Container class="relative flex min-h-[auto] flex-col justify-center py-16 sm:py-20 lg:min-h-[85vh] lg:py-24">
-    <div class="max-w-3xl">
-      <p class="text-eyebrow font-heading font-semibold uppercase text-gold">
-        20+ Years · Licensed in Texas &amp; Nationwide
-      </p>
-      <h1 class="mt-4 font-heading text-display text-white">More Than a Mortgage. A Mortgage Solution.</h1>
-      <p class="mt-6 max-w-2xl text-body-lg text-silver-light">
-        Most lenders quote you a rate. I solve the problem standing between you and your home. Self-employed, buying
-        before selling, or told &ldquo;no&rdquo; somewhere else — there&rsquo;s almost always a path. Let&rsquo;s find
-        yours.
-      </p>
+  <Container class="relative">
+    <div class="grid gap-x-10 lg:min-h-[85vh] lg:grid-cols-12 lg:grid-rows-[auto_auto] lg:items-center">
+      <div class="pt-14 sm:pt-20 lg:col-span-7 lg:row-start-1 lg:pt-24">
+        <p class="text-eyebrow font-heading font-semibold uppercase text-gold">
+          20+ Years · Licensed in Texas &amp; Nationwide
+        </p>
+        <h1 class="mt-4 font-heading text-display text-white">More Than a Mortgage. A Mortgage Solution.</h1>
+        <p class="mt-6 max-w-2xl text-body-lg text-silver-light">
+          Most lenders quote you a rate. I solve the problem standing between you and your home. Self-employed, buying
+          before selling, or told &ldquo;no&rdquo; somewhere else — there&rsquo;s almost always a path. Let&rsquo;s find
+          yours.
+        </p>
 
-      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
-        <Button
-          href={site.applyUrl}
-          variant="primary"
-          size="lg"
-          icon="arrow-right"
-          external
-          track="begin_application"
-          trackParams={{ cta_location: 'home_hero' }}
-        >
-          Apply Online
-        </Button>
-        <Button href="/schedule" variant="outline-white" size="lg" track="schedule">
-          Book a Free Strategy Call
-        </Button>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <Button
+            href={site.applyUrl}
+            variant="primary"
+            size="lg"
+            icon="arrow-right"
+            external
+            track="begin_application"
+            trackParams={{ cta_location: 'home_hero' }}
+          >
+            Apply Online
+          </Button>
+          <Button href="/schedule" variant="outline-white" size="lg" track="schedule">
+            Book a Free Strategy Call
+          </Button>
+        </div>
       </div>
 
-      <ul class="mt-12 grid gap-5 sm:grid-cols-3">
+      <div class="mt-10 lg:col-span-5 lg:col-start-8 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:self-end">
+        <img
+          src="/images/jason-headshot-hero.webp"
+          alt="Jason Herbert, mortgage advisor with The Herbert Team in Georgetown, Texas"
+          width="1100"
+          height="1467"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          class="mx-auto block w-full max-w-[17rem] drop-shadow-2xl sm:max-w-[20rem] lg:max-w-none"
+        />
+      </div>
+
+      <ul class="mb-14 mt-10 grid gap-5 sm:mb-20 sm:grid-cols-3 lg:col-span-7 lg:row-start-2 lg:mb-24 lg:mt-12">
         {
           outcomes.map((outcome) => (
             <li class="flex gap-3.5">

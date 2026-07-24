@@ -58,7 +58,7 @@ const personSchema = {
   jobTitle: 'Mortgage Advisor',
   description: `${site.advisor} is a licensed mortgage advisor with more than 20 years of experience, serving Texas and clients nationwide through ${site.institution}.`,
   url: new URL('/about', site.url).toString(),
-  image: new URL('/images/jason-headshot-large.jpg', site.url).toString(),
+  image: new URL('/images/jason-headshot-large.webp', site.url).toString(),
   telephone: '+1-760-715-3434',
   email: site.email,
   worksFor: {
@@ -82,7 +82,7 @@ const schema = combineSchema(personSchema, breadcrumbSchema(crumbs));
   heroEyebrow="About"
   heroTitle="20 Years of Saying “Here’s How We Do It” Instead of “No.”"
   heroSubtitle="I am not the lender with the flashiest rate ad. I am the one people call after somebody else turned them down — and the one smart buyers call first so they never hear no in the first place."
-  heroImage="/images/hero/about-hero.jpg"
+  heroImage="/images/hero/about-hero.webp"
   heroImageAlt="Jason Herbert meeting with clients in Georgetown, Texas"
   crumbs={crumbs}
   schema={schema}
@@ -140,13 +140,13 @@ const schema = combineSchema(personSchema, breadcrumbSchema(crumbs));
 
       <div class="lg:sticky lg:top-28 lg:self-start">
         <img
-          src="/images/jason-headshot-large.jpg"
+          src="/images/jason-headshot-large.webp"
           alt={`${site.advisor}, ${site.positioning}`}
-          width="900"
-          height="1100"
+          width="1000"
+          height="1250"
           loading="lazy"
           decoding="async"
-          class="aspect-[9/11] w-full rounded-card object-cover shadow-card-hover"
+          class="aspect-[4/5] w-full rounded-card bg-gradient-to-b from-silver-light to-white object-cover shadow-card-hover"
         />
         <div class="mt-6 rounded-card border border-silver-light bg-offwhite p-6">
           <p class="font-heading text-lg font-bold text-navy">{site.advisor}</p>

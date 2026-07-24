@@ -1,12 +1,16 @@
 /**
- * Generates every placeholder asset referenced by the site so the build runs and
- * layouts render at the correct aspect ratios. Each JPG is labelled with its own
- * path, so swapping in real photography is a straight file replacement — no code
- * changes required.
+ * Generates every placeholder asset still awaiting real photography, so the build
+ * runs and layouts render at the correct aspect ratios. Each file is labelled with
+ * its own path, making a swap to final imagery a straight file replacement.
+ *
+ * Real photography is deliberately absent from the `images` array below — this
+ * script must never clobber a delivered asset. When a placeholder is replaced for
+ * good, delete its entry here.
  *
  * Run with: npm run placeholders
  */
 
+import { existsSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,46 +24,61 @@ const NAVY_DARK = '#000842';
 const BRANDBLUE = '#0698F8';
 const WHITE = '#FFFFFF';
 
-/** Wide hero crops, 3:2 cards, portrait headshots, and the social share image. */
+/**
+ * Wide hero crops, 3:2 cards, and social share images.
+ *
+ * Everything is WebP except og-default — social scrapers (Facebook, LinkedIn, X)
+ * do not reliably render WebP share images, so that one stays JPEG.
+ */
 const images = [
   { path: 'images/og-default.jpg', width: 1200, height: 630, label: 'The Herbert Team — Open Graph' },
-  { path: 'images/jason-headshot.jpg', width: 800, height: 800, label: 'Jason Herbert headshot' },
-  { path: 'images/jason-headshot-large.jpg', width: 1000, height: 1250, label: 'Jason Herbert headshot (large)' },
 
-  { path: 'images/hero/home-hero.jpg', width: 1920, height: 1280, label: 'Home hero' },
-  { path: 'images/hero/about-hero.jpg', width: 1920, height: 1080, label: 'About hero' },
-  { path: 'images/hero/programs-hero.jpg', width: 1920, height: 1080, label: 'Loan programs hero' },
-  { path: 'images/hero/solutions-hero.jpg', width: 1920, height: 1080, label: 'Solutions hero' },
-  { path: 'images/hero/resources-hero.jpg', width: 1920, height: 1080, label: 'Resources hero' },
-  { path: 'images/hero/contact-hero.jpg', width: 1920, height: 1080, label: 'Contact hero' },
-  { path: 'images/hero/blog-hero.jpg', width: 1920, height: 1080, label: 'Blog hero' },
+  // The homepage hero uses Jason's cutout over a navy gradient, so it needs no
+  // background photograph.
+  { path: 'images/hero/about-hero.webp', width: 1920, height: 1080, label: 'About hero' },
+  { path: 'images/hero/programs-hero.webp', width: 1920, height: 1080, label: 'Loan programs hero' },
+  { path: 'images/hero/solutions-hero.webp', width: 1920, height: 1080, label: 'Solutions hero' },
+  { path: 'images/hero/resources-hero.webp', width: 1920, height: 1080, label: 'Resources hero' },
+  { path: 'images/hero/contact-hero.webp', width: 1920, height: 1080, label: 'Contact hero' },
+  { path: 'images/hero/blog-hero.webp', width: 1920, height: 1080, label: 'Blog hero' },
 
-  { path: 'images/programs/conventional.jpg', width: 1200, height: 800, label: 'Conventional loans' },
-  { path: 'images/programs/fha.jpg', width: 1200, height: 800, label: 'FHA loans' },
-  { path: 'images/programs/va.jpg', width: 1200, height: 800, label: 'VA loans' },
-  { path: 'images/programs/jumbo.jpg', width: 1200, height: 800, label: 'Jumbo loans' },
-  { path: 'images/programs/construction.jpg', width: 1200, height: 800, label: 'Construction loans' },
-  { path: 'images/programs/investor-dscr.jpg', width: 1200, height: 800, label: 'Investor & DSCR' },
-  { path: 'images/programs/self-employed.jpg', width: 1200, height: 800, label: 'Self-employed programs' },
-  { path: 'images/programs/refinance.jpg', width: 1200, height: 800, label: 'Refinance' },
+  { path: 'images/programs/conventional.webp', width: 1200, height: 800, label: 'Conventional loans' },
+  { path: 'images/programs/fha.webp', width: 1200, height: 800, label: 'FHA loans' },
+  { path: 'images/programs/va.webp', width: 1200, height: 800, label: 'VA loans' },
+  { path: 'images/programs/jumbo.webp', width: 1200, height: 800, label: 'Jumbo loans' },
+  { path: 'images/programs/construction.webp', width: 1200, height: 800, label: 'Construction loans' },
+  { path: 'images/programs/investor-dscr.webp', width: 1200, height: 800, label: 'Investor & DSCR' },
+  { path: 'images/programs/self-employed.webp', width: 1200, height: 800, label: 'Self-employed programs' },
+  { path: 'images/programs/refinance.webp', width: 1200, height: 800, label: 'Refinance' },
 
-  { path: 'images/solutions/atm-mortgage.jpg', width: 1200, height: 800, label: 'ATM Mortgage' },
-  { path: 'images/solutions/buy-before-you-sell.jpg', width: 1200, height: 800, label: 'Buy Before You Sell' },
-  { path: 'images/solutions/down-payment-assistance.jpg', width: 1200, height: 800, label: 'Down payment assistance' },
-  { path: 'images/solutions/first-time-homebuyers.jpg', width: 1200, height: 800, label: 'First-time homebuyers' },
+  { path: 'images/solutions/atm-mortgage.webp', width: 1200, height: 800, label: 'ATM Mortgage' },
+  { path: 'images/solutions/buy-before-you-sell.webp', width: 1200, height: 800, label: 'Buy Before You Sell' },
+  { path: 'images/solutions/down-payment-assistance.webp', width: 1200, height: 800, label: 'Down payment assistance' },
+  { path: 'images/solutions/first-time-homebuyers.webp', width: 1200, height: 800, label: 'First-time homebuyers' },
 
-  { path: 'images/resources/homebuyer-guide.jpg', width: 800, height: 500, label: 'Homebuyer guide' },
-  { path: 'images/resources/first-time-checklist.jpg', width: 800, height: 500, label: 'First-time checklist' },
-  { path: 'images/resources/mortgage-process-guide.jpg', width: 800, height: 500, label: 'Mortgage process guide' },
-  { path: 'images/resources/moving-checklist.jpg', width: 800, height: 500, label: 'Moving checklist' },
-  { path: 'images/resources/closing-cost-guide.jpg', width: 800, height: 500, label: 'Closing cost guide' },
-  { path: 'images/resources/buying-timeline.jpg', width: 800, height: 500, label: 'Home buying timeline' },
+  { path: 'images/resources/homebuyer-guide.webp', width: 800, height: 500, label: 'Homebuyer guide' },
+  { path: 'images/resources/first-time-checklist.webp', width: 800, height: 500, label: 'First-time checklist' },
+  { path: 'images/resources/mortgage-process-guide.webp', width: 800, height: 500, label: 'Mortgage process guide' },
+  { path: 'images/resources/moving-checklist.webp', width: 800, height: 500, label: 'Moving checklist' },
+  { path: 'images/resources/closing-cost-guide.webp', width: 800, height: 500, label: 'Closing cost guide' },
+  { path: 'images/resources/buying-timeline.webp', width: 800, height: 500, label: 'Home buying timeline' },
 
-  { path: 'images/two-futures/stuck.jpg', width: 1000, height: 750, label: 'If nothing changes' },
-  { path: 'images/two-futures/moving-forward.jpg', width: 1000, height: 750, label: 'If we talk this week' },
+  { path: 'images/two-futures/stuck.webp', width: 1000, height: 750, label: 'If nothing changes' },
+  { path: 'images/two-futures/moving-forward.webp', width: 1000, height: 750, label: 'If we talk this week' },
 
-  { path: 'images/blog/placeholder.jpg', width: 1200, height: 675, label: 'Blog article image' },
-  { path: 'images/testimonials/placeholder-avatar.jpg', width: 200, height: 200, label: 'Client' },
+  { path: 'images/blog/placeholder.webp', width: 1200, height: 675, label: 'Blog article image' },
+  { path: 'images/testimonials/placeholder-avatar.webp', width: 200, height: 200, label: 'Client' },
+];
+
+/**
+ * Delivered photography, listed here only so the script can assert it exists
+ * rather than silently leaving a broken reference behind.
+ */
+const delivered = [
+  'images/jason-headshot.webp',
+  'images/jason-headshot-large.webp',
+  'images/jason-headshot-hero.webp',
+  'images/logo-on-dark.webp',
 ];
 
 /** Escapes text for safe interpolation into the SVG label. */
@@ -100,18 +119,14 @@ const svgFiles = {
   <path d="M14 34 32 18l18 16v14a2 2 0 0 1-2 2h-9V38h-14v12h-9a2 2 0 0 1-2-2z" fill="none" stroke="${BRANDBLUE}" stroke-width="4" stroke-linejoin="round"/>
 </svg>`,
 
+  // TODO: Replace with the real logo once a transparent-background export with
+  // dark ink is available. The delivered artwork is silver on navy, which is
+  // unreadable on the white header, so it is used in the footer only for now.
   'images/logo.svg': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56" role="img" aria-label="The Herbert Team">
   <rect x="0" y="4" width="48" height="48" rx="11" fill="${NAVY}"/>
   <path d="M11 30 24 18l13 12v10a1.5 1.5 0 0 1-1.5 1.5H29V33h-10v8.5h-6.5A1.5 1.5 0 0 1 11 40z" fill="none" stroke="${BRANDBLUE}" stroke-width="3" stroke-linejoin="round"/>
   <text x="62" y="27" font-family="Sora, Segoe UI, Helvetica, Arial, sans-serif" font-size="19" font-weight="800" fill="${NAVY}">The Herbert Team</text>
-  <text x="62" y="44" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="10.5" letter-spacing="2.1" fill="#5A5A5F">MORTGAGE SOLUTION EXPERT</text>
-</svg>`,
-
-  'images/logo-white.svg': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56" role="img" aria-label="The Herbert Team">
-  <rect x="0" y="4" width="48" height="48" rx="11" fill="${WHITE}"/>
-  <path d="M11 30 24 18l13 12v10a1.5 1.5 0 0 1-1.5 1.5H29V33h-10v8.5h-6.5A1.5 1.5 0 0 1 11 40z" fill="none" stroke="${NAVY}" stroke-width="3" stroke-linejoin="round"/>
-  <text x="62" y="27" font-family="Sora, Segoe UI, Helvetica, Arial, sans-serif" font-size="19" font-weight="800" fill="${WHITE}">The Herbert Team</text>
-  <text x="62" y="44" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="10.5" letter-spacing="2.1" fill="#C5C4C3">MORTGAGE SOLUTION EXPERT</text>
+  <text x="62" y="44" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="9" letter-spacing="1.05" fill="#5A5A5F">MORTGAGE SOLUTION EXPERT</text>
 </svg>`,
 
   'images/badges/equal-housing.svg': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 56" width="56" height="56" role="img" aria-label="Equal Housing Lender">
@@ -160,12 +175,24 @@ async function main() {
   await write('downloads/.gitkeep', '');
 
   for (const image of images) {
-    const svg = placeholderSvg(image);
-    const jpg = await sharp(Buffer.from(svg)).jpeg({ quality: 72, progressive: true }).toBuffer();
-    await write(image.path, jpg);
+    const pipeline = sharp(Buffer.from(placeholderSvg(image)));
+    const encoded = image.path.endsWith('.jpg')
+      ? await pipeline.jpeg({ quality: 72, progressive: true }).toBuffer()
+      : await pipeline.webp({ quality: 74, effort: 4 }).toBuffer();
+    await write(image.path, encoded);
+  }
+
+  const missing = [];
+  for (const asset of delivered) {
+    if (!existsSync(join(publicDir, asset))) missing.push(asset);
   }
 
   console.log(`Generated ${images.length} placeholder images and ${Object.keys(svgFiles).length} vector assets.`);
+
+  if (missing.length) {
+    console.warn(`\nWARNING — delivered assets are missing from public/:\n  ${missing.join('\n  ')}`);
+    process.exitCode = 1;
+  }
 }
 
 main().catch((error) => {

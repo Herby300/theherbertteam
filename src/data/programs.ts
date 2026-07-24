@@ -32,8 +32,8 @@ export const programs: Program[] = [
     tagline: 'Flexible down payments and strong terms for well-qualified buyers.',
     blurb:
       'The most common loan in America, and for good reason. Conventional financing rewards solid credit with competitive pricing, down payments starting at 3%, and mortgage insurance that goes away instead of following you for the life of the loan.',
-    image: '/images/programs/conventional.jpg',
-    heroImage: '/images/programs/conventional.jpg',
+    image: '/images/programs/conventional.webp',
+    heroImage: '/images/programs/conventional.webp',
     seoTitle: 'Conventional Loans in Texas | 3% Down Options',
     seoDescription:
       'Conventional mortgage options in Georgetown and across Texas: as little as 3% down, mortgage insurance that drops at 20% equity, and pricing built around strong credit.',
@@ -143,8 +143,8 @@ export const programs: Program[] = [
     tagline: 'Lower down payment and more forgiving credit requirements.',
     blurb:
       'FHA exists so that a thin credit file, a past setback, or a smaller savings account does not lock you out of homeownership. 3.5% down, flexible guidelines, and gift funds allowed for the entire down payment.',
-    image: '/images/programs/fha.jpg',
-    heroImage: '/images/programs/fha.jpg',
+    image: '/images/programs/fha.webp',
+    heroImage: '/images/programs/fha.webp',
     seoTitle: 'FHA Loans in Texas | 3.5% Down, Flexible Credit',
     seoDescription:
       'FHA mortgage options in Georgetown and across Texas. 3.5% down, credit-flexible guidelines, gift funds allowed, and honest guidance on when FHA beats conventional.',
@@ -254,8 +254,8 @@ export const programs: Program[] = [
     tagline: 'Zero down and no monthly MI — let\u2019s use every benefit you earned.',
     blurb:
       'The VA loan is the strongest financing benefit in the country, and it is routinely underused because borrowers are told things about it that are not true. Zero down, no monthly mortgage insurance, reusable entitlement, and competitive pricing.',
-    image: '/images/programs/va.jpg',
-    heroImage: '/images/programs/va.jpg',
+    image: '/images/programs/va.webp',
+    heroImage: '/images/programs/va.webp',
     seoTitle: 'VA Loans in Texas | Zero Down VA Mortgage Lender',
     seoDescription:
       'VA loan financing for Texas veterans and active duty service members. Zero down payment, no monthly mortgage insurance, entitlement reuse, and funding fee exemptions explained.',
@@ -365,8 +365,8 @@ export const programs: Program[] = [
     tagline: 'Luxury financing with 5%-down and no-MI options available.',
     blurb:
       'Above the conforming limit, guidelines stop being standardized and start being negotiable. That is an advantage if your lender knows which investors will look at your file — 5% down, no mortgage insurance, and asset-based qualifying are all on the table.',
-    image: '/images/programs/jumbo.jpg',
-    heroImage: '/images/programs/jumbo.jpg',
+    image: '/images/programs/jumbo.webp',
+    heroImage: '/images/programs/jumbo.webp',
     seoTitle: 'Jumbo Loans in Texas | 5% Down, No MI Options',
     seoDescription:
       'Jumbo mortgage financing across Texas for luxury and high-balance purchases. 5%-down jumbo, no-MI structures, asset depletion qualifying, and interest-only options for eligible borrowers.',
@@ -476,8 +476,8 @@ export const programs: Program[] = [
     tagline: 'Financing for custom builds and new construction.',
     blurb:
       'Building means coordinating a lender, a builder, a draw schedule, and a permanent loan at the same time. A one-time close wraps all of it into a single loan with a single set of closing costs and one rate lock.',
-    image: '/images/programs/construction.jpg',
-    heroImage: '/images/programs/construction.jpg',
+    image: '/images/programs/construction.webp',
+    heroImage: '/images/programs/construction.webp',
     seoTitle: 'Construction Loans in Texas | One-Time Close Financing',
     seoDescription:
       'One-time close construction financing for custom homes in Georgetown, Austin, and across Texas. Single closing, managed draw schedule, and builder coordination from lot to keys.',
@@ -587,8 +587,8 @@ export const programs: Program[] = [
     tagline: 'Qualify on rental income and scale your portfolio.',
     blurb:
       'DSCR loans qualify the property, not you. No tax returns, no debt-to-income calculation, no cap on how many properties you own — just whether the rent covers the payment.',
-    image: '/images/programs/investor-dscr.jpg',
-    heroImage: '/images/programs/investor-dscr.jpg',
+    image: '/images/programs/investor-dscr.webp',
+    heroImage: '/images/programs/investor-dscr.webp',
     seoTitle: 'DSCR Loans in Texas | Investment Property Mortgage',
     seoDescription:
       'DSCR and investment property financing across Texas. Qualify on rental income instead of tax returns, vest in an LLC, and scale past conventional financed-property limits.',
@@ -698,8 +698,8 @@ export const programs: Program[] = [
     tagline: 'Bank statement, 1099, P&L, and no-ratio loans for business owners.',
     blurb:
       'You did not do anything wrong. Your accountant did their job, your tax return shows a modest net income, and a lender who only knows one way to read income told you no. There are four other ways to read it.',
-    image: '/images/programs/self-employed.jpg',
-    heroImage: '/images/programs/self-employed.jpg',
+    image: '/images/programs/self-employed.webp',
+    heroImage: '/images/programs/self-employed.webp',
     seoTitle: 'Bank Statement Loans Texas | Self-Employed Mortgage',
     seoDescription:
       'Self-employed mortgage options in Texas: bank statement loans, 1099 loans, P&L-only programs, and no-ratio financing for business owners whose tax returns understate their income.',
@@ -809,8 +809,8 @@ export const programs: Program[] = [
     tagline: 'Rate-and-term, cash-out, and no-lender-fee options.',
     blurb:
       'Refinancing is only worth doing when the math says so. I will show you the break-even, the total interest cost, and what happens if you stay five years versus thirty — then tell you honestly whether to move.',
-    image: '/images/programs/refinance.jpg',
-    heroImage: '/images/programs/refinance.jpg',
+    image: '/images/programs/refinance.webp',
+    heroImage: '/images/programs/refinance.webp',
     seoTitle: 'Mortgage Refinance in Texas | Cash-Out & Rate-and-Term',
     seoDescription:
       'Refinance your Texas mortgage with honest break-even math. Rate-and-term, cash-out, debt consolidation, and no-lender-fee options explained line by line before you commit.',

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 56" width="260" height="56" role="img" aria-label="The Herbert Team">
-  <rect x="0" y="4" width="48" height="48" rx="11" fill="#FFFFFF"/>
-  <path d="M11 30 24 18l13 12v10a1.5 1.5 0 0 1-1.5 1.5H29V33h-10v8.5h-6.5A1.5 1.5 0 0 1 11 40z" fill="none" stroke="#010E71" stroke-width="3" stroke-linejoin="round"/>
-  <text x="62" y="27" font-family="Sora, Segoe UI, Helvetica, Arial, sans-serif" font-size="19" font-weight="800" fill="#FFFFFF">The Herbert Team</text>
-  <text x="62" y="44" font-family="Inter, Segoe UI, Helvetica, Arial, sans-serif" font-size="10.5" letter-spacing="2.1" fill="#C5C4C3">MORTGAGE SOLUTION EXPERT</text>
-</svg>
