@@ -1,0 +1,183 @@
+---
+import Icon from './ui/Icon.astro';
+import { site } from '../data/site';
+import { mainNav } from '../data/nav';
+---
+
+<div
+  id="mobile-nav"
+  class="invisible fixed inset-0 z-[60] opacity-0 transition-opacity duration-200 lg:hidden"
+  aria-hidden="true"
+>
+  <div id="mobile-nav-backdrop" class="absolute inset-0 bg-navy-dark/60" aria-hidden="true"></div>
+
+  <div
+    id="mobile-nav-panel"
+    class="absolute right-0 top-0 flex h-full w-full max-w-sm translate-x-full flex-col bg-white shadow-card-hover transition-transform duration-200"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Site menu"
+  >
+    <div class="flex items-center justify-between border-b border-silver-light px-5 py-3">
+      <a href="/" class="flex items-center">
+        <img src="/images/logo.svg" alt={`${site.name} logo`} width="180" height="44" class="h-9 w-auto" />
+      </a>
+      <button
+        type="button"
+        id="mobile-nav-close"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-silver-light text-navy"
+        aria-label="Close menu"
+      >
+        <Icon name="x" size={22} />
+      </button>
+    </div>
+
+    <nav class="flex-1 overflow-y-auto px-5 py-4" aria-label="Mobile">
+      <ul class="space-y-1">
+        {
+          mainNav.map((item) =>
+            item.children ? (
+              <li class="border-b border-silver-light/70 pb-1">
+                <button
+                  type="button"
+                  class="flex min-h-[48px] w-full items-center justify-between py-2 text-left font-heading text-base font-semibold text-navy"
+                  aria-expanded="false"
+                  data-accordion-trigger
+                >
+                  {item.label}
+                  <Icon name="chevron-down" size={20} class="text-brandblue transition-transform duration-200" />
+                </button>
+                <div class="hidden pb-2" data-accordion-panel>
+                  <ul class="space-y-0.5 border-l-2 border-brandblue-soft pl-4">
+                    <li>
+                      <a
+                        href={item.href}
+                        class="flex min-h-[44px] items-center py-2 font-heading text-sm font-semibold text-brandblue"
+                      >
+                        All {item.label}
+                      </a>
+                    </li>
+                    {item.children.map((child) => (
+                      <li>
+                        <a href={child.href} class="flex min-h-[44px] items-center py-2 text-sm text-charcoal">
+                          {child.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </li>
+            ) : (
+              <li class="border-b border-silver-light/70">
+                <a
+                  href={item.href}
+                  class="flex min-h-[48px] items-center py-3 font-heading text-base font-semibold text-navy"
+                >
+                  {item.label}
+                </a>
+              </li>
+            )
+          )
+        }
+      </ul>
+
+      <div class="mt-6 space-y-3">
+        <a
+          href="/apply"
+          class="flex min-h-[52px] w-full items-center justify-center rounded-lg bg-brandblue px-6 py-3.5 font-heading font-semibold text-white shadow-cta"
+          data-track="begin_application"
+          data-track-params='{"cta_location":"mobile_nav"}'
+        >
+          Apply Now
+        </a>
+        <a
+          href="/schedule"
+          class="flex min-h-[52px] w-full items-center justify-center rounded-lg border-2 border-navy px-6 py-3.5 font-heading font-semibold text-navy"
+        >
+          Book a Strategy Call
+        </a>
+        <a
+          href={site.phoneHref}
+          class="flex min-h-[48px] w-full items-center justify-center gap-2 py-2 font-heading font-semibold text-navy"
+        >
+          <Icon name="phone" size={18} class="text-brandblue" />
+          <span class="tabular">{site.phone}</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<script>
+  const nav = document.getElementById('mobile-nav');
+  const panel = document.getElementById('mobile-nav-panel');
+  const toggle = document.getElementById('mobile-nav-toggle');
+  const closeBtn = document.getElementById('mobile-nav-close');
+  const backdrop = document.getElementById('mobile-nav-backdrop');
+
+  if (nav && panel && toggle) {
+    const focusableSelector =
+      'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
+    let lastFocused: HTMLElement | null = null;
+
+    const open = () => {
+      lastFocused = document.activeElement as HTMLElement;
+      nav.classList.remove('invisible', 'opacity-0');
+      nav.setAttribute('aria-hidden', 'false');
+      panel.classList.remove('translate-x-full');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      panel.querySelector<HTMLElement>(focusableSelector)?.focus();
+    };
+
+    const close = () => {
+      nav.classList.add('invisible', 'opacity-0');
+      nav.setAttribute('aria-hidden', 'true');
+      panel.classList.add('translate-x-full');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      lastFocused?.focus();
+    };
+
+    toggle.addEventListener('click', open);
+    closeBtn?.addEventListener('click', close);
+    backdrop?.addEventListener('click', close);
+
+    document.addEventListener('keydown', (event) => {
+      if (nav.getAttribute('aria-hidden') === 'true') return;
+
+      if (event.key === 'Escape') {
+        close();
+        return;
+      }
+
+      if (event.key !== 'Tab') return;
+
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+        (el) => el.offsetParent !== null
+      );
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    panel.querySelectorAll<HTMLButtonElement>('[data-accordion-trigger]').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const expanded = trigger.getAttribute('aria-expanded') === 'true';
+        const body = trigger.nextElementSibling as HTMLElement | null;
+        trigger.setAttribute('aria-expanded', String(!expanded));
+        trigger.querySelector('svg')?.classList.toggle('rotate-180', !expanded);
+        body?.classList.toggle('hidden', expanded);
+      });
+    });
+  }
+</script>

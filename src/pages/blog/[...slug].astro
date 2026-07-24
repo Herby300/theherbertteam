@@ -1,0 +1,39 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import { readTime } from '../../utils/format';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+  return posts.map((post) => {
+    const sameCategory = posts.filter(
+      (other) => other.slug !== post.slug && other.data.category === post.data.category
+    );
+    const others = posts.filter(
+      (other) => other.slug !== post.slug && other.data.category !== post.data.category
+    );
+    const related = [...sameCategory, ...others]
+      .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+      .slice(0, 3)
+      .map((entry) => ({ slug: entry.slug, data: entry.data }));
+
+    return {
+      params: { slug: post.slug },
+      props: { post, related },
+    };
+  });
+}
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+  related: { slug: string; data: CollectionEntry<'blog'>['data'] }[];
+};
+
+const { post, related } = Astro.props;
+const { Content } = await post.render();
+---
+
+<BlogPostLayout post={post} related={related} readingMinutes={readTime(post.body)}>
+  <Content />
+</BlogPostLayout>

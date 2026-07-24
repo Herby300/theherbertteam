@@ -1,0 +1,118 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import GhlBooking from '../components/forms/GhlBooking.astro';
+import Icon from '../components/ui/Icon.astro';
+import { site } from '../data/site';
+import { breadcrumbSchema } from '../utils/seo';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Schedule', href: '/schedule' },
+];
+
+const covered = [
+  {
+    icon: 'target',
+    title: 'Your actual price range',
+    text: 'Not the maximum a computer approves — the number that fits your budget with room to live.',
+  },
+  {
+    icon: 'compass',
+    title: 'Which programs fit you',
+    text: 'Based on how you earn, what you have saved, and how long you plan to keep the home.',
+  },
+  {
+    icon: 'banknote',
+    title: 'Real cash to close',
+    text: 'Down payment, closing costs, and every other dollar you should plan for in Texas.',
+  },
+  {
+    icon: 'list-checks',
+    title: 'Your next three steps',
+    text: 'Concrete actions, in order, whether you are buying next month or next year.',
+  },
+];
+
+const prep = [
+  'A rough idea of your household income before taxes',
+  'Your approximate monthly debt payments — car, student loans, credit card minimums',
+  'How much you have available for a down payment and closing costs',
+  'Your best guess at your credit score, or simply say you are unsure',
+  'If self-employed: your business type and roughly what deposits look like monthly',
+  'Any question you have been afraid to ask another lender',
+];
+---
+
+<PageLayout
+  title="Schedule a Free Mortgage Consultation"
+  description="Book a free 20-minute mortgage strategy call with Jason Herbert. Get your real price range, program options, and cash-to-close estimate with no obligation."
+  heroEyebrow="Free Consultation"
+  heroTitle="Grab 20 Minutes on My Calendar."
+  heroSubtitle="No cost, no obligation, no pressure to apply at the end. You will leave knowing more than you do right now, which is the entire point."
+  heroImage="/images/hero/contact-hero.jpg"
+  heroImageAlt="Calendar and phone on a desk"
+  crumbs={crumbs}
+  showHeroCtas={false}
+  schema={breadcrumbSchema(crumbs)}
+>
+  <Section bg="offwhite">
+    <SectionHeading eyebrow="On the Call" title="What We’ll Cover" align="center" class="mb-12" />
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        covered.map((item) => (
+          <div class="reveal flex h-full flex-col rounded-card border border-silver-light bg-white p-6 shadow-card">
+            <span class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+              <Icon name={item.icon} size={23} />
+            </span>
+            <h3 class="mt-4 font-heading text-lg font-bold text-navy">{item.title}</h3>
+            <p class="mt-2 flex-1 text-[0.9375rem] leading-relaxed text-graytext">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section bg="white">
+    <div class="mx-auto max-w-4xl">
+      <SectionHeading
+        eyebrow="Pick a Time"
+        title="Choose Whatever Slot Works"
+        subtitle="Calls are usually by phone. If you would rather do video or meet in person in Georgetown, just say so in the booking notes."
+        align="center"
+        class="mb-10"
+      />
+      <div class="overflow-hidden rounded-card border border-silver-light bg-white shadow-card">
+        <GhlBooking height="700" />
+      </div>
+      <p class="mt-6 text-center text-sm text-graytext">
+        Prefer to skip the calendar? Call or text
+        <a href={site.phoneHref} class="font-semibold text-brandblue hover:underline">{site.phone}</a>
+        and we can talk right now if I am free.
+      </p>
+    </div>
+  </Section>
+
+  <Section bg="offwhite">
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+      <div>
+        <SectionHeading eyebrow="Come Prepared" title="Six Things to Have Loosely in Mind" align="left" class="mb-6" />
+        <p class="text-body-lg text-graytext">
+          None of this needs to be exact, and you do not need documents for a first conversation. Rough numbers are
+          plenty to get you a useful answer, and if you do not know something, saying so is a perfectly good response.
+        </p>
+      </div>
+      <ul class="space-y-3.5">
+        {
+          prep.map((item) => (
+            <li class="flex items-start gap-3 rounded-card border border-silver-light bg-white px-5 py-4 shadow-card">
+              <Icon name="check-circle" size={20} class="mt-0.5 shrink-0 text-success" />
+              <span class="text-[0.9375rem] leading-relaxed text-charcoal">{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Section>
+</PageLayout>

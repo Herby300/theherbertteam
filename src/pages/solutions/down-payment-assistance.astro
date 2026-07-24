@@ -1,0 +1,152 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { getSolution } from '../../data/solutions';
+
+const solution = getSolution('down-payment-assistance');
+
+const programTypes = [
+  {
+    icon: 'sparkles',
+    title: 'Grants',
+    text: 'Funds you never repay. No lien is placed on the property and there is no monthly payment. Typically calculated as a percentage of the loan amount and applied at closing.',
+  },
+  {
+    icon: 'clock',
+    title: 'Forgivable second liens',
+    text: 'A zero-interest second lien with no payment that is forgiven entirely once you have occupied the home for a set period, commonly three years. Sell early and a prorated amount may be due.',
+  },
+  {
+    icon: 'file-text',
+    title: 'Deferred second liens',
+    text: 'No monthly payment, but the balance is repaid when you sell, refinance, or pay off the first mortgage. Often provides larger assistance amounts than a grant.',
+  },
+  {
+    icon: 'banknote',
+    title: 'Repayable second liens',
+    text: 'A small amortizing second lien with a modest monthly payment. Less common, but useful when the assistance amount is large and the terms are favorable.',
+  },
+];
+
+const texasPrograms = [
+  {
+    name: 'TSAHC — Homes for Texas Heroes',
+    detail:
+      'Dedicated to teachers, first responders, corrections officers, veterans, and healthcare workers. Provides grant or deferred second lien assistance alongside a fixed-rate first mortgage.',
+  },
+  {
+    name: 'TSAHC — Home Sweet Texas',
+    detail:
+      'Open to buyers who meet income limits regardless of profession. Same assistance structures as Homes for Texas Heroes, with income caps set by county and household size.',
+  },
+  {
+    name: 'TDHCA — My First Texas Home',
+    detail:
+      'A statewide program for first-time buyers and qualified veterans, pairing a low-rate first mortgage with down payment and closing cost assistance.',
+  },
+  {
+    name: 'TDHCA — Texas Mortgage Credit Certificate',
+    detail:
+      'Not down payment assistance, but a federal tax credit on a portion of the mortgage interest you pay each year for as long as you keep the loan. It can often be combined with other assistance.',
+  },
+  {
+    name: 'City and county programs',
+    detail:
+      'Several jurisdictions in the Austin metro operate their own assistance programs with local income and purchase price limits. Availability and funding change frequently, so we verify at the time you are shopping.',
+  },
+];
+---
+
+<ProgramLayout program={solution} kind="solution">
+  <Section slot="after-benefits" bg="white">
+    <SectionHeading
+      eyebrow="Program Types"
+      title="Four Structures, Four Different Obligations"
+      subtitle="The word “assistance” covers very different arrangements. Knowing which one you are getting matters more than the dollar amount."
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid gap-6 md:grid-cols-2">
+      {
+        programTypes.map((type) => (
+          <div class="reveal flex gap-4 rounded-card border border-silver-light bg-white p-7 shadow-card">
+            <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+              <Icon name={type.icon} size={22} />
+            </span>
+            <div>
+              <h3 class="font-heading text-lg font-bold text-navy">{type.title}</h3>
+              <p class="mt-2 text-[0.9375rem] leading-relaxed text-graytext">{type.text}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-14">
+      <SectionHeading
+        eyebrow="Texas Programs"
+        title="What’s Available Where You’re Buying"
+        subtitle="Program terms, income limits, and funding availability change periodically. Everything below is verified against the current program guidelines before we rely on it for your file."
+        align="center"
+        class="mb-10"
+      />
+      <ul class="mx-auto max-w-4xl divide-y divide-silver-light overflow-hidden rounded-card border border-silver-light bg-white shadow-card">
+        {
+          texasPrograms.map((program) => (
+            <li class="p-6 md:p-7">
+              <h3 class="font-heading text-lg font-bold text-navy">{program.name}</h3>
+              <p class="mt-2 leading-relaxed text-graytext">{program.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="mx-auto mt-10 flex max-w-4xl gap-4 rounded-card border-l-4 border-gold bg-brandblue-soft p-6 md:p-8">
+      <Icon name="alert-triangle" size={24} class="mt-0.5 shrink-0 text-gold" />
+      <div>
+        <h3 class="font-heading text-lg font-bold text-navy">Assistance funds get reserved, not requested</h3>
+        <p class="mt-2 leading-relaxed text-charcoal">
+          Most programs require the lender to reserve funds when you go under contract, and some run out of allocation
+          before the year does. That is the single most common reason eligible buyers miss out. If assistance is part of
+          your plan, we set it up before you start writing offers, not after.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section slot="before-faq" bg="white">
+    <SectionHeading
+      eyebrow="Stacking"
+      title="How Assistance Layers On Top of Your Loan"
+      subtitle="Assistance is not a loan type. It sits on top of a first mortgage, and the combination determines your total monthly cost."
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid gap-6 md:grid-cols-3">
+      {
+        [
+          {
+            title: 'FHA + assistance',
+            text: 'The most common pairing. FHA already requires only 3.5% down, so assistance often covers the entire down payment and part of the closing costs. Credit-flexible and widely available.',
+          },
+          {
+            title: 'Conventional + assistance',
+            text: 'Works well for buyers with stronger credit who want mortgage insurance that eventually cancels. Requires 3% to 5% down, much of which assistance can cover.',
+          },
+          {
+            title: 'VA + assistance',
+            text: 'VA already requires nothing down, so assistance is typically applied to closing costs and prepaid items instead — which can bring your cash to close close to zero.',
+          },
+        ].map((item) => (
+          <div class="reveal rounded-card border border-silver-light bg-offwhite p-7">
+            <h3 class="font-heading text-lg font-bold text-navy">{item.title}</h3>
+            <p class="mt-3 text-[0.9375rem] leading-relaxed text-graytext">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+</ProgramLayout>

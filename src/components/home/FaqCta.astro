@@ -1,0 +1,45 @@
+---
+import Container from '../Container.astro';
+import SectionHeading from '../SectionHeading.astro';
+import Accordion from '../ui/Accordion.astro';
+import AccordionItem from '../ui/AccordionItem.astro';
+import CtaBand from '../sections/CtaBand.astro';
+import LeadMagnetStrip from '../sections/LeadMagnetStrip.astro';
+import Icon from '../ui/Icon.astro';
+import { homepageFaqs } from '../../data/faqs';
+---
+
+<section class="bg-offwhite py-16 md:py-20 lg:py-24">
+  <Container>
+    <SectionHeading
+      eyebrow="Straight Answers"
+      title="Questions People Ask Me Every Week"
+      align="center"
+      class="mb-10"
+    />
+
+    <div class="mx-auto max-w-3xl">
+      <Accordion>
+        {
+          homepageFaqs.map((faq, index) => (
+            <AccordionItem question={faq.q} answer={faq.a} id={`home-faq-${index}`} open={index === 0} />
+          ))
+        }
+      </Accordion>
+
+      <p class="mt-8 text-center">
+        <a
+          href="/faq"
+          class="inline-flex min-h-[44px] items-center gap-1.5 font-heading font-semibold text-brandblue hover:text-brandblue-hover"
+        >
+          See all 40+ questions answered
+          <Icon name="arrow-right" size={17} />
+        </a>
+      </p>
+    </div>
+  </Container>
+</section>
+
+<CtaBand />
+
+<LeadMagnetStrip bg="offwhite" />

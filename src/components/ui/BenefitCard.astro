@@ -1,0 +1,43 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  text: string;
+  icon: string;
+  number?: number;
+  class?: string;
+  invert?: boolean;
+}
+
+const { title, text, icon, number, class: className = '', invert = false } = Astro.props;
+---
+
+<div
+  class:list={[
+    'flex h-full flex-col rounded-card border p-7 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover',
+    invert ? 'border-white/15 bg-navy-light/40' : 'border-silver-light bg-white',
+    className,
+  ]}
+>
+  <div class="flex items-center gap-4">
+    <span
+      class:list={[
+        'inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-xl',
+        invert ? 'bg-brandblue text-white' : 'bg-brandblue-soft text-brandblue',
+      ]}
+    >
+      <Icon name={icon} size={26} />
+    </span>
+    {
+      number && (
+        <span class:list={['font-heading text-4xl font-extrabold tabular', invert ? 'text-white/25' : 'text-silver']}>
+          {String(number).padStart(2, '0')}
+        </span>
+      )
+    }
+  </div>
+  <h3 class:list={['mt-5 font-heading text-h3', invert ? 'text-white' : 'text-navy']}>{title}</h3>
+  <p class:list={['mt-3 flex-1 leading-relaxed', invert ? 'text-silver-light' : 'text-graytext']}>{text}</p>
+  <slot />
+</div>

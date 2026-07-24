@@ -1,0 +1,188 @@
+---
+import Container from './Container.astro';
+import Icon from './ui/Icon.astro';
+import MobileNav from './MobileNav.astro';
+import { site } from '../data/site';
+import { mainNav } from '../data/nav';
+
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+
+function isActive(href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+---
+
+<header id="site-header" class="sticky top-0 z-50 w-full">
+  <div class="hidden bg-navy text-white lg:block">
+    <Container class="flex items-center justify-center gap-3 py-2 text-[0.8125rem] font-medium">
+      <span>20+ Years Experience</span>
+      <span aria-hidden="true" class="text-brandblue">·</span>
+      <span>Licensed in Texas &amp; Nationwide</span>
+      <span aria-hidden="true" class="text-brandblue">·</span>
+      <span class="flex items-center gap-1.5">
+        <span class="flex text-gold" aria-hidden="true">
+          {[0, 1, 2, 3, 4].map(() => <Icon name="star" size={13} class="fill-current" strokeWidth={0} />)}
+        </span>
+        <span>Google Reviews</span>
+      </span>
+    </Container>
+  </div>
+
+  <div id="header-bar" class="bg-white/95 backdrop-blur transition-shadow duration-200">
+    <Container class="flex items-center justify-between gap-4 py-3">
+      <a href="/" class="flex shrink-0 items-center gap-3" aria-label={`${site.name} — home`}>
+        <img src="/images/logo.svg" alt={`${site.name} logo`} width="200" height="48" class="h-10 w-auto sm:h-11" />
+      </a>
+
+      <nav class="hidden lg:block" aria-label="Primary">
+        <ul class="flex items-center gap-1">
+          {
+            mainNav.map((item) =>
+              item.children ? (
+                <li class="group relative">
+                  <button
+                    type="button"
+                    class:list={[
+                      'flex min-h-[44px] items-center gap-1 rounded-lg px-3 py-2 font-heading text-[0.9375rem] font-semibold transition-colors hover:text-brandblue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brandblue',
+                      isActive(item.href) ? 'text-brandblue' : 'text-navy',
+                    ]}
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    data-dropdown-trigger
+                  >
+                    {item.label}
+                    <Icon name="chevron-down" size={16} class="transition-transform duration-200 group-hover:rotate-180" />
+                  </button>
+                  <div
+                    class="invisible absolute left-0 top-full z-50 w-[22rem] translate-y-1 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+                    data-dropdown-panel
+                  >
+                    <ul class="overflow-hidden rounded-card border border-silver-light bg-white p-2 shadow-card-hover">
+                      <li>
+                        <a
+                          href={item.href}
+                          class="flex items-center justify-between rounded-lg px-3 py-2 font-heading text-sm font-semibold text-navy hover:bg-brandblue-soft"
+                        >
+                          All {item.label}
+                          <Icon name="arrow-right" size={16} class="text-brandblue" />
+                        </a>
+                      </li>
+                      {item.children.map((child) => (
+                        <li>
+                          <a
+                            href={child.href}
+                            class:list={[
+                              'block rounded-lg px-3 py-2 transition-colors hover:bg-offwhite',
+                              isActive(child.href) ? 'bg-brandblue-soft' : '',
+                            ]}
+                          >
+                            <span class="block font-heading text-sm font-semibold text-navy">{child.label}</span>
+                            {child.description && (
+                              <span class="mt-0.5 block text-[0.8125rem] leading-snug text-graytext">
+                                {child.description}
+                              </span>
+                            )}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+              ) : (
+                <li>
+                  <a
+                    href={item.href}
+                    class:list={[
+                      'flex min-h-[44px] items-center rounded-lg px-3 py-2 font-heading text-[0.9375rem] font-semibold transition-colors hover:text-brandblue',
+                      isActive(item.href) ? 'text-brandblue' : 'text-navy',
+                    ]}
+                    aria-current={isActive(item.href) ? 'page' : undefined}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              )
+            )
+          }
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2 sm:gap-3">
+        <a
+          href={site.phoneHref}
+          class="hidden min-h-[44px] items-center gap-2 rounded-lg px-3 font-heading text-sm font-semibold text-navy transition-colors hover:text-brandblue xl:flex"
+        >
+          <Icon name="phone" size={17} class="text-brandblue" />
+          <span class="tabular">{site.phone}</span>
+        </a>
+        <a
+          href="/apply"
+          class="hidden min-h-[44px] items-center rounded-lg bg-brandblue px-5 py-2.5 font-heading text-sm font-semibold text-white shadow-cta transition-all duration-200 hover:-translate-y-0.5 hover:bg-brandblue-hover sm:inline-flex"
+          data-track="begin_application"
+          data-track-params='{"cta_location":"header"}'
+        >
+          Apply Now
+        </a>
+        <button
+          type="button"
+          id="mobile-nav-toggle"
+          class="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-silver-light text-navy transition-colors hover:bg-offwhite lg:hidden"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+        >
+          <Icon name="menu" size={24} />
+        </button>
+      </div>
+    </Container>
+  </div>
+</header>
+
+<MobileNav />
+
+<script>
+  const bar = document.getElementById('header-bar');
+
+  if (bar) {
+    const applyShadow = () => {
+      if (window.scrollY > 20) {
+        bar.classList.add('shadow-card');
+      } else {
+        bar.classList.remove('shadow-card');
+      }
+    };
+    applyShadow();
+    window.addEventListener('scroll', applyShadow, { passive: true });
+  }
+
+  // Desktop dropdowns open on hover via CSS; keyboard users toggle them here.
+  document.querySelectorAll<HTMLButtonElement>('[data-dropdown-trigger]').forEach((trigger) => {
+    const panel = trigger.parentElement?.querySelector<HTMLElement>('[data-dropdown-panel]');
+    if (!panel) return;
+
+    const setOpen = (open: boolean) => {
+      trigger.setAttribute('aria-expanded', String(open));
+      panel.classList.toggle('!visible', open);
+      panel.classList.toggle('!opacity-100', open);
+      panel.classList.toggle('!translate-y-0', open);
+    };
+
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      setOpen(trigger.getAttribute('aria-expanded') !== 'true');
+    });
+
+    trigger.parentElement?.addEventListener('focusout', (event) => {
+      const next = event.relatedTarget as Node | null;
+      if (!next || !trigger.parentElement?.contains(next)) setOpen(false);
+    });
+
+    trigger.parentElement?.addEventListener('keydown', (event) => {
+      if ((event as KeyboardEvent).key === 'Escape') {
+        setOpen(false);
+        trigger.focus();
+      }
+    });
+  });
+</script>

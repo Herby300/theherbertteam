@@ -1,0 +1,33 @@
+---
+interface Props {
+  href?: string;
+  class?: string;
+  padding?: 'none' | 'sm' | 'md' | 'lg';
+  hover?: boolean;
+  as?: 'div' | 'article' | 'li';
+}
+
+const { href, class: className = '', padding = 'md', hover = true, as: Tag = 'div' } = Astro.props;
+
+const paddings: Record<string, string> = {
+  none: '',
+  sm: 'p-5',
+  md: 'p-6 md:p-7',
+  lg: 'p-7 md:p-9',
+};
+
+const base = `rounded-card border border-silver-light bg-white shadow-card ${paddings[padding]}`;
+const hoverClasses = hover ? 'transition-all duration-200 hover:shadow-card-hover hover:-translate-y-1' : '';
+---
+
+{
+  href ? (
+    <a href={href} class={`block ${base} ${hoverClasses} ${className}`}>
+      <slot />
+    </a>
+  ) : (
+    <Tag class={`${base} ${hoverClasses} ${className}`}>
+      <slot />
+    </Tag>
+  )
+}

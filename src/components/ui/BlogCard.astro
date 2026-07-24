@@ -1,0 +1,71 @@
+---
+import Icon from './Icon.astro';
+import { formatDate } from '../../utils/format';
+
+interface Props {
+  title: string;
+  description: string;
+  image: string;
+  slug: string;
+  category: string;
+  date: Date | string;
+  readTime?: number;
+  featured?: boolean;
+  class?: string;
+}
+
+const {
+  title,
+  description,
+  image,
+  slug,
+  category,
+  date,
+  readTime,
+  featured = false,
+  class: className = '',
+} = Astro.props;
+
+const href = `/blog/${slug}`;
+---
+
+<article
+  class:list={[
+    'group flex h-full flex-col overflow-hidden rounded-card border border-silver-light bg-white shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover',
+    featured ? 'md:flex-row' : '',
+    className,
+  ]}
+  data-category={category}
+>
+  <a href={href} class:list={['block shrink-0 overflow-hidden', featured ? 'md:w-1/2' : '']} tabindex="-1" aria-hidden="true">
+    <img
+      src={image}
+      alt=""
+      width="800"
+      height="450"
+      loading="lazy"
+      decoding="async"
+      class:list={[
+        'w-full object-cover transition-transform duration-300 group-hover:scale-105',
+        featured ? 'aspect-[16/10] h-full' : 'aspect-video',
+      ]}
+    />
+  </a>
+  <div class="flex flex-1 flex-col p-6 md:p-7">
+    <div class="flex flex-wrap items-center gap-3 text-sm">
+      <span class="rounded-full bg-brandblue-soft px-3 py-1 font-heading text-[0.75rem] font-semibold uppercase tracking-wide text-navy">
+        {category}
+      </span>
+      <time datetime={new Date(date).toISOString()} class="text-graytext">{formatDate(date)}</time>
+      {readTime && <span class="text-graytext">· {readTime} min read</span>}
+    </div>
+    <h3 class:list={['mt-4 font-heading font-bold text-navy', featured ? 'text-h3' : 'text-lg']}>
+      <a href={href} class="transition-colors hover:text-brandblue">{title}</a>
+    </h3>
+    <p class="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-graytext">{description}</p>
+    <span class="mt-5 inline-flex items-center gap-1.5 font-heading text-sm font-semibold text-brandblue">
+      Read the article
+      <Icon name="arrow-right" size={16} class="transition-transform duration-200 group-hover:translate-x-1" />
+    </span>
+  </div>
+</article>

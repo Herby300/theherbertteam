@@ -1,0 +1,40 @@
+---
+import Icon from './ui/Icon.astro';
+
+interface Props {
+  crumbs: { label: string; href: string }[];
+  invert?: boolean;
+  class?: string;
+}
+
+const { crumbs, invert = false, class: className = '' } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class={className}>
+  <ol
+    class:list={[
+      'flex flex-wrap items-center gap-1.5 text-sm',
+      invert ? 'text-silver-light' : 'text-graytext',
+    ]}
+  >
+    {
+      crumbs.map((crumb, index) => (
+        <li class="flex items-center gap-1.5">
+          {index > 0 && <Icon name="chevron-right" size={14} class="opacity-60" />}
+          {index === crumbs.length - 1 ? (
+            <span aria-current="page" class={invert ? 'text-white' : 'text-navy'}>
+              {crumb.label}
+            </span>
+          ) : (
+            <a
+              href={crumb.href}
+              class:list={['transition-colors', invert ? 'hover:text-brandblue' : 'hover:text-brandblue']}
+            >
+              {crumb.label}
+            </a>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

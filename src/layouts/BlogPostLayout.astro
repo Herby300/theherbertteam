@@ -1,0 +1,191 @@
+---
+import Layout from './Layout.astro';
+import Container from '../components/Container.astro';
+import Section from '../components/Section.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import BlogCard from '../components/ui/BlogCard.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+import { site } from '../data/site';
+import { formatDate } from '../utils/format';
+import { articleSchema, breadcrumbSchema, combineSchema } from '../utils/seo';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  readingMinutes: number;
+  related: { slug: string; data: CollectionEntry<'blog'>['data'] }[];
+}
+
+const { post, readingMinutes, related } = Astro.props;
+const { title, description, pubDate, updatedDate, category, image, imageAlt, author } = post.data;
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog', href: '/blog' },
+  { label: title, href: `/blog/${post.slug}` },
+];
+
+const schema = combineSchema(
+  articleSchema({
+    title,
+    description,
+    image,
+    datePublished: pubDate.toISOString(),
+    dateModified: updatedDate?.toISOString(),
+    slug: post.slug,
+  }),
+  breadcrumbSchema(crumbs)
+);
+---
+
+<Layout title={title} description={description} image={image} type="article" schema={schema}>
+  <article>
+    <header class="border-b border-silver-light bg-offwhite py-10 md:py-14">
+      <Container>
+        <Breadcrumbs crumbs={crumbs} class="mb-6" />
+        <div class="max-w-3xl">
+          <span class="inline-block rounded-full bg-brandblue-soft px-3.5 py-1.5 font-heading text-[0.75rem] font-semibold uppercase tracking-wide text-navy">
+            {category}
+          </span>
+          <h1 class="mt-5 text-display text-navy">{title}</h1>
+          <p class="mt-5 text-body-lg text-graytext">{description}</p>
+          <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-graytext">
+            <span class="flex items-center gap-2">
+              <img
+                src="/images/jason-headshot.jpg"
+                alt=""
+                width="40"
+                height="40"
+                loading="lazy"
+                decoding="async"
+                class="h-9 w-9 rounded-full object-cover"
+              />
+              <span class="font-heading font-semibold text-navy">{author}</span>
+            </span>
+            <time datetime={pubDate.toISOString()}>{formatDate(pubDate)}</time>
+            <span>{readingMinutes} min read</span>
+            {updatedDate && <span>Updated {formatDate(updatedDate)}</span>}
+          </div>
+        </div>
+      </Container>
+    </header>
+
+    <Container class="py-10 md:py-14">
+      <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
+        <div class="min-w-0">
+          <img
+            src={image}
+            alt={imageAlt || title}
+            width="1200"
+            height="675"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            class="aspect-video w-full rounded-card object-cover"
+          />
+
+          <div class="prose mt-10 max-w-none">
+            <slot />
+          </div>
+
+          <aside class="mt-12 rounded-card border border-silver-light bg-offwhite p-6 md:p-8">
+            <div class="flex flex-col gap-5 sm:flex-row sm:items-start">
+              <img
+                src="/images/jason-headshot.jpg"
+                alt={`${site.advisor}, ${site.positioning}`}
+                width="112"
+                height="112"
+                loading="lazy"
+                decoding="async"
+                class="h-24 w-24 shrink-0 rounded-card object-cover"
+              />
+              <div>
+                <p class="font-heading text-lg font-bold text-navy">{site.advisor}</p>
+                <p class="text-sm text-graytext">{site.positioning} · {site.nmls}</p>
+                <p class="mt-3 text-[0.9375rem] leading-relaxed text-charcoal">
+                  Jason has spent more than 20 years helping buyers and homeowners across Texas and nationwide find
+                  financing that fits their actual situation. If something here raised a question about your own
+                  scenario, the fastest way to get a real answer is to ask him directly.
+                </p>
+                <div class="mt-5 flex flex-col gap-3 sm:flex-row">
+                  <Button href="/schedule" variant="primary" size="sm" icon="arrow-right" track="schedule">
+                    Book a Free Strategy Call
+                  </Button>
+                  <Button href="/contact" variant="secondary" size="sm">Send a Question</Button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <aside class="lg:sticky lg:top-28 lg:self-start">
+          <div class="rounded-card border border-silver-light bg-white p-6 shadow-card">
+            <h2 class="font-heading text-lg font-bold text-navy">Get a real answer in 24 hours</h2>
+            <p class="mt-3 text-sm leading-relaxed text-graytext">
+              Every situation is different. Tell me yours and I will tell you honestly whether there is a path — and
+              what it looks like.
+            </p>
+            <Button
+              href={site.applyUrl}
+              variant="primary"
+              size="sm"
+              class="mt-5"
+              icon="arrow-right"
+              external
+              fullWidth
+              track="begin_application"
+              trackParams={{ cta_location: 'blog_sidebar' }}
+            >
+              Apply Online
+            </Button>
+            <Button href="/schedule" variant="secondary" size="sm" class="mt-3" fullWidth track="schedule">
+              Book a Call
+            </Button>
+            <a
+              href={site.phoneHref}
+              class="mt-4 flex min-h-[44px] items-center justify-center gap-2 font-heading text-sm font-semibold text-navy hover:text-brandblue"
+            >
+              <Icon name="phone" size={16} class="text-brandblue" />
+              <span class="tabular">{site.phone}</span>
+            </a>
+          </div>
+
+          <div class="mt-6 rounded-card border border-silver-light bg-offwhite p-6">
+            <h2 class="font-heading text-base font-bold text-navy">Popular programs</h2>
+            <ul class="mt-3 space-y-2 text-sm">
+              <li><a href="/loan-programs/self-employed" class="text-brandblue hover:underline">Self-Employed &amp; Bank Statement Loans</a></li>
+              <li><a href="/loan-programs/va-loans" class="text-brandblue hover:underline">VA Loans</a></li>
+              <li><a href="/loan-programs/investor-dscr" class="text-brandblue hover:underline">Investor &amp; DSCR</a></li>
+              <li><a href="/solutions/buy-before-you-sell" class="text-brandblue hover:underline">Buy Before You Sell</a></li>
+              <li><a href="/resources/calculator" class="text-brandblue hover:underline">Mortgage Calculator</a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </Container>
+  </article>
+
+  {
+    related.length > 0 && (
+      <Section bg="offwhite">
+        <h2 class="text-h2 text-navy">Keep Reading</h2>
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+          {related.map((item) => (
+            <BlogCard
+              title={item.data.title}
+              description={item.data.description}
+              image={item.data.image}
+              slug={item.slug}
+              category={item.data.category}
+              date={item.data.pubDate}
+            />
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  <CtaBand />
+</Layout>

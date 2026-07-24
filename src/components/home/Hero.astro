@@ -1,0 +1,98 @@
+---
+import Container from '../Container.astro';
+import Button from '../Button.astro';
+import Icon from '../ui/Icon.astro';
+import TrustBar from '../ui/TrustBar.astro';
+import { site } from '../../data/site';
+
+const outcomes = [
+  {
+    icon: 'zap',
+    title: 'Get a real answer in 24 hours',
+    text: 'not a runaround',
+  },
+  {
+    icon: 'key-round',
+    title: 'Qualify with income other lenders won\u2019t count',
+    text: 'bank statement, 1099, P&L, DSCR',
+  },
+  {
+    icon: 'shield-check',
+    title: 'Know exactly what you\u2019re signing',
+    text: 'every number explained before you commit',
+  },
+];
+---
+
+<section class="relative isolate overflow-hidden bg-navy">
+  <img
+    src="/images/hero/home-hero.jpg"
+    alt="A family standing in front of their new Texas home"
+    width="1920"
+    height="1080"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+    class="absolute inset-0 h-full w-full object-cover"
+  />
+  <div
+    class="absolute inset-0 bg-gradient-to-r from-navy/90 via-navy/70 to-navy/40"
+    aria-hidden="true"
+  >
+  </div>
+
+  <Container class="relative flex min-h-[auto] flex-col justify-center py-16 sm:py-20 lg:min-h-[85vh] lg:py-24">
+    <div class="max-w-3xl">
+      <p class="text-eyebrow font-heading font-semibold uppercase text-gold">
+        20+ Years · Licensed in Texas &amp; Nationwide
+      </p>
+      <h1 class="mt-4 font-heading text-display text-white">More Than a Mortgage. A Mortgage Solution.</h1>
+      <p class="mt-6 max-w-2xl text-body-lg text-silver-light">
+        Most lenders quote you a rate. I solve the problem standing between you and your home. Self-employed, buying
+        before selling, or told &ldquo;no&rdquo; somewhere else — there&rsquo;s almost always a path. Let&rsquo;s find
+        yours.
+      </p>
+
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+        <Button
+          href={site.applyUrl}
+          variant="primary"
+          size="lg"
+          icon="arrow-right"
+          external
+          track="begin_application"
+          trackParams={{ cta_location: 'home_hero' }}
+        >
+          Apply Online
+        </Button>
+        <Button href="/schedule" variant="outline-white" size="lg" track="schedule">
+          Book a Free Strategy Call
+        </Button>
+      </div>
+
+      <ul class="mt-12 grid gap-5 sm:grid-cols-3">
+        {
+          outcomes.map((outcome) => (
+            <li class="flex gap-3.5">
+              <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white/10 text-brandblue backdrop-blur">
+                <Icon name={outcome.icon} size={22} />
+              </span>
+              <span>
+                <span class="block font-heading text-[0.9375rem] font-semibold leading-snug text-white">
+                  {outcome.title}
+                </span>
+                <span class="mt-1 block text-sm text-silver-light">{outcome.text}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Container>
+
+  <div class="relative border-t border-white/15 bg-navy-dark/70">
+    <Container class="py-4">
+      <TrustBar invert />
+    </Container>
+  </div>
+</section>

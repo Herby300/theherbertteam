@@ -1,0 +1,183 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import GhlForm from '../components/forms/GhlForm.astro';
+import GhlBooking from '../components/forms/GhlBooking.astro';
+import Icon from '../components/ui/Icon.astro';
+import { site, formIds, hours } from '../data/site';
+import { breadcrumbSchema } from '../utils/seo';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const socials = [
+  { name: 'YouTube', icon: 'youtube', href: site.social.youtube },
+  { name: 'Facebook', icon: 'facebook', href: site.social.facebook },
+  { name: 'Instagram', icon: 'instagram', href: site.social.instagram },
+  { name: 'TikTok', icon: 'tiktok', href: site.social.tiktok },
+  { name: 'LinkedIn', icon: 'linkedin', href: site.social.linkedin },
+];
+---
+
+<PageLayout
+  title="Contact Jason Herbert"
+  description="Call, email, or book a free mortgage strategy consultation with Jason Herbert in Georgetown, TX. Every message is answered personally, usually within one business day."
+  heroEyebrow="Get in Touch"
+  heroTitle="Let’s Talk."
+  heroSubtitle="Tell me your situation — even the messy version. There is no obligation, no pressure, and no cost to find out whether there is a path."
+  heroImage="/images/hero/contact-hero.jpg"
+  heroImageAlt="Mortgage advisor on a call with a client"
+  crumbs={crumbs}
+  showHeroCtas={false}
+  schema={breadcrumbSchema(crumbs)}
+>
+  <Section bg="offwhite">
+    <div class="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+      <div class="rounded-card border border-silver-light bg-white p-4 shadow-card md:p-7">
+        <h2 class="font-heading text-h3 text-navy">Send Me Your Scenario</h2>
+        <p class="mt-2 text-graytext">
+          The more detail you give me, the more useful my first reply will be. Self-employed? Been denied elsewhere?
+          Buying before selling? Say so — that is exactly the information I need.
+        </p>
+        <div class="mt-6">
+          <GhlForm formId={formIds.contact} title="Contact The Herbert Team" formType="contact" height="620" />
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <div class="rounded-card border border-silver-light bg-white p-7 shadow-card">
+          <h2 class="font-heading text-h3 text-navy">Reach Me Directly</h2>
+          <ul class="mt-6 space-y-5">
+            <li>
+              <a href={site.phoneHref} class="flex items-start gap-4 text-charcoal transition-colors hover:text-brandblue">
+                <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+                  <Icon name="phone" size={21} />
+                </span>
+                <span>
+                  <span class="block font-heading font-semibold text-navy">Call or text</span>
+                  <span class="mt-0.5 block tabular">{site.phone}</span>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href={site.emailHref} class="flex items-start gap-4 text-charcoal transition-colors hover:text-brandblue">
+                <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+                  <Icon name="mail" size={21} />
+                </span>
+                <span>
+                  <span class="block font-heading font-semibold text-navy">Email</span>
+                  <span class="mt-0.5 block break-all">{site.email}</span>
+                </span>
+              </a>
+            </li>
+            <li class="flex items-start gap-4">
+              <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+                <Icon name="map-pin" size={21} />
+              </span>
+              <span>
+                <span class="block font-heading font-semibold text-navy">Based in</span>
+                <span class="mt-0.5 block text-charcoal">{site.address}</span>
+                <span class="mt-0.5 block text-sm text-graytext">Serving Texas and clients nationwide</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="rounded-card border border-silver-light bg-white p-7 shadow-card">
+          <h2 class="font-heading text-h3 text-navy">Hours &amp; Response Time</h2>
+          <ul class="mt-5 space-y-2.5">
+            {
+              hours.map((entry) => (
+                <li class="flex flex-wrap justify-between gap-x-6 border-b border-silver-light pb-2.5 last:border-0">
+                  <span class="text-graytext">{entry.day}</span>
+                  <span class="font-medium text-navy">{entry.time}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="mt-5 flex gap-3 rounded-lg bg-brandblue-soft p-4">
+            <Icon name="clock" size={20} class="mt-0.5 shrink-0 text-brandblue" />
+            <p class="text-sm leading-relaxed text-charcoal">
+              Every message gets a personal reply, usually within one business day and often the same day. If you are
+              under contract with a deadline, call or text — I will pick up outside of posted hours when a deal needs it.
+            </p>
+          </div>
+        </div>
+
+        <div class="rounded-card border border-silver-light bg-white p-7 shadow-card">
+          <h2 class="font-heading text-h3 text-navy">Follow Along</h2>
+          <p class="mt-2 text-sm text-graytext">{site.socialHandle} — mortgage education, market updates, and program explainers.</p>
+          <ul class="mt-5 flex flex-wrap gap-2.5">
+            {
+              socials.map((social) => (
+                <li>
+                  <a
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-silver-light text-navy transition-colors hover:border-brandblue hover:bg-brandblue hover:text-white"
+                    aria-label={`${site.name} on ${social.name}`}
+                  >
+                    <Icon name={social.icon} size={20} />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section bg="white">
+    <SectionHeading
+      eyebrow="Book Directly"
+      title="Grab Twenty Minutes on My Calendar"
+      subtitle="Pick a time that works. We will cover your situation, your options, and what your real numbers look like."
+      align="center"
+      class="mb-10"
+    />
+    <div class="mx-auto max-w-4xl overflow-hidden rounded-card border border-silver-light bg-white shadow-card">
+      <GhlBooking height="700" />
+    </div>
+  </Section>
+
+  <Section bg="offwhite">
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-14">
+      <div>
+        <SectionHeading eyebrow="Where I Am" title="Georgetown, Texas" align="left" class="mb-6" />
+        <p class="text-body-lg text-graytext">
+          Home base is Georgetown in Williamson County, just north of Austin. Most of my clients never need to meet in
+          person — applications, documents, and closings are handled digitally — but if you would rather sit down with
+          someone, I am happy to do that.
+        </p>
+        <p class="mt-5 text-body-lg text-graytext">
+          I regularly work with buyers throughout Round Rock, Cedar Park, Leander, Liberty Hill, Hutto, Pflugerville,
+          Austin, and across Texas, plus relocation clients moving in from out of state.
+        </p>
+        <div class="mt-7 rounded-card border border-silver-light bg-white p-6">
+          <p class="text-sm leading-relaxed text-graytext">
+            {site.advisor} · {site.nmls} · {site.institution} · {site.institutionNmls}. Equal Housing Lender. Member
+            FDIC. This is not a commitment to lend. All loans subject to credit approval, income verification, and
+            property appraisal.
+          </p>
+        </div>
+      </div>
+
+      <div class="overflow-hidden rounded-card border border-silver-light shadow-card">
+        <iframe
+          title="Map of Georgetown, Texas"
+          src="https://www.google.com/maps?q=Georgetown,+Texas&output=embed"
+          width="100%"
+          height="460"
+          style="border:0; display:block;"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </Section>
+</PageLayout>

@@ -1,0 +1,48 @@
+---
+interface Props {
+  /** Only one item stays open at a time when true. */
+  singleOpen?: boolean;
+  class?: string;
+}
+
+const { singleOpen = true, class: className = '' } = Astro.props;
+---
+
+<div class={`divide-y divide-silver-light overflow-hidden rounded-card border border-silver-light bg-white ${className}`} data-accordion data-single-open={singleOpen ? 'true' : undefined}>
+  <slot />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-accordion]').forEach((root) => {
+    const singleOpen = root.dataset.singleOpen === 'true';
+    const triggers = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-accordion-item-trigger]'));
+
+    const setOpen = (trigger: HTMLButtonElement, open: boolean) => {
+      const panel = document.getElementById(trigger.getAttribute('aria-controls') ?? '');
+      trigger.setAttribute('aria-expanded', String(open));
+      trigger.querySelector('svg')?.classList.toggle('rotate-180', open);
+      panel?.classList.toggle('hidden', !open);
+    };
+
+    triggers.forEach((trigger, index) => {
+      trigger.addEventListener('click', () => {
+        const willOpen = trigger.getAttribute('aria-expanded') !== 'true';
+        if (singleOpen) triggers.forEach((other) => setOpen(other, false));
+        setOpen(trigger, willOpen);
+      });
+
+      trigger.addEventListener('keydown', (event) => {
+        const key = (event as KeyboardEvent).key;
+        if (key !== 'ArrowDown' && key !== 'ArrowUp' && key !== 'Home' && key !== 'End') return;
+        event.preventDefault();
+        const last = triggers.length - 1;
+        const next =
+          key === 'ArrowDown' ? (index + 1) % triggers.length
+          : key === 'ArrowUp' ? (index - 1 + triggers.length) % triggers.length
+          : key === 'Home' ? 0
+          : last;
+        triggers[next]?.focus();
+      });
+    });
+  });
+</script>

@@ -1,0 +1,41 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../../data/site';
+
+interface Props {
+  invert?: boolean;
+  class?: string;
+}
+
+const { invert = true, class: className = '' } = Astro.props;
+
+const items = [
+  { icon: 'shield-check', label: site.nmls },
+  { icon: 'landmark', label: 'Backed by Primis Bank, Member FDIC' },
+  { icon: 'home', label: 'Equal Housing Lender' },
+  { icon: 'award', label: '20+ Years' },
+];
+---
+
+<ul
+  class:list={[
+    'flex flex-wrap items-center gap-x-6 gap-y-3 text-sm',
+    invert ? 'text-silver-light' : 'text-graytext',
+    className,
+  ]}
+>
+  <li class="flex items-center gap-2">
+    <span class="flex text-gold" aria-hidden="true">
+      {[0, 1, 2, 3, 4].map(() => <Icon name="star" size={15} class="fill-current" strokeWidth={0} />)}
+    </span>
+    <span class={invert ? 'text-white' : 'text-navy'}>Google Reviews</span>
+  </li>
+  {
+    items.map((item) => (
+      <li class="flex items-center gap-2">
+        <Icon name={item.icon} size={16} class="text-brandblue" />
+        <span>{item.label}</span>
+      </li>
+    ))
+  }
+</ul>

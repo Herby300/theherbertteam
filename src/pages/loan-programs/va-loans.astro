@@ -1,0 +1,64 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { getProgram } from '../../data/programs';
+
+const program = getProgram('va-loans');
+
+const entitlementPoints = [
+  {
+    title: 'Full entitlement',
+    text: 'You have never used your VA benefit, or you sold a VA-financed home and paid the loan off in full. With full entitlement there is no loan limit tied to your benefit and no down payment required, regardless of purchase price, as long as you qualify for the payment.',
+  },
+  {
+    title: 'Partial entitlement',
+    text: 'You currently have a VA loan outstanding, or a previous VA loan was paid through a claim. You can still buy with VA financing, but county loan limits apply to the remaining entitlement, which may mean a partial down payment.',
+  },
+  {
+    title: 'Restored entitlement',
+    text: 'When you sell the property and pay off the VA loan, entitlement is restored and available again. A one-time restoration is also available if you paid the loan off but kept the home.',
+  },
+  {
+    title: 'Two VA loans at once',
+    text: 'It is possible using remaining entitlement, most commonly during a PCS move where you keep the first home as a rental. The math is specific to your situation, and it is worth running before you list anything.',
+  },
+];
+---
+
+<ProgramLayout program={program} kind="program">
+  <Section slot="after-benefits" bg="white">
+    <SectionHeading
+      eyebrow="Entitlement, Explained"
+      title="The Part Most Lenders Get Wrong"
+      subtitle="Entitlement is what the VA guarantees on your behalf. Understanding your status is what determines whether you need a down payment at all."
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid gap-6 md:grid-cols-2">
+      {
+        entitlementPoints.map((point) => (
+          <div class="reveal flex gap-4 rounded-card border border-silver-light bg-white p-7 shadow-card">
+            <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+              <Icon name="shield" size={22} />
+            </span>
+            <div>
+              <h3 class="font-heading text-lg font-bold text-navy">{point.title}</h3>
+              <p class="mt-2 text-[0.9375rem] leading-relaxed text-graytext">{point.text}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 rounded-card border-l-4 border-gold bg-brandblue-soft p-6 md:p-8">
+      <h3 class="font-heading text-lg font-bold text-navy">Check your funding fee exemption before you do anything else</h3>
+      <p class="mt-3 leading-relaxed text-charcoal">
+        Veterans receiving compensation for a service-connected disability are exempt from the VA funding fee entirely.
+        On a $400,000 purchase that is more than $9,000. I pull your Certificate of Eligibility at no cost, which
+        confirms both your entitlement and your exemption status — usually the same day you ask.
+      </p>
+    </div>
+  </Section>
+</ProgramLayout>

@@ -1,0 +1,80 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ComparisonTable from '../../components/ui/ComparisonTable.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { getProgram } from '../../data/programs';
+
+const program = getProgram('investor-dscr');
+---
+
+<ProgramLayout program={program} kind="program">
+  <Section slot="after-benefits" bg="white">
+    <SectionHeading
+      eyebrow="Run the Ratio"
+      title="A Worked DSCR Example"
+      subtitle="The entire qualification decision comes down to one division problem. Here is what it looks like on a typical Central Texas rental."
+      align="center"
+      class="mb-10"
+    />
+
+    <div class="mx-auto max-w-3xl overflow-hidden rounded-card border border-silver-light bg-white shadow-card">
+      <div class="bg-navy px-6 py-4">
+        <h3 class="font-heading text-lg font-bold text-white">$340,000 single-family rental · 25% down</h3>
+      </div>
+      <dl class="divide-y divide-silver-light">
+        {
+          [
+            ['Loan amount', '$255,000'],
+            ['Principal and interest', '$1,690 / month'],
+            ['Property taxes', '$595 / month'],
+            ['Insurance', '$145 / month'],
+            ['HOA dues', '$40 / month'],
+            ['Total monthly payment (PITIA)', '$2,470 / month'],
+            ['Market rent from appraisal', '$2,850 / month'],
+          ].map(([label, value], index) => (
+            <div class:list={['flex justify-between gap-6 px-6 py-3.5', index === 5 ? 'bg-offwhite font-semibold' : '']}>
+              <dt class="text-graytext">{label}</dt>
+              <dd class="text-navy tabular">{value}</dd>
+            </div>
+          ))
+        }
+        <div class="flex items-center justify-between gap-6 bg-success/10 px-6 py-5">
+          <dt class="font-heading font-bold text-navy">DSCR</dt>
+          <dd class="flex items-center gap-2 font-heading text-2xl font-extrabold text-success tabular">
+            1.15
+            <Icon name="check-circle" size={22} />
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <p class="mx-auto mt-6 max-w-3xl text-center text-sm text-graytext">
+      A 1.15 ratio clears most program thresholds comfortably. Figures are illustrative only — actual taxes, insurance,
+      rents, and payment will vary by property and are subject to underwriting.
+    </p>
+
+    <div class="mt-14">
+      <SectionHeading
+        eyebrow="DSCR vs. Conventional Investment"
+        title="Two Very Different Underwriting Philosophies"
+        align="center"
+        class="mb-10"
+      />
+      <ComparisonTable
+        headers={['Factor', 'DSCR Loan', 'Conventional Investment Loan']}
+        rows={[
+          ['Income documentation', 'None — property rent only', 'Tax returns, W-2s, and pay stubs'],
+          ['Personal debt-to-income', 'Not calculated', 'Calculated and capped'],
+          ['Financed property limit', 'Generally none', 'Ten financed properties'],
+          ['Vesting', 'Individual or LLC', 'Individual only in most cases'],
+          ['Typical down payment', '20%–25%', '15%–25%'],
+          ['Typical pricing', 'Above conventional', 'Lowest available for investment property'],
+          ['Typical closing time', '21–30 days', '30 days'],
+        ]}
+        highlightColumn={1}
+      />
+    </div>
+  </Section>
+</ProgramLayout>

@@ -1,0 +1,52 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { getProgram } from '../../data/programs';
+
+const program = getProgram('construction');
+
+const draws = [
+  { stage: 'Draw 1', title: 'Site work and foundation', text: 'Lot clearing, excavation, forms, and slab. Inspected before funds release.' },
+  { stage: 'Draw 2', title: 'Framing and roof dry-in', text: 'Structure up, sheathing and roofing complete, house weathertight.' },
+  { stage: 'Draw 3', title: 'Mechanical rough-in', text: 'Plumbing, electrical, and HVAC installed and inspected behind the walls.' },
+  { stage: 'Draw 4', title: 'Insulation and drywall', text: 'Interior takes shape. Often the longest stretch between inspections.' },
+  { stage: 'Draw 5', title: 'Finish-out', text: 'Cabinets, flooring, fixtures, paint, and trim.' },
+  { stage: 'Final', title: 'Certificate of occupancy', text: 'Final inspection, title update, and automatic conversion to your permanent mortgage.' },
+];
+---
+
+<ProgramLayout program={program} kind="program">
+  <Section slot="after-benefits" bg="white">
+    <SectionHeading
+      eyebrow="The Draw Schedule"
+      title="How the Money Actually Reaches Your Builder"
+      subtitle="Construction funds are not handed over at closing. They release in stages as verified work is completed, which protects you, the lender, and the project."
+      align="center"
+      class="mb-12"
+    />
+    <ol class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {
+        draws.map((draw) => (
+          <li class="reveal rounded-card border border-silver-light bg-white p-6 shadow-card">
+            <span class="text-eyebrow font-heading font-semibold uppercase text-brandblue">{draw.stage}</span>
+            <h3 class="mt-2 font-heading text-lg font-bold text-navy">{draw.title}</h3>
+            <p class="mt-2 text-[0.9375rem] leading-relaxed text-graytext">{draw.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="mt-10 flex gap-4 rounded-card border-l-4 border-brandblue bg-brandblue-soft p-6 md:p-8">
+      <Icon name="info" size={24} class="mt-0.5 shrink-0 text-brandblue" />
+      <div>
+        <h3 class="font-heading text-lg font-bold text-navy">Build a contingency into the budget</h3>
+        <p class="mt-2 leading-relaxed text-charcoal">
+          Every build has change orders. We typically finance a 5% to 10% contingency inside the loan amount so a
+          mid-project decision does not become a cash crisis. If you never use it, you never pay interest on it.
+        </p>
+      </div>
+    </div>
+  </Section>
+</ProgramLayout>

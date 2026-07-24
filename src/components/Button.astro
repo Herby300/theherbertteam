@@ -1,0 +1,80 @@
+---
+import Icon from './ui/Icon.astro';
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'white' | 'outline-white' | 'tertiary' | 'ghost';
+  size?: 'sm' | 'md' | 'lg';
+  external?: boolean;
+  icon?: string;
+  iconPosition?: 'left' | 'right';
+  class?: string;
+  /** Tracking event name consumed by the delegated listener in Layout.astro. */
+  track?: string;
+  trackParams?: Record<string, unknown>;
+  type?: 'button' | 'submit';
+  ariaLabel?: string;
+  id?: string;
+  fullWidth?: boolean;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  external = false,
+  icon,
+  iconPosition = 'right',
+  class: className = '',
+  track,
+  trackParams,
+  type = 'button',
+  ariaLabel,
+  id,
+  fullWidth = false,
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 font-heading font-semibold rounded-lg transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brandblue disabled:opacity-60';
+
+const variants: Record<string, string> = {
+  primary: 'bg-brandblue text-white shadow-cta hover:bg-brandblue-hover hover:-translate-y-0.5 active:translate-y-0',
+  secondary: 'bg-white text-navy border-2 border-navy hover:bg-navy hover:text-white',
+  white: 'bg-white text-navy shadow-card hover:bg-offwhite hover:-translate-y-0.5',
+  'outline-white': 'bg-transparent text-white border-2 border-white hover:bg-white hover:text-navy',
+  tertiary: 'text-brandblue hover:text-brandblue-hover underline-offset-4 hover:underline px-0 py-0',
+  ghost: 'text-navy hover:bg-offwhite',
+};
+
+const sizes: Record<string, string> = {
+  sm: 'px-5 py-2.5 text-sm min-h-[44px]',
+  md: 'px-7 py-3.5 text-base min-h-[48px]',
+  lg: 'px-8 py-4 text-base sm:text-lg min-h-[52px]',
+};
+
+const sizeClass = variant === 'tertiary' ? 'text-base min-h-[44px]' : sizes[size];
+const classes = `${base} ${variants[variant]} ${sizeClass} ${fullWidth ? 'w-full' : ''} ${className}`;
+
+const iconSize = size === 'lg' ? 20 : 18;
+const trackAttrs = {
+  'data-track': track,
+  'data-track-params': trackParams ? JSON.stringify(trackParams) : undefined,
+};
+const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+{
+  href ? (
+    <a href={href} id={id} class={classes} aria-label={ariaLabel} {...externalAttrs} {...trackAttrs}>
+      {icon && iconPosition === 'left' && <Icon name={icon} size={iconSize} />}
+      <slot />
+      {icon && iconPosition === 'right' && <Icon name={icon} size={iconSize} />}
+    </a>
+  ) : (
+    <button type={type} id={id} class={classes} aria-label={ariaLabel} {...trackAttrs}>
+      {icon && iconPosition === 'left' && <Icon name={icon} size={iconSize} />}
+      <slot />
+      {icon && iconPosition === 'right' && <Icon name={icon} size={iconSize} />}
+    </button>
+  )
+}

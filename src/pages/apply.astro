@@ -1,0 +1,195 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Icon from '../components/ui/Icon.astro';
+import Button from '../components/Button.astro';
+import { site } from '../data/site';
+import { breadcrumbSchema } from '../utils/seo';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Apply', href: '/apply' },
+];
+
+const steps = [
+  {
+    title: 'Create your secure account',
+    text: 'You will land on HomeHub, the application portal hosted by Primis Bank. Set up a login, and your progress saves automatically as you go. Start on your laptop, finish on your phone — it does not matter.',
+  },
+  {
+    title: 'Complete the application',
+    text: 'Basic information about you, your income, your assets, and the property if you have one identified. Most people finish in about 12 minutes. You can link accounts electronically or upload documents manually, whichever you prefer.',
+  },
+  {
+    title: 'I review it and call you',
+    text: 'Once it hits my desk I review the file personally, identify the strongest program for your situation, and call you with a real answer — typically within 24 hours.',
+  },
+];
+
+const w2Docs = [
+  'Two most recent pay stubs',
+  'Two years of W-2 forms',
+  'Two months of bank statements, all pages',
+  'Photo ID',
+  'Most recent statements for retirement or investment accounts',
+  'If you own other property: mortgage statement, tax bill, and insurance declaration',
+];
+
+const selfEmployedDocs = [
+  '12 or 24 months of business or personal bank statements',
+  'Business license, CPA letter, or entity formation documents',
+  '1099 forms if you are a contractor',
+  'CPA-prepared profit and loss statement if using a P&L program',
+  'Photo ID',
+  'If you own other property: mortgage statement, tax bill, and insurance declaration',
+];
+---
+
+<PageLayout
+  title="Start Your Mortgage Application"
+  description="Apply online through Primis Bank's secure HomeHub portal in about 12 minutes. See what you need before you start, and get a personal review from Jason Herbert within 24 hours."
+  heroEyebrow="Apply Online"
+  heroTitle="Start Your Application."
+  heroSubtitle="About 12 minutes, saved as you go, and reviewed personally by me rather than by an algorithm. Here is exactly what happens and what to have handy."
+  heroImage="/images/hero/contact-hero.jpg"
+  heroImageAlt="Person completing a mortgage application on a laptop"
+  crumbs={crumbs}
+  showHeroCtas={false}
+  schema={breadcrumbSchema(crumbs)}
+>
+  <Section bg="offwhite">
+    <div class="mx-auto max-w-4xl">
+      <div class="flex gap-4 rounded-card border-l-4 border-brandblue bg-white p-6 shadow-card md:p-8">
+        <Icon name="landmark" size={26} class="mt-0.5 shrink-0 text-brandblue" />
+        <div>
+          <h2 class="font-heading text-lg font-bold text-navy">Before you click: where you are going</h2>
+          <p class="mt-3 leading-relaxed text-charcoal">
+            You will be taken to Primis Bank&rsquo;s secure application portal (HomeHub) to complete your application. It
+            opens in a new tab, so this page stays where it is, and your progress saves as you go — you can stop
+            partway through and pick it up later from the same login.
+          </p>
+          <p class="mt-3 leading-relaxed text-charcoal">
+            Primis is a federally regulated, FDIC-insured bank, and the portal is theirs rather than a third-party lead
+            form. Your information goes directly into the lending system, not into a marketplace that resells it.
+          </p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section bg="white">
+    <SectionHeading eyebrow="What to Expect" title="Three Steps, Start to Answer" align="center" class="mb-12" />
+    <ol class="grid gap-6 md:grid-cols-3">
+      {
+        steps.map((step, index) => (
+          <li class="reveal rounded-card border border-silver-light bg-white p-7 shadow-card">
+            <span class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-navy font-heading text-lg font-bold text-white tabular">
+              {index + 1}
+            </span>
+            <h3 class="mt-5 font-heading text-lg font-bold text-navy">{step.title}</h3>
+            <p class="mt-3 leading-relaxed text-graytext">{step.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <Section bg="offwhite">
+    <SectionHeading
+      eyebrow="Document Checklist"
+      title="What You’ll Need"
+      subtitle="You do not need all of this to start the application — you can begin now and upload as you gather. Find your column."
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid gap-6 lg:grid-cols-2">
+      <div class="rounded-card border border-silver-light bg-white p-7 shadow-card md:p-8">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+            <Icon name="briefcase" size={22} />
+          </span>
+          <h3 class="font-heading text-h3 text-navy">If you are W-2 employed</h3>
+        </div>
+        <ul class="mt-6 space-y-3">
+          {
+            w2Docs.map((doc) => (
+              <li class="flex items-start gap-3">
+                <Icon name="check" size={18} class="mt-1 shrink-0 text-success" />
+                <span class="text-[0.9375rem] leading-relaxed text-charcoal">{doc}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="rounded-card border-2 border-brandblue bg-white p-7 shadow-card md:p-8">
+        <div class="flex items-center gap-3">
+          <span class="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brandblue text-white">
+            <Icon name="trending-up" size={22} />
+          </span>
+          <h3 class="font-heading text-h3 text-navy">If you are self-employed</h3>
+        </div>
+        <ul class="mt-6 space-y-3">
+          {
+            selfEmployedDocs.map((doc) => (
+              <li class="flex items-start gap-3">
+                <Icon name="check" size={18} class="mt-1 shrink-0 text-success" />
+                <span class="text-[0.9375rem] leading-relaxed text-charcoal">{doc}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-5 rounded-lg bg-brandblue-soft p-4 text-sm leading-relaxed text-charcoal">
+          Notice what is not on this list: two years of tax returns. Which documents you actually need depends on which
+          program fits, so start the application and we will narrow it together.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section bg="navy">
+    <div class="mx-auto max-w-3xl text-center">
+      <h2 class="text-h2 text-white">Ready When You Are</h2>
+      <p class="mt-5 text-body-lg text-silver-light">
+        Twelve minutes now, a real answer within 24 hours. No credit impact to get started, and no obligation to
+        proceed after we talk.
+      </p>
+      <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <Button
+          href={site.applyUrl}
+          variant="primary"
+          size="lg"
+          icon="external-link"
+          external
+          track="begin_application"
+          trackParams={{ cta_location: 'apply_page_main' }}
+        >
+          Open the Secure Application
+        </Button>
+        <Button href="/schedule" variant="outline-white" size="lg" track="schedule">
+          Rather Talk First? Book a Call
+        </Button>
+      </div>
+      <p class="mt-5 text-sm text-silver">Opens Primis Bank&rsquo;s HomeHub portal in a new tab.</p>
+    </div>
+
+    <div class="mx-auto mt-12 grid max-w-4xl gap-5 sm:grid-cols-3">
+      {
+        [
+          { icon: 'lock', title: 'Bank-grade security', text: 'Hosted by Primis Bank, a federally regulated FDIC-insured institution.' },
+          { icon: 'shield-check', title: 'Not a lead form', text: 'Your information is not sold, shared, or resold to other lenders.' },
+          { icon: 'user', title: 'One advisor', text: 'I personally review your file — no call center, no rotating names.' },
+        ].map((item) => (
+          <div class="rounded-card border border-white/15 bg-white/5 p-6 text-center">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brandblue text-white">
+              <Icon name={item.icon} size={21} />
+            </span>
+            <h3 class="mt-4 font-heading font-bold text-white">{item.title}</h3>
+            <p class="mt-2 text-sm text-silver-light">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+</PageLayout>

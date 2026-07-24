@@ -1,0 +1,144 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Section from '../components/Section.astro';
+import Accordion from '../components/ui/Accordion.astro';
+import AccordionItem from '../components/ui/AccordionItem.astro';
+import Icon from '../components/ui/Icon.astro';
+import { faqs, faqCategories } from '../data/faqs';
+import { breadcrumbSchema, faqSchema, combineSchema } from '../utils/seo';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'FAQ', href: '/faq' },
+];
+
+const schema = combineSchema(
+  faqSchema(faqs.map((faq) => ({ q: faq.q, a: faq.a }))),
+  breadcrumbSchema(crumbs)
+);
+
+const grouped = faqCategories.map((category) => ({
+  category,
+  items: faqs.filter((faq) => faq.category === category),
+}));
+---
+
+<PageLayout
+  title="Mortgage FAQ — Every Question, Answered"
+  description="Answers to 50+ mortgage questions covering down payments, credit, self-employed income, VA benefits, investment property, refinancing, and closing in Texas."
+  heroEyebrow="Frequently Asked Questions"
+  heroTitle="Every Question I Get Asked, Answered."
+  heroSubtitle="Search it, skim it, or read the whole thing. If your question is not here, call me and I will answer it — then probably add it to this page."
+  heroImage="/images/hero/contact-hero.jpg"
+  heroImageAlt="Mortgage advisor answering client questions"
+  crumbs={crumbs}
+  schema={schema}
+>
+  <Section bg="offwhite">
+    <div class="mx-auto max-w-3xl">
+      <label for="faq-search" class="block font-heading text-sm font-semibold text-navy">
+        Search the questions
+      </label>
+      <div class="relative mt-2">
+        <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-graytext">
+          <Icon name="search" size={20} />
+        </span>
+        <input
+          type="search"
+          id="faq-search"
+          placeholder="Try “down payment”, “self-employed”, or “credit score”"
+          class="w-full rounded-lg border border-silver bg-white py-3.5 pl-12 pr-4 text-base text-charcoal transition-colors focus:border-brandblue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brandblue"
+          autocomplete="off"
+        />
+      </div>
+      <p class="mt-3 text-sm text-graytext" data-faq-count aria-live="polite">
+        Showing all {faqs.length} questions
+      </p>
+
+      <nav class="mt-6 flex flex-wrap gap-2" aria-label="Jump to a category">
+        {
+          faqCategories.map((category) => (
+            <a
+              href={`#${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+              class="inline-flex min-h-[40px] items-center rounded-full border border-silver bg-white px-4 py-2 font-heading text-sm font-semibold text-navy transition-colors hover:border-brandblue hover:text-brandblue"
+            >
+              {category}
+            </a>
+          ))
+        }
+      </nav>
+    </div>
+
+    <div class="mx-auto mt-12 max-w-3xl space-y-12">
+      {
+        grouped.map((group, groupIndex) => (
+          <div data-faq-group id={group.category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}>
+            <h2 class="font-heading text-h3 text-navy">{group.category}</h2>
+            <p class="mt-1 text-sm text-graytext">{group.items.length} questions</p>
+            <div class="mt-5">
+              <Accordion singleOpen={false}>
+                {group.items.map((faq, index) => (
+                  <div data-faq-item data-faq-text={`${faq.q} ${faq.a}`.toLowerCase()}>
+                    <AccordionItem question={faq.q} answer={faq.a} id={`faq-${groupIndex}-${index}`} />
+                  </div>
+                ))}
+              </Accordion>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="mx-auto mt-10 hidden max-w-3xl rounded-card border border-silver-light bg-white p-6 text-center text-graytext" data-faq-empty>
+      No questions match that search. Try a different word, or just
+      <a href="/contact" class="text-brandblue underline underline-offset-2">ask me directly</a>.
+    </p>
+  </Section>
+
+  <Section bg="white" padding="sm">
+    <div class="mx-auto flex max-w-3xl gap-4 rounded-card border-l-4 border-brandblue bg-brandblue-soft p-6 md:p-8">
+      <Icon name="help-circle" size={24} class="mt-0.5 shrink-0 text-brandblue" />
+      <div>
+        <h2 class="font-heading text-lg font-bold text-navy">Still have a question?</h2>
+        <p class="mt-2 leading-relaxed text-charcoal">
+          Send it over. I answer every message personally, usually within a business day, and there is no obligation
+          attached. If it is a question other people are likely to have, it ends up on this page.
+        </p>
+      </div>
+    </div>
+  </Section>
+</PageLayout>
+
+<script>
+  const search = document.getElementById('faq-search') as HTMLInputElement | null;
+  const items = document.querySelectorAll<HTMLElement>('[data-faq-item]');
+  const groups = document.querySelectorAll<HTMLElement>('[data-faq-group]');
+  const count = document.querySelector<HTMLElement>('[data-faq-count]');
+  const empty = document.querySelector<HTMLElement>('[data-faq-empty]');
+  const total = items.length;
+
+  search?.addEventListener('input', () => {
+    const query = search.value.trim().toLowerCase();
+    let visible = 0;
+
+    items.forEach((item) => {
+      const match = query === '' || (item.dataset.faqText ?? '').includes(query);
+      item.classList.toggle('hidden', !match);
+      if (match) visible += 1;
+    });
+
+    groups.forEach((group) => {
+      const hasVisible = group.querySelector('[data-faq-item]:not(.hidden)') !== null;
+      group.classList.toggle('hidden', !hasVisible);
+    });
+
+    if (count) {
+      count.textContent =
+        query === ''
+          ? `Showing all ${total} questions`
+          : `Showing ${visible} of ${total} questions for “${search.value.trim()}”`;
+    }
+
+    empty?.classList.toggle('hidden', visible > 0);
+  });
+</script>

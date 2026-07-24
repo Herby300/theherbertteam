@@ -1,0 +1,215 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --header-height: 4.5rem;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--header-height) + 1.5rem);
+  }
+
+  body {
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-bold text-navy;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brandblue;
+  }
+
+  /* Tabular numerals for anything rendering rates, payments, or amounts. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum';
+  }
+
+  ::selection {
+    background-color: #0698f8;
+    color: #ffffff;
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------- scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------------------------------------------------------------- prose */
+  .prose {
+    @apply text-charcoal;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+
+  .prose > * + * {
+    margin-top: 1.25em;
+  }
+
+  .prose h2 {
+    @apply font-heading text-h3 text-navy;
+    margin-top: 2.25em;
+    margin-bottom: 0.6em;
+  }
+
+  .prose h3 {
+    @apply font-heading text-navy;
+    font-size: 1.25rem;
+    margin-top: 1.75em;
+    margin-bottom: 0.5em;
+  }
+
+  .prose h4 {
+    @apply font-heading text-navy;
+    font-size: 1.0625rem;
+    margin-top: 1.5em;
+    margin-bottom: 0.4em;
+  }
+
+  .prose a {
+    @apply text-brandblue underline underline-offset-2;
+    text-decoration-thickness: 1px;
+  }
+
+  .prose a:hover {
+    @apply text-brandblue-hover;
+  }
+
+  .prose strong {
+    @apply font-semibold text-navy;
+  }
+
+  .prose ul,
+  .prose ol {
+    padding-left: 1.35em;
+  }
+
+  .prose ul {
+    list-style-type: disc;
+  }
+
+  .prose ol {
+    list-style-type: decimal;
+  }
+
+  .prose li + li {
+    margin-top: 0.5em;
+  }
+
+  .prose li::marker {
+    @apply text-brandblue;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-brandblue bg-brandblue-soft/60 text-navy;
+    padding: 1rem 1.25rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    font-style: normal;
+  }
+
+  .prose blockquote p {
+    margin: 0;
+  }
+
+  .prose img {
+    @apply rounded-card;
+    width: 100%;
+    height: auto;
+  }
+
+  .prose hr {
+    @apply border-silver-light;
+    margin: 2.5em 0;
+  }
+
+  .prose code {
+    @apply rounded bg-offwhite px-1.5 py-0.5 text-[0.9em] text-navy;
+  }
+
+  .prose table {
+    @apply w-full border-collapse text-left text-[0.95em];
+  }
+
+  .prose th {
+    @apply border-b-2 border-silver bg-offwhite px-3 py-2 font-heading text-navy;
+  }
+
+  .prose td {
+    @apply border-b border-silver-light px-3 py-2 align-top;
+  }
+
+  /* ---------------------------------------------------------------- misc */
+  .snap-row {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .snap-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .snap-item {
+    scroll-snap-align: center;
+  }
+
+  /* GoHighLevel iframes should never introduce a horizontal scrollbar. */
+  .ghl-form-wrap iframe,
+  .ghl-booking-wrap iframe {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media print {
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+}

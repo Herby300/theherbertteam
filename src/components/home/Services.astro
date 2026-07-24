@@ -1,0 +1,102 @@
+---
+import Section from '../Section.astro';
+import SectionHeading from '../SectionHeading.astro';
+import ProgramCard from '../ui/ProgramCard.astro';
+import Button from '../Button.astro';
+
+const services = [
+  {
+    title: 'Conventional Loans',
+    text: 'Flexible down payments and strong terms for well-qualified buyers.',
+    href: '/loan-programs/conventional',
+    icon: 'home',
+  },
+  {
+    title: 'FHA Loans',
+    text: 'Lower down payment and more forgiving credit requirements.',
+    href: '/loan-programs/fha',
+    icon: 'key-round',
+  },
+  {
+    title: 'VA Loans',
+    text: 'Zero down and no monthly MI — let’s use every benefit you earned.',
+    href: '/loan-programs/va-loans',
+    icon: 'shield-check',
+  },
+  {
+    title: 'Jumbo Loans',
+    text: 'Luxury financing with 5%-down and no-MI options available.',
+    href: '/loan-programs/jumbo',
+    icon: 'gem',
+  },
+  {
+    title: 'First-Time Homebuyer',
+    text: 'Education, budgeting, and offer strategy from preapproval to keys.',
+    href: '/solutions/first-time-homebuyers',
+    icon: 'graduation-cap',
+  },
+  {
+    title: 'Down Payment Assistance',
+    text: 'Programs that shrink the cash you need to close.',
+    href: '/solutions/down-payment-assistance',
+    icon: 'wallet',
+  },
+  {
+    title: 'Self-Employed Programs',
+    text: 'Bank statement, 1099, P&L, and no-ratio loans for business owners.',
+    href: '/loan-programs/self-employed',
+    icon: 'briefcase',
+  },
+  {
+    title: 'Investor & DSCR',
+    text: 'Qualify on rental income and scale your portfolio.',
+    href: '/loan-programs/investor-dscr',
+    icon: 'trending-up',
+  },
+  {
+    title: 'Construction Loans',
+    text: 'Financing for custom builds and new construction.',
+    href: '/loan-programs/construction',
+    icon: 'hammer',
+  },
+  {
+    title: 'ATM Mortgage',
+    text: 'A first-lien HELOC — your equity, accessible on demand.',
+    href: '/solutions/atm-mortgage',
+    icon: 'banknote',
+  },
+  {
+    title: 'Buy Before You Sell',
+    text: 'Make a non-contingent offer without selling first.',
+    href: '/solutions/buy-before-you-sell',
+    icon: 'arrow-up-right',
+  },
+  {
+    title: 'Refinance',
+    text: 'Rate-and-term, cash-out, and no-lender-fee options.',
+    href: '/loan-programs/refinance',
+    icon: 'refresh-cw',
+  },
+];
+---
+
+<Section bg="offwhite">
+  <SectionHeading
+    eyebrow="One Advisor. Every Program."
+    title="Whatever Your Situation, There’s a Program For It."
+    align="center"
+    class="mb-12"
+  />
+
+  <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      services.map((service) => <ProgramCard {...service} class="reveal" />)
+    }
+  </div>
+
+  <div class="mt-12 text-center">
+    <Button href="/schedule" variant="primary" size="lg" icon="arrow-right" track="schedule">
+      Not Sure Which One? Let’s Talk
+    </Button>
+  </div>
+</Section>

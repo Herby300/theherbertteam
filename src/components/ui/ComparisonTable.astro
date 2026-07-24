@@ -1,0 +1,59 @@
+---
+interface Props {
+  caption?: string;
+  headers: string[];
+  rows: string[][];
+  /** Highlights a column index (0-based, including the label column). */
+  highlightColumn?: number;
+  class?: string;
+}
+
+const { caption, headers, rows, highlightColumn, class: className = '' } = Astro.props;
+---
+
+<div class={`overflow-x-auto rounded-card border border-silver-light bg-white shadow-card ${className}`}>
+  <table class="w-full min-w-[36rem] border-collapse text-left text-[0.9375rem]">
+    {caption && <caption class="px-5 pt-5 text-left font-heading text-sm text-graytext">{caption}</caption>}
+    <thead>
+      <tr class="bg-navy text-white">
+        {
+          headers.map((header, index) => (
+            <th
+              scope="col"
+              class:list={[
+                'px-5 py-4 font-heading text-sm font-semibold',
+                index === highlightColumn ? 'bg-brandblue' : '',
+              ]}
+            >
+              {header}
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row, rowIndex) => (
+          <tr class={rowIndex % 2 === 1 ? 'bg-offwhite' : 'bg-white'}>
+            {row.map((cell, cellIndex) =>
+              cellIndex === 0 ? (
+                <th scope="row" class="border-b border-silver-light px-5 py-4 text-left font-heading font-semibold text-navy">
+                  {cell}
+                </th>
+              ) : (
+                <td
+                  class:list={[
+                    'border-b border-silver-light px-5 py-4 align-top text-charcoal',
+                    cellIndex === highlightColumn ? 'bg-brandblue-soft/60 font-medium' : '',
+                  ]}
+                >
+                  {cell}
+                </td>
+              )
+            )}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

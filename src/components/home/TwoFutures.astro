@@ -1,0 +1,107 @@
+---
+import Container from '../Container.astro';
+import Button from '../Button.astro';
+import Icon from '../ui/Icon.astro';
+import { site } from '../../data/site';
+
+const stuck = [
+  'You’re still refreshing rate websites, no closer to an answer',
+  'Another lender told you no and didn’t tell you why',
+  'The house you loved sold to a non-contingent offer',
+  'You closed on something you didn’t fully understand, and the payment isn’t what you expected',
+  'Rent went up again. Equity went to your landlord again.',
+];
+
+const forward = [
+  'You know your real numbers — payment, cash to close, options',
+  'You’re preapproved with a lender sellers take seriously',
+  'Your self-employment income actually counts toward qualifying',
+  'You made a strong offer and got the house',
+  'You have a mortgage advisor on speed dial for the next 20 years',
+];
+---
+
+<section class="bg-white py-16 md:py-20 lg:py-24">
+  <Container>
+    <h2 class="mx-auto max-w-3xl text-center text-h2 text-navy">Six Months From Now, One of These Is True.</h2>
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-2 lg:gap-8">
+      <div class="reveal relative isolate overflow-hidden rounded-card border border-silver bg-silver-light">
+        <img
+          src="/images/two-futures/stuck.jpg"
+          alt=""
+          width="900"
+          height="600"
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 h-full w-full object-cover opacity-20 grayscale"
+        />
+        <div class="relative p-7 md:p-9">
+          <span class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-white text-graytext">
+            <Icon name="clock" size={24} />
+          </span>
+          <h3 class="mt-5 font-heading text-h3 text-graytext">If Nothing Changes</h3>
+          <ul class="mt-6 space-y-4">
+            {
+              stuck.map((item) => (
+                <li class="flex items-start gap-3">
+                  <Icon name="x" size={19} class="mt-1 shrink-0 text-graytext" />
+                  <span class="text-[0.9375rem] leading-relaxed text-graytext">{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="reveal relative isolate overflow-hidden rounded-card bg-navy">
+        <img
+          src="/images/two-futures/moving-forward.jpg"
+          alt=""
+          width="900"
+          height="600"
+          loading="lazy"
+          decoding="async"
+          class="absolute inset-0 h-full w-full object-cover opacity-25"
+        />
+        <div class="relative p-7 md:p-9">
+          <span class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brandblue text-white">
+            <Icon name="key-round" size={24} />
+          </span>
+          <h3 class="mt-5 font-heading text-h3 text-white">If We Talk This Week</h3>
+          <ul class="mt-6 space-y-4">
+            {
+              forward.map((item) => (
+                <li class="flex items-start gap-3">
+                  <Icon name="check" size={19} class="mt-1 shrink-0 text-brandblue" />
+                  <span class="text-[0.9375rem] leading-relaxed text-white">{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto mt-12 max-w-3xl text-center">
+      <p class="font-heading text-h3 font-bold text-navy">
+        The difference between those two columns is one 20-minute conversation. It’s free, and there’s no obligation.
+      </p>
+      <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <Button href="/schedule" variant="primary" size="lg" icon="arrow-right" track="schedule">
+          Book My Free Strategy Call
+        </Button>
+        <Button
+          href={site.applyUrl}
+          variant="secondary"
+          size="lg"
+          external
+          track="begin_application"
+          trackParams={{ cta_location: 'home_two_futures' }}
+        >
+          Or Apply Online Now
+        </Button>
+      </div>
+    </div>
+  </Container>
+</section>

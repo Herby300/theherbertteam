@@ -1,0 +1,127 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ComparisonTable from '../../components/ui/ComparisonTable.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { getSolution } from '../../data/solutions';
+
+const solution = getSolution('buy-before-you-sell');
+
+const costs = [
+  { label: 'Equity required in current home', value: 'Typically 25%–30% or more' },
+  { label: 'Credit score', value: 'Generally 680 and above' },
+  { label: 'Property types', value: 'Most single-family and townhome purchases' },
+  { label: 'Bridge period', value: 'Commonly up to 6 months' },
+  { label: 'Program fee', value: 'Disclosed in writing before you make an offer' },
+  { label: 'Carrying cost', value: 'Short-term, tied to how long the bridge stays outstanding' },
+];
+---
+
+<ProgramLayout program={solution} kind="solution">
+  <Section slot="after-intro" bg="offwhite">
+    <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <SectionHeading
+          eyebrow="The Problem"
+          title="Why Contingent Offers Lose"
+          align="left"
+          class="mb-6"
+        />
+        <div class="space-y-4 text-body-lg text-graytext">
+          <p>
+            A home sale contingency tells the seller that your ability to close depends on a transaction that has not
+            happened yet, with a buyer who does not exist yet, on a house they have never seen. From their side, it is
+            not an offer — it is an option.
+          </p>
+          <p>
+            So when two offers land at the same price and one has a contingency, the contingent one loses. Sellers will
+            frequently take less money for more certainty, which means your contingency is costing you real negotiating
+            power, not just convenience.
+          </p>
+          <p>
+            The alternative most families fall into is selling first, moving into a rental, and moving again months
+            later. Two moves, a lease, storage, and shopping under a deadline — all to avoid one contingency.
+          </p>
+        </div>
+      </div>
+
+      <div class="rounded-card border border-silver-light bg-white p-7 shadow-card md:p-9">
+        <h2 class="font-heading text-h3 text-navy">What Sellers Actually Rank</h2>
+        <ol class="mt-6 space-y-4">
+          {
+            [
+              'Certainty that the deal will close',
+              'Closing timeline that matches their move',
+              'Price',
+              'Concessions and repair requests',
+              'Everything else',
+            ].map((item, index) => (
+              <li class="flex items-center gap-4 rounded-lg bg-offwhite px-4 py-3">
+                <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-navy font-heading text-sm font-bold text-white tabular">
+                  {index + 1}
+                </span>
+                <span class="font-medium text-charcoal">{item}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="mt-6 text-[0.9375rem] leading-relaxed text-graytext">
+          Notice that price is third. Remove the contingency and you are competing on the two things that outrank it.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section slot="after-benefits" bg="white">
+    <SectionHeading
+      eyebrow="Contingent vs. Non-Contingent"
+      title="The Same Buyer, Two Very Different Offers"
+      align="center"
+      class="mb-10"
+    />
+    <ComparisonTable
+      headers={['Factor', 'Contingent Offer', 'Non-Contingent Offer']}
+      rows={[
+        ['How the listing agent ranks it', 'Bottom of the stack', 'Competitive with cash'],
+        ['Negotiating leverage', 'Minimal — you often pay full price and still lose', 'Strong, including on price and repairs'],
+        ['Number of moves', 'Two, if you sell first', 'One'],
+        ['Interim housing', 'Rental or family, often for months', 'None'],
+        ['Selling your current home', 'Occupied, staged around your life, under time pressure', 'Empty, staged, and shown without pressure'],
+        ['Risk of losing the house you want', 'High in any competitive market', 'Low'],
+      ]}
+      highlightColumn={2}
+    />
+
+    <div class="mt-12 grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
+      <div class="rounded-card border border-silver-light bg-offwhite p-7 md:p-8">
+        <h3 class="font-heading text-h3 text-navy">Eligibility &amp; Costs</h3>
+        <dl class="mt-6 divide-y divide-silver-light">
+          {
+            costs.map((item) => (
+              <div class="flex flex-col gap-1 py-3.5 sm:flex-row sm:justify-between sm:gap-6">
+                <dt class="text-graytext">{item.label}</dt>
+                <dd class="font-medium text-navy sm:text-right">{item.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div class="flex gap-4 rounded-card border-l-4 border-brandblue bg-brandblue-soft p-7 md:p-8">
+        <Icon name="info" size={24} class="mt-0.5 shrink-0 text-brandblue" />
+        <div>
+          <h3 class="font-heading text-lg font-bold text-navy">Start before you tour, not after</h3>
+          <p class="mt-3 leading-relaxed text-charcoal">
+            The most common mistake is calling about this after finding the perfect house. Approval moves quickly, but
+            you want it in hand before your agent writes anything, so the offer goes out clean on day one.
+          </p>
+          <p class="mt-4 leading-relaxed text-charcoal">
+            Program terms, fees, and eligibility vary by structure and are disclosed in writing before you commit. This
+            is not a commitment to lend, and all financing is subject to underwriting approval.
+          </p>
+        </div>
+      </div>
+    </div>
+  </Section>
+</ProgramLayout>

@@ -1,0 +1,447 @@
+---
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+
+const fieldClass =
+  'w-full rounded-lg border border-silver bg-white px-4 py-3 font-body text-base text-charcoal tabular transition-colors focus:border-brandblue focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brandblue';
+const labelClass = 'block font-heading text-sm font-semibold text-navy';
+---
+
+<div class={`overflow-hidden rounded-card border border-silver-light bg-white shadow-card ${className}`} data-calculator>
+  <div class="grid lg:grid-cols-[1fr_1fr]">
+    <!-- ---------------------------------------------------------------- inputs -->
+    <form class="space-y-6 p-6 md:p-8" novalidate>
+      <div>
+        <label class={labelClass} for="calc-price">Home price</label>
+        <div class="relative mt-2">
+          <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-graytext">$</span>
+          <input
+            type="number"
+            id="calc-price"
+            class={`${fieldClass} pl-8`}
+            value="425000"
+            min="25000"
+            max="10000000"
+            step="1000"
+            inputmode="numeric"
+          />
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-baseline justify-between gap-3">
+          <label class={labelClass} for="calc-down">Down payment</label>
+          <span class="text-sm text-graytext" id="calc-down-hint">20% of price</span>
+        </div>
+        <div class="mt-2 grid grid-cols-[1fr_7.5rem] gap-3">
+          <div class="relative">
+            <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-graytext">$</span>
+            <input
+              type="number"
+              id="calc-down"
+              class={`${fieldClass} pl-8`}
+              value="85000"
+              min="0"
+              step="500"
+              inputmode="numeric"
+            />
+          </div>
+          <div class="relative">
+            <input
+              type="number"
+              id="calc-down-pct"
+              class={`${fieldClass} pr-8`}
+              value="20"
+              min="0"
+              max="100"
+              step="0.5"
+              inputmode="decimal"
+              aria-label="Down payment percentage"
+            />
+            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-graytext">%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label class={labelClass} for="calc-rate">Interest rate</label>
+          <div class="relative mt-2">
+            <input
+              type="number"
+              id="calc-rate"
+              class={`${fieldClass} pr-8`}
+              value="6.5"
+              min="0.5"
+              max="20"
+              step="0.125"
+              inputmode="decimal"
+            />
+            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-graytext">%</span>
+          </div>
+        </div>
+        <div>
+          <label class={labelClass} for="calc-term">Loan term</label>
+          <select id="calc-term" class={`${fieldClass} mt-2`}>
+            <option value="30" selected>30 years</option>
+            <option value="20">20 years</option>
+            <option value="15">15 years</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label class={labelClass} for="calc-tax">Property tax rate</label>
+          <div class="relative mt-2">
+            <input
+              type="number"
+              id="calc-tax"
+              class={`${fieldClass} pr-8`}
+              value="2.1"
+              min="0"
+              max="10"
+              step="0.05"
+              inputmode="decimal"
+            />
+            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-graytext">%</span>
+          </div>
+          <p class="mt-1.5 text-xs text-graytext">Texas averages roughly 1.8%–2.5% depending on your district.</p>
+        </div>
+        <div>
+          <label class={labelClass} for="calc-insurance">Home insurance / year</label>
+          <div class="relative mt-2">
+            <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-graytext">$</span>
+            <input
+              type="number"
+              id="calc-insurance"
+              class={`${fieldClass} pl-8`}
+              value="2400"
+              min="0"
+              step="50"
+              inputmode="numeric"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label class={labelClass} for="calc-hoa">HOA dues / month</label>
+          <div class="relative mt-2">
+            <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-graytext">$</span>
+            <input
+              type="number"
+              id="calc-hoa"
+              class={`${fieldClass} pl-8`}
+              value="0"
+              min="0"
+              step="5"
+              inputmode="numeric"
+            />
+          </div>
+        </div>
+        <div>
+          <label class={labelClass} for="calc-pmi">PMI rate</label>
+          <div class="relative mt-2">
+            <input
+              type="number"
+              id="calc-pmi"
+              class={`${fieldClass} pr-8`}
+              value="0.55"
+              min="0"
+              max="3"
+              step="0.05"
+              inputmode="decimal"
+            />
+            <span class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-graytext">%</span>
+          </div>
+          <p class="mt-1.5 text-xs text-graytext" id="calc-pmi-note">Applied automatically under 20% down.</p>
+        </div>
+      </div>
+    </form>
+
+    <!-- ---------------------------------------------------------------- results -->
+    <div class="border-t border-silver-light bg-navy p-6 text-white md:p-8 lg:border-l lg:border-t-0">
+      <p class="text-eyebrow font-heading font-semibold uppercase text-gold">Estimated Monthly Payment</p>
+      <p class="mt-3 font-heading text-5xl font-extrabold tabular" id="calc-total" aria-live="polite">$0</p>
+      <p class="mt-2 text-sm text-silver-light">
+        Loan amount <span class="text-white tabular" id="calc-loan-amount">$0</span> ·
+        <span class="text-white tabular" id="calc-ltv">0%</span> loan-to-value
+      </p>
+
+      <div class="mt-8 flex flex-col items-center gap-8 sm:flex-row">
+        <div
+          class="relative h-40 w-40 shrink-0 rounded-full"
+          id="calc-donut"
+          role="img"
+          aria-label="Payment breakdown chart"
+        >
+          <div class="absolute inset-[18%] flex flex-col items-center justify-center rounded-full bg-navy text-center">
+            <span class="text-xs uppercase tracking-wide text-silver">Monthly</span>
+            <span class="font-heading text-lg font-bold tabular" id="calc-donut-total">$0</span>
+          </div>
+        </div>
+
+        <dl class="w-full space-y-2.5 text-sm">
+          {
+            [
+              { id: 'pi', label: 'Principal & interest', color: 'bg-brandblue' },
+              { id: 'tax', label: 'Property taxes', color: 'bg-gold' },
+              { id: 'ins', label: 'Home insurance', color: 'bg-success' },
+              { id: 'pmi', label: 'Mortgage insurance', color: 'bg-silver' },
+              { id: 'hoa', label: 'HOA dues', color: 'bg-white' },
+            ].map((row) => (
+              <div class="flex items-center justify-between gap-4" data-row={row.id}>
+                <dt class="flex items-center gap-2.5 text-silver-light">
+                  <span class={`inline-block h-3 w-3 shrink-0 rounded-sm ${row.color}`} aria-hidden="true" />
+                  {row.label}
+                </dt>
+                <dd class="font-medium tabular" id={`calc-${row.id}`}>$0</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div class="mt-8 grid gap-4 border-t border-white/15 pt-6 sm:grid-cols-2">
+        <div>
+          <p class="text-xs uppercase tracking-wide text-silver">Total interest paid</p>
+          <p class="mt-1 font-heading text-xl font-bold tabular" id="calc-total-interest">$0</p>
+        </div>
+        <div>
+          <p class="text-xs uppercase tracking-wide text-silver">Total of all payments</p>
+          <p class="mt-1 font-heading text-xl font-bold tabular" id="calc-total-cost">$0</p>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        id="calc-schedule-toggle"
+        class="mt-7 inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg border-2 border-white/40 px-6 py-3 font-heading text-sm font-semibold text-white transition-colors hover:border-brandblue hover:bg-brandblue"
+        aria-expanded="false"
+        aria-controls="calc-schedule"
+      >
+        <Icon name="list-checks" size={18} />
+        <span id="calc-schedule-label">Show amortization schedule</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ---------------------------------------------------------------- amortization -->
+  <div id="calc-schedule" class="hidden border-t border-silver-light bg-offwhite p-6 md:p-8">
+    <h3 class="font-heading text-lg font-bold text-navy">Amortization by year</h3>
+    <p class="mt-1 text-sm text-graytext">
+      Principal and interest only. Taxes, insurance, and HOA dues are excluded because they are not amortized.
+    </p>
+    <div class="mt-5 max-h-96 overflow-auto rounded-card border border-silver-light bg-white">
+      <table class="w-full min-w-[34rem] border-collapse text-left text-sm">
+        <thead class="sticky top-0 bg-navy text-white">
+          <tr>
+            <th scope="col" class="px-4 py-3 font-heading text-xs font-semibold uppercase tracking-wide">Year</th>
+            <th scope="col" class="px-4 py-3 text-right font-heading text-xs font-semibold uppercase tracking-wide">Principal</th>
+            <th scope="col" class="px-4 py-3 text-right font-heading text-xs font-semibold uppercase tracking-wide">Interest</th>
+            <th scope="col" class="px-4 py-3 text-right font-heading text-xs font-semibold uppercase tracking-wide">Balance</th>
+          </tr>
+        </thead>
+        <tbody id="calc-schedule-body" class="tabular"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-calculator]');
+
+  if (root) {
+    const money = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+    });
+
+    const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T | null;
+
+    const price = el<HTMLInputElement>('calc-price');
+    const down = el<HTMLInputElement>('calc-down');
+    const downPct = el<HTMLInputElement>('calc-down-pct');
+    const rate = el<HTMLInputElement>('calc-rate');
+    const term = el<HTMLSelectElement>('calc-term');
+    const tax = el<HTMLInputElement>('calc-tax');
+    const insurance = el<HTMLInputElement>('calc-insurance');
+    const hoa = el<HTMLInputElement>('calc-hoa');
+    const pmiRate = el<HTMLInputElement>('calc-pmi');
+
+    const donut = el<HTMLElement>('calc-donut');
+    const scheduleToggle = el<HTMLButtonElement>('calc-schedule-toggle');
+    const schedule = el<HTMLElement>('calc-schedule');
+    const scheduleBody = el<HTMLElement>('calc-schedule-body');
+    const scheduleLabel = el<HTMLElement>('calc-schedule-label');
+
+    const num = (input: HTMLInputElement | HTMLSelectElement | null, fallback = 0): number => {
+      const value = Number(input?.value);
+      return Number.isFinite(value) ? value : fallback;
+    };
+
+    const setText = (id: string, value: string) => {
+      const node = document.getElementById(id);
+      if (node) node.textContent = value;
+    };
+
+    /** Standard amortized payment. Falls back to straight division at 0% interest. */
+    const monthlyPayment = (principal: number, annualRate: number, years: number): number => {
+      const months = years * 12;
+      if (months <= 0) return 0;
+      if (annualRate <= 0) return principal / months;
+      const monthlyRate = annualRate / 100 / 12;
+      const factor = Math.pow(1 + monthlyRate, months);
+      return (principal * monthlyRate * factor) / (factor - 1);
+    };
+
+    const buildSchedule = (principal: number, annualRate: number, years: number, payment: number) => {
+      if (!scheduleBody) return { totalInterest: 0 };
+      const monthlyRate = annualRate / 100 / 12;
+      let balance = principal;
+      let totalInterest = 0;
+      const rows: string[] = [];
+
+      for (let year = 1; year <= years; year += 1) {
+        let yearPrincipal = 0;
+        let yearInterest = 0;
+
+        for (let month = 0; month < 12 && balance > 0; month += 1) {
+          const interest = balance * monthlyRate;
+          let principalPart = payment - interest;
+          if (principalPart > balance) principalPart = balance;
+          balance -= principalPart;
+          yearPrincipal += principalPart;
+          yearInterest += interest;
+          totalInterest += interest;
+        }
+
+        rows.push(
+          `<tr class="${year % 2 === 0 ? 'bg-offwhite' : 'bg-white'}">
+            <th scope="row" class="border-b border-silver-light px-4 py-2.5 text-left font-heading font-semibold text-navy">${year}</th>
+            <td class="border-b border-silver-light px-4 py-2.5 text-right">${money.format(yearPrincipal)}</td>
+            <td class="border-b border-silver-light px-4 py-2.5 text-right">${money.format(yearInterest)}</td>
+            <td class="border-b border-silver-light px-4 py-2.5 text-right">${money.format(Math.max(balance, 0))}</td>
+          </tr>`
+        );
+
+        if (balance <= 0) break;
+      }
+
+      scheduleBody.innerHTML = rows.join('');
+      return { totalInterest };
+    };
+
+    const update = () => {
+      const homePrice = Math.max(num(price), 0);
+      const downPayment = Math.min(Math.max(num(down), 0), homePrice);
+      const loanAmount = Math.max(homePrice - downPayment, 0);
+      const years = num(term, 30);
+      const annualRate = num(rate);
+
+      const ltv = homePrice > 0 ? (loanAmount / homePrice) * 100 : 0;
+      const downPercent = homePrice > 0 ? (downPayment / homePrice) * 100 : 0;
+
+      const pi = monthlyPayment(loanAmount, annualRate, years);
+      const monthlyTax = (homePrice * (num(tax) / 100)) / 12;
+      const monthlyInsurance = num(insurance) / 12;
+      const monthlyHoa = num(hoa);
+      const monthlyPmi = downPercent < 20 ? (loanAmount * (num(pmiRate) / 100)) / 12 : 0;
+
+      const total = pi + monthlyTax + monthlyInsurance + monthlyHoa + monthlyPmi;
+
+      setText('calc-total', money.format(total));
+      setText('calc-donut-total', money.format(total));
+      setText('calc-loan-amount', money.format(loanAmount));
+      setText('calc-ltv', `${ltv.toFixed(1)}%`);
+      setText('calc-pi', money.format(pi));
+      setText('calc-tax', money.format(monthlyTax));
+      setText('calc-ins', money.format(monthlyInsurance));
+      setText('calc-pmi', money.format(monthlyPmi));
+      setText('calc-hoa', money.format(monthlyHoa));
+
+      const hint = document.getElementById('calc-down-hint');
+      if (hint) hint.textContent = `${downPercent.toFixed(1)}% of price`;
+
+      const pmiNote = document.getElementById('calc-pmi-note');
+      if (pmiNote) {
+        pmiNote.textContent =
+          downPercent < 20
+            ? 'Applied because the down payment is under 20%.'
+            : 'Not applied — your down payment is 20% or more.';
+      }
+
+      root.querySelectorAll<HTMLElement>('[data-row]').forEach((row) => {
+        const key = row.dataset.row;
+        const hideEmpty = (key === 'pmi' && monthlyPmi <= 0) || (key === 'hoa' && monthlyHoa <= 0);
+        row.classList.toggle('opacity-40', hideEmpty);
+      });
+
+      if (donut && total > 0) {
+        const slices: [number, string][] = [
+          [pi, '#0698F8'],
+          [monthlyTax, '#D4A54A'],
+          [monthlyInsurance, '#1F9D55'],
+          [monthlyPmi, '#C5C4C3'],
+          [monthlyHoa, '#FFFFFF'],
+        ];
+        let cursor = 0;
+        const stops = slices
+          .filter(([value]) => value > 0)
+          .map(([value, color]) => {
+            const start = cursor;
+            cursor += (value / total) * 100;
+            return `${color} ${start.toFixed(2)}% ${cursor.toFixed(2)}%`;
+          });
+        donut.style.background = `conic-gradient(${stops.join(', ')})`;
+      }
+
+      const { totalInterest } = buildSchedule(loanAmount, annualRate, years, pi);
+      setText('calc-total-interest', money.format(totalInterest));
+      setText('calc-total-cost', money.format(loanAmount + totalInterest));
+    };
+
+    // Keep the dollar and percent down payment fields in sync.
+    down?.addEventListener('input', () => {
+      const homePrice = Math.max(num(price), 1);
+      if (downPct) downPct.value = ((num(down) / homePrice) * 100).toFixed(1);
+      update();
+    });
+
+    downPct?.addEventListener('input', () => {
+      const homePrice = Math.max(num(price), 0);
+      if (down) down.value = String(Math.round((num(downPct) / 100) * homePrice));
+      update();
+    });
+
+    price?.addEventListener('input', () => {
+      const homePrice = Math.max(num(price), 0);
+      if (down && downPct) down.value = String(Math.round((num(downPct) / 100) * homePrice));
+      update();
+    });
+
+    [rate, term, tax, insurance, hoa, pmiRate].forEach((input) => {
+      input?.addEventListener('input', update);
+      input?.addEventListener('change', update);
+    });
+
+    scheduleToggle?.addEventListener('click', () => {
+      const expanded = scheduleToggle.getAttribute('aria-expanded') === 'true';
+      scheduleToggle.setAttribute('aria-expanded', String(!expanded));
+      schedule?.classList.toggle('hidden', expanded);
+      if (scheduleLabel) {
+        scheduleLabel.textContent = expanded ? 'Show amortization schedule' : 'Hide amortization schedule';
+      }
+    });
+
+    update();
+  }
+</script>

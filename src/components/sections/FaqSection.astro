@@ -1,0 +1,47 @@
+---
+import Container from '../Container.astro';
+import SectionHeading from '../SectionHeading.astro';
+import Accordion from '../ui/Accordion.astro';
+import AccordionItem from '../ui/AccordionItem.astro';
+import { slugify } from '../../utils/format';
+
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  items: { q: string; a: string }[];
+  bg?: 'white' | 'offwhite';
+  idPrefix?: string;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  title = 'Frequently Asked Questions',
+  subtitle,
+  items,
+  bg = 'offwhite',
+  idPrefix = 'faq',
+  class: className = '',
+} = Astro.props;
+---
+
+<section class={`${bg === 'white' ? 'bg-white' : 'bg-offwhite'} py-16 md:py-20 lg:py-24 ${className}`}>
+  <Container>
+    <SectionHeading eyebrow={eyebrow} title={title} subtitle={subtitle} align="center" />
+    <div class="mx-auto mt-10 max-w-3xl">
+      <Accordion>
+        {
+          items.map((item, index) => (
+            <AccordionItem
+              question={item.q}
+              answer={item.a}
+              id={`${idPrefix}-${index}-${slugify(item.q).slice(0, 32)}`}
+            />
+          ))
+        }
+      </Accordion>
+    </div>
+    <slot />
+  </Container>
+</section>

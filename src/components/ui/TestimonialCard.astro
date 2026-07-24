@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  quote: string;
+  author: string;
+  role: string;
+  category?: string;
+  invert?: boolean;
+  class?: string;
+}
+
+const { quote, author, role, category, invert = false, class: className = '' } = Astro.props;
+---
+
+<figure
+  class:list={[
+    'flex h-full flex-col rounded-card border p-7 shadow-card',
+    invert ? 'border-white/15 bg-white' : 'border-silver-light bg-white',
+    className,
+  ]}
+  data-category={category}
+>
+  <div class="flex items-center gap-1 text-gold" aria-label="Rated 5 out of 5 stars">
+    {[0, 1, 2, 3, 4].map(() => <Icon name="star" size={18} class="fill-current" strokeWidth={0} />)}
+  </div>
+  <blockquote class="mt-4 flex-1">
+    <p class="text-[1.0625rem] leading-relaxed text-charcoal">&ldquo;{quote}&rdquo;</p>
+  </blockquote>
+  <figcaption class="mt-6 border-t border-silver-light pt-4">
+    <span class="block font-heading font-semibold text-navy">{author}</span>
+    <span class="block text-sm text-graytext">{role}</span>
+  </figcaption>
+</figure>

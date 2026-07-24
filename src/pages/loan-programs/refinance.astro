@@ -1,0 +1,93 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ComparisonTable from '../../components/ui/ComparisonTable.astro';
+import Icon from '../../components/ui/Icon.astro';
+import Button from '../../components/Button.astro';
+import { getProgram } from '../../data/programs';
+
+const program = getProgram('refinance');
+---
+
+<ProgramLayout program={program} kind="program">
+  <Section slot="after-benefits" bg="white">
+    <SectionHeading
+      eyebrow="Rate-and-Term vs. Cash-Out"
+      title="Two Refinances That Do Very Different Jobs"
+      align="center"
+      class="mb-10"
+    />
+    <ComparisonTable
+      headers={['Factor', 'Rate-and-Term', 'Cash-Out']}
+      rows={[
+        ['Purpose', 'Lower the rate, change the term, or drop mortgage insurance', 'Convert equity into cash for debt, renovation, or investment'],
+        ['Cash to you at closing', 'None beyond minor adjustments', 'The equity you withdraw, less costs'],
+        ['Texas maximum loan-to-value', 'Up to 97% conventional', '80% on a primary residence'],
+        ['Typical pricing', 'Best available refinance pricing', 'Slightly higher than rate-and-term'],
+        ['Texas-specific rules', 'Standard', 'Section 50(a)(6) rules, including timing and fee limits'],
+        ['Common use case', 'Rate dropped, or removing FHA mortgage insurance', 'Consolidating high-interest debt or funding a renovation'],
+      ]}
+      highlightColumn={1}
+    />
+
+    <div class="mt-14 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:gap-12">
+      <div>
+        <SectionHeading
+          eyebrow="The Only Math That Matters"
+          title="How to Calculate Your Break-Even"
+          align="left"
+          class="mb-6"
+        />
+        <div class="space-y-4 text-body-lg text-graytext">
+          <p>
+            Take your total closing costs and divide them by your monthly savings. The result is the number of months
+            until the refinance has paid for itself. Everything before that month costs you money; everything after is
+            profit.
+          </p>
+          <p>
+            If your break-even is 28 months and you plan to be in the home for ten more years, refinancing is an easy
+            yes. If you are listing the house next spring, it is an easy no — and I will tell you so rather than let you
+            pay closing costs you will never recover.
+          </p>
+          <p>
+            A no-lender-fee structure changes this equation significantly, because a smaller cost figure shortens the
+            break-even even if the rate is a fraction higher. I model both versions for every client.
+          </p>
+        </div>
+        <Button href="/resources/calculator" variant="secondary" class="mt-7" icon="arrow-right">
+          Run Your Numbers in the Calculator
+        </Button>
+      </div>
+
+      <div class="rounded-card border border-silver-light bg-offwhite p-7 md:p-8">
+        <h3 class="font-heading text-lg font-bold text-navy">Worked example</h3>
+        <dl class="mt-5 divide-y divide-silver-light">
+          {
+            [
+              ['Current payment (P&I)', '$2,410'],
+              ['New payment (P&I)', '$2,155'],
+              ['Monthly savings', '$255'],
+              ['Total closing costs', '$5,900'],
+            ].map(([label, value]) => (
+              <div class="flex justify-between gap-6 py-3">
+                <dt class="text-graytext">{label}</dt>
+                <dd class="font-medium text-navy tabular">{value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <div class="mt-5 flex items-center justify-between gap-4 rounded-lg bg-success/10 px-5 py-4">
+          <span class="font-heading font-bold text-navy">Break-even</span>
+          <span class="flex items-center gap-2 font-heading text-xl font-extrabold text-success tabular">
+            23 months
+            <Icon name="check-circle" size={20} />
+          </span>
+        </div>
+        <p class="mt-4 text-sm text-graytext">
+          Illustrative figures only. Your break-even depends on your loan amount, rate, and actual closing costs.
+        </p>
+      </div>
+    </div>
+  </Section>
+</ProgramLayout>

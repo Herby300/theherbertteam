@@ -1,0 +1,186 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ProgramCard from '../../components/ui/ProgramCard.astro';
+import FaqSection from '../../components/sections/FaqSection.astro';
+import Button from '../../components/Button.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { programs } from '../../data/programs';
+import { solutions } from '../../data/solutions';
+import { breadcrumbSchema, faqSchema, combineSchema } from '../../utils/seo';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Loan Programs', href: '/loan-programs' },
+];
+
+const hubFaqs = [
+  {
+    q: 'How do I know which loan program is right for me?',
+    a: 'It comes down to four things: your credit, your income documentation, your down payment, and your goals for the property. Once I know those, the right program is usually obvious within a few minutes. That is exactly what the free strategy call covers.',
+  },
+  {
+    q: 'Can I switch programs after I start?',
+    a: 'Yes, up to a point. Before you are under contract it is easy. After that it depends on your closing timeline and whether the new program changes the appraisal or documentation requirements. I would rather get it right the first time, which is why the diagnosis happens before the application.',
+  },
+  {
+    q: 'Do you charge to compare programs for me?',
+    a: 'No. Running scenarios and comparing programs is part of the advisory work, not a billable service. You only pay loan costs at closing, and those are disclosed in writing well before you commit.',
+  },
+  {
+    q: 'What if I do not fit any of these programs?',
+    a: 'Then we look at portfolio and non-QM options that are not listed here, or we build a 60-to-90-day plan to get you qualified. In 20 years I have rarely met a situation with no path at all — usually there is just no path with the lender who said no.',
+  },
+];
+
+const schema = combineSchema(breadcrumbSchema(crumbs), faqSchema(hubFaqs));
+---
+
+<PageLayout
+  title="Mortgage Loan Programs in Texas"
+  description="Compare conventional, FHA, VA, jumbo, construction, DSCR, self-employed, and refinance loan programs with a Georgetown, TX mortgage advisor who matches the program to your situation."
+  heroEyebrow="Loan Programs"
+  heroTitle="There’s No Such Thing as “The Mortgage.” There’s Yours."
+  heroSubtitle="Eight core programs, dozens of variations underneath them, and one question that matters: which structure gets you the best result for your situation? That is the part most lenders skip."
+  heroImage="/images/hero/programs-hero.jpg"
+  heroImageAlt="Texas neighborhood of newly built homes at sunset"
+  crumbs={crumbs}
+  schema={schema}
+>
+  <Section bg="white">
+    <div class="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+      <div>
+        <h2 class="text-h2 text-navy">Program Matching Is the Whole Job</h2>
+        <div class="mt-6 space-y-5 text-body-lg text-graytext">
+          <p>
+            Most people shop for a mortgage the way they shop for airline tickets — find the lowest number and click.
+            The problem is that a mortgage is not one product with one price. It is dozens of products with different
+            qualifying rules, and the cheapest one you cannot qualify for is worth nothing.
+          </p>
+          <p>
+            The right question is not &ldquo;what is your rate.&rdquo; It is &ldquo;given my income, my credit, my down
+            payment, and how long I plan to own this home, which structure costs me the least over the time I actually
+            keep it?&rdquo; Sometimes the answer is a conventional loan with 5% down. Sometimes it is FHA now and a
+            refinance in three years. Sometimes it is a bank statement loan that no retail lender in your search results
+            even offers.
+          </p>
+          <p>
+            That is what I do before anyone fills out an application: diagnose the situation, then pick the tool.
+          </p>
+        </div>
+      </div>
+
+      <div class="rounded-card border border-silver-light bg-offwhite p-7 md:p-8">
+        <h2 class="font-heading text-h3 text-navy">Four Things That Decide Your Program</h2>
+        <ol class="mt-6 space-y-5">
+          {
+            [
+              { title: 'How you earn', text: 'W-2, 1099, K-1, commission, rental income, or a mix — this is the single biggest factor.' },
+              { title: 'Your credit profile', text: 'Not just the score. Depth of history, recent events, and where you sit relative to pricing tiers.' },
+              { title: 'Cash available', text: 'Down payment, closing costs, and reserves. Gift funds and assistance programs change this math.' },
+              { title: 'Your timeline', text: 'How long you plan to keep the home determines whether points, MI, or a shorter term make sense.' },
+            ].map((item, index) => (
+              <li class="flex gap-4">
+                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-navy font-heading text-sm font-bold text-white tabular">
+                  {index + 1}
+                </span>
+                <span>
+                  <span class="block font-heading font-semibold text-navy">{item.title}</span>
+                  <span class="mt-1 block text-[0.9375rem] leading-relaxed text-graytext">{item.text}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </Section>
+
+  <Section bg="offwhite">
+    <SectionHeading
+      eyebrow="All Programs"
+      title="Eight Ways to Finance a Home"
+      subtitle="Every program page covers who it fits, how it works, real guideline numbers, the myths that cost borrowers money, and the questions I get asked most."
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        programs.map((program) => (
+          <ProgramCard
+            title={program.name}
+            text={program.tagline}
+            href={program.href}
+            icon={program.icon}
+            class="reveal"
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section bg="white">
+    <SectionHeading
+      eyebrow="Signature Solutions"
+      title="And Four Problems Most Lenders Send You Home With"
+      subtitle="These are not loan programs so much as answers to specific situations — the ones that come up again and again."
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        solutions.map((solution) => (
+          <ProgramCard
+            title={solution.name}
+            text={solution.tagline}
+            href={solution.href}
+            icon={solution.icon}
+            class="reveal"
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section bg="navy" padding="sm">
+    <div class="grid items-center gap-8 lg:grid-cols-[1.3fr_1fr]">
+      <div>
+        <h2 class="text-h2 text-white">Not Sure Which Fits?</h2>
+        <p class="mt-4 text-body-lg text-silver-light">
+          Tell me your situation in twenty minutes and I will tell you which program you should be looking at — and
+          which ones to ignore. No cost, no obligation, no pressure to apply that day.
+        </p>
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+          {
+            [
+              'Your realistic price range',
+              'Which programs you qualify for',
+              'Down payment and closing cost estimate',
+              'What to fix before applying, if anything',
+            ].map((item) => (
+              <li class="flex items-start gap-2.5 text-sm text-white">
+                <Icon name="check" size={17} class="mt-0.5 shrink-0 text-brandblue" />
+                {item}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="flex flex-col gap-3">
+        <Button href="/schedule" variant="primary" size="lg" icon="arrow-right" track="schedule" fullWidth>
+          Book a Free Strategy Call
+        </Button>
+        <Button href="/contact" variant="outline-white" size="lg" fullWidth>Send Me Your Scenario</Button>
+      </div>
+    </div>
+  </Section>
+
+  <FaqSection
+    eyebrow="Common Questions"
+    title="About Choosing a Program"
+    items={hubFaqs}
+    idPrefix="programs-hub"
+    bg="offwhite"
+  />
+</PageLayout>

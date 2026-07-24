@@ -1,0 +1,31 @@
+---
+import { formBase } from '../../data/site';
+
+interface Props {
+  formId: string;
+  title: string;
+  height?: string;
+  class?: string;
+  /** Labels the form for the submission tracking listener in Layout.astro. */
+  formType?: string;
+}
+
+const { formId, title, height = '560', class: className = '', formType } = Astro.props;
+---
+
+<div class={`ghl-form-wrap ${className}`} data-ghl-active={formType ?? title}>
+  <iframe
+    src={`${formBase}${formId}`}
+    style={`width:100%; height:${height}px; border:none; border-radius:0.875rem;`}
+    id={`inline-${formId}`}
+    data-layout="{'id':'INLINE'}"
+    data-trigger-type="alwaysShow"
+    data-activation-type="alwaysActivated"
+    data-deactivation-type="neverDeactivate"
+    data-form-name={title}
+    data-height={height}
+    data-layout-iframe-id={`inline-${formId}`}
+    data-form-id={formId}
+    title={title}
+    loading="lazy"></iframe>
+</div>

@@ -1,0 +1,175 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import LeadMagnetStrip from '../../components/sections/LeadMagnetStrip.astro';
+import Accordion from '../../components/ui/Accordion.astro';
+import AccordionItem from '../../components/ui/AccordionItem.astro';
+import Icon from '../../components/ui/Icon.astro';
+import Button from '../../components/Button.astro';
+import { getSolution } from '../../data/solutions';
+
+const solution = getSolution('first-time-homebuyers');
+
+const fears = [
+  {
+    fear: '“What if I get denied and everyone finds out?”',
+    answer:
+      'A preapproval conversation is private and costs nothing. If the answer today is not yet, you get a specific plan instead of a rejection — and nobody but you and I ever knows we talked.',
+  },
+  {
+    fear: '“What if I buy and the market drops?”',
+    answer:
+      'Nobody can promise short-term appreciation. What a fixed mortgage does promise is that your principal and interest payment will be the same in year ten as it is in year one, while rent will not be. Buy for a horizon of five years or more and short-term movement matters far less.',
+  },
+  {
+    fear: '“What if something breaks and I cannot afford it?”',
+    answer:
+      'Real concern, real answer: budget roughly 1% of the home value per year for maintenance, get a thorough inspection during your option period, and consider a home warranty for the first year. We build this into the budget conversation before you shop.',
+  },
+  {
+    fear: '“What if I am overpaying?”',
+    answer:
+      'Your agent runs comparable sales and the lender orders an independent appraisal. If the appraisal comes in below the contract price, you have negotiating leverage and, in most contracts, an exit. Two separate checks stand between you and overpaying.',
+  },
+  {
+    fear: '“What if I do not have enough saved?”',
+    answer:
+      'You probably need less than you think. Between 3% conventional, 3.5% FHA, zero-down VA, seller concessions, and Texas assistance programs, the actual cash requirement is often a fraction of the 20% people assume.',
+  },
+];
+
+const cashItems = [
+  { label: 'Earnest money', value: 'About 1% of the price', note: 'Held by title, credited back to you at closing' },
+  { label: 'Option fee', value: '$200–$500', note: 'Buys your right to terminate during the option period' },
+  { label: 'Inspection', value: '$400–$600', note: 'Paid directly to the inspector, usually within the first week' },
+  { label: 'Appraisal', value: '$500–$700', note: 'Paid to the lender or appraisal management company' },
+  { label: 'Down payment', value: '0%–5% typical', note: 'Depends on the program; assistance may reduce it further' },
+  { label: 'Closing costs', value: '2%–3% of the price', note: 'Seller concessions can offset part or all of this' },
+];
+
+const glossary = [
+  { term: 'Amortization', definition: 'The schedule that splits each payment between interest and principal. Early payments are interest-heavy; the balance shifts toward principal over time.' },
+  { term: 'Appraisal', definition: 'An independent opinion of the property’s value, ordered by the lender, used to confirm the home is worth what you agreed to pay.' },
+  { term: 'APR', definition: 'Annual percentage rate. The interest rate plus certain financing costs, expressed as a yearly figure, intended to make loan offers comparable.' },
+  { term: 'Closing costs', definition: 'The fees paid at closing for the loan, title, escrow, recording, and prepaid taxes and insurance. Typically 2% to 3% of the purchase price for a buyer.' },
+  { term: 'Closing Disclosure', definition: 'The final itemized statement of your loan terms and costs. Federal law requires you to receive it at least three business days before closing.' },
+  { term: 'Contingency', definition: 'A condition in the contract that must be met for the sale to proceed, such as financing, appraisal, or the sale of your current home.' },
+  { term: 'Debt-to-income ratio (DTI)', definition: 'Your total monthly debt payments divided by gross monthly income. One of the primary numbers underwriting uses to size your loan.' },
+  { term: 'Down payment', definition: 'The portion of the purchase price you pay out of pocket rather than borrowing. Ranges from 0% to 20% or more depending on program.' },
+  { term: 'Earnest money', definition: 'A good-faith deposit made after your offer is accepted, held by the title company and credited to you at closing.' },
+  { term: 'Equity', definition: 'The difference between what your home is worth and what you owe on it. It grows through payments, appreciation, and improvements.' },
+  { term: 'Escrow account', definition: 'An account your servicer uses to collect and pay property taxes and insurance on your behalf as part of the monthly payment.' },
+  { term: 'Loan estimate', definition: 'A standardized three-page document showing your estimated rate, payment, and closing costs, provided within three days of application.' },
+  { term: 'Loan-to-value (LTV)', definition: 'Your loan amount divided by the property value. An 80% LTV means 20% equity, which is the threshold where mortgage insurance typically ends.' },
+  { term: 'Mortgage insurance', definition: 'Insurance that protects the lender when a borrower puts down less than 20%. Conventional PMI cancels with equity; FHA MIP generally does not.' },
+  { term: 'Option period', definition: 'A negotiated window in Texas contracts, usually seven to ten days, during which you can terminate for any reason after paying the option fee.' },
+  { term: 'Origination fee', definition: 'A lender charge for processing the loan, expressed as a percentage of the loan amount or a flat dollar figure. Disclosed on your Loan Estimate.' },
+  { term: 'PITI', definition: 'Principal, interest, taxes, and insurance — the four components of a typical monthly mortgage payment. Add HOA dues and mortgage insurance where applicable.' },
+  { term: 'Points', definition: 'Prepaid interest paid at closing to lower your rate. One point equals 1% of the loan amount and is worth doing only if you keep the loan past the break-even.' },
+  { term: 'Preapproval', definition: 'A lender review of your actual documents resulting in a conditional commitment. Stronger than prequalification and what sellers expect to see.' },
+  { term: 'Underwriting', definition: 'The lender’s formal review of your credit, income, assets, and the property to make the final approval decision.' },
+];
+---
+
+<ProgramLayout program={solution} kind="solution">
+  <LeadMagnetStrip
+    slot="after-intro"
+    bg="soft"
+    title="Start With the Free First-Time Homebuyer Guide"
+    description="Everything on this page, expanded — plus a printable checklist, a budget worksheet, and the document list underwriting will ask for. Read it before you talk to anyone, including me."
+    bullets={[
+      'What you can afford versus what you will be approved for',
+      'Texas-specific costs: property taxes, option fee, title',
+      'The seven steps from first conversation to keys',
+    ]}
+  />
+
+  <Section slot="after-benefits" bg="white">
+    <SectionHeading
+      eyebrow="Let’s Name Them"
+      title="Five Fears That Keep People Renting"
+      subtitle="Every first-time buyer has at least three of these. None of them are silly, and all of them have real answers."
+      align="center"
+      class="mb-12"
+    />
+    <div class="mx-auto max-w-4xl space-y-5">
+      {
+        fears.map((item) => (
+          <div class="reveal rounded-card border border-silver-light bg-white p-7 shadow-card">
+            <p class="font-heading text-lg italic text-graytext">{item.fear}</p>
+            <div class="mt-4 flex items-start gap-3 border-t border-silver-light pt-4">
+              <Icon name="check-circle" size={20} class="mt-0.5 shrink-0 text-success" />
+              <p class="leading-relaxed text-charcoal">{item.answer}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-16">
+      <SectionHeading
+        eyebrow="Cash to Close"
+        title="How Much Money You Actually Need"
+        subtitle="The down payment is only part of it. Here is every dollar a Texas first-time buyer should plan for."
+        align="center"
+        class="mb-10"
+      />
+      <div class="mx-auto max-w-4xl overflow-hidden rounded-card border border-silver-light bg-white shadow-card">
+        {
+          cashItems.map((item, index) => (
+            <div class:list={['grid gap-2 px-6 py-5 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8', index % 2 === 1 ? 'bg-offwhite' : '']}>
+              <div>
+                <p class="font-heading font-semibold text-navy">{item.label}</p>
+                <p class="mt-1 text-sm text-graytext">{item.note}</p>
+              </div>
+              <p class="font-heading text-lg font-bold text-brandblue tabular">{item.value}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="mx-auto mt-5 max-w-4xl text-sm text-graytext">
+        Ranges are typical for Central Texas and are estimates only. Your actual figures depend on price, program, and
+        negotiated terms, and will be disclosed in writing on your Loan Estimate.
+      </p>
+    </div>
+
+    <div class="mt-16">
+      <SectionHeading
+        eyebrow="Glossary"
+        title="Twenty Terms You’ll Hear, Defined"
+        subtitle="You should never nod along to a word you do not know. Here are the ones that come up most."
+        align="center"
+        class="mb-10"
+      />
+      <div class="mx-auto max-w-3xl">
+        <Accordion singleOpen={false}>
+          {
+            glossary.map((entry, index) => (
+              <AccordionItem question={entry.term} answer={entry.definition} id={`glossary-${index}`} />
+            ))
+          }
+        </Accordion>
+      </div>
+    </div>
+  </Section>
+
+  <Section slot="before-faq" bg="offwhite" padding="sm">
+    <div class="grid items-center gap-8 rounded-card border-l-4 border-brandblue bg-white p-7 shadow-card md:p-9 lg:grid-cols-[1.3fr_1fr]">
+      <div>
+        <span class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+          <Icon name="wallet" size={24} />
+        </span>
+        <h2 class="mt-5 text-h3 font-bold text-navy">You May Not Need to Save as Long as You Think</h2>
+        <p class="mt-3 leading-relaxed text-graytext">
+          Texas down payment assistance programs offer grants and forgivable second liens that can cover most or all of
+          a down payment for eligible buyers. Income limits are usually higher than people expect, and target-area
+          purchases often waive the first-time requirement entirely.
+        </p>
+      </div>
+      <Button href="/solutions/down-payment-assistance" variant="primary" size="lg" icon="arrow-right" fullWidth>
+        See Assistance Programs
+      </Button>
+    </div>
+  </Section>
+</ProgramLayout>

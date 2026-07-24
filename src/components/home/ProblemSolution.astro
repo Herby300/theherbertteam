@@ -1,0 +1,74 @@
+---
+import Section from '../Section.astro';
+import Button from '../Button.astro';
+import { site } from '../../data/site';
+---
+
+<Section bg="offwhite" id="why-me">
+  <div class="grid items-start gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+    <div class="reveal">
+      <h2 class="text-h2 text-navy">Getting a Mortgage Shouldn&rsquo;t Feel Like Being Judged.</h2>
+
+      <div class="mt-7 space-y-5 text-body-lg text-graytext">
+        <p>
+          You&rsquo;ve done the work. You built the business, served the country, saved the down payment, found the
+          house. Then a lender runs your file through a box, and if you don&rsquo;t fit the box, you get a one-word
+          answer: <em class="italic">no.</em>
+        </p>
+        <p>No explanation. No alternative. No idea what to fix.</p>
+        <p>
+          Meanwhile you&rsquo;re watching rates move, your dream home go pending, and your lease renewal date get
+          closer. Everyone&rsquo;s got an opinion, nobody&rsquo;s got a plan, and the &ldquo;lowest rate&rdquo; ad that
+          got you in the door turned out to have three asterisks attached to it.
+        </p>
+      </div>
+
+      <p class="mt-9 border-l-4 border-brandblue pl-5 font-heading text-h3 font-bold text-brandblue">
+        That&rsquo;s not a you problem. That&rsquo;s a wrong-lender problem.
+      </p>
+
+      <div class="mt-9 space-y-5 text-body-lg text-graytext">
+        <p>
+          I&rsquo;m {site.advisor}. For over 20 years I&rsquo;ve been the person people call <em class="italic">after</em>
+          someone else said no — and the person smart buyers call <em class="italic">first</em> so they never hear it. I
+          don&rsquo;t sell rates. I diagnose situations and build financing strategies around them. Bank statement loans
+          for business owners. Non-contingent offers for move-up buyers. First-lien HELOCs for homeowners who want
+          flexibility. DSCR for investors scaling a portfolio.
+        </p>
+        <p>
+          You get one advisor, start to finish, who explains every step in plain English — and stays your mortgage
+          advisor for life, not just for one closing.
+        </p>
+      </div>
+
+      <Button href="/loan-programs" variant="primary" size="lg" class="mt-9" icon="arrow-right">
+        See How I Solve It
+      </Button>
+    </div>
+
+    <div class="reveal relative mx-auto w-full max-w-md lg:max-w-none">
+      <div
+        class="absolute -bottom-5 -left-5 h-full w-full rounded-card bg-navy sm:-bottom-6 sm:-left-6"
+        aria-hidden="true"
+      >
+      </div>
+      <img
+        src="/images/jason-headshot-large.jpg"
+        alt={`${site.advisor}, ${site.positioning}, in Georgetown, Texas`}
+        width="900"
+        height="1100"
+        loading="lazy"
+        decoding="async"
+        class="relative aspect-[9/11] w-full rounded-card object-cover shadow-card-hover"
+      />
+      <div
+        class="relative mt-6 rounded-card border border-silver-light bg-white p-6 shadow-card sm:absolute sm:-bottom-8 sm:right-4 sm:mt-0 sm:max-w-[16rem]"
+      >
+        <p class="font-heading text-3xl font-extrabold text-navy tabular">20+</p>
+        <p class="mt-1 text-sm text-graytext">
+          years structuring mortgages for buyers other lenders turned away
+        </p>
+      </div>
+    </div>
+  </div>
+</Section>

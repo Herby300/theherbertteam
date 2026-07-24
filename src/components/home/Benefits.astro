@@ -1,0 +1,63 @@
+---
+import Section from '../Section.astro';
+import SectionHeading from '../SectionHeading.astro';
+import BenefitCard from '../ui/BenefitCard.astro';
+import Button from '../Button.astro';
+import { site } from '../../data/site';
+
+const benefits = [
+  {
+    icon: 'target',
+    title: 'You Get Approved When You Thought You Couldn\u2019t',
+    text: 'Self-employed with write-offs? Commission income? Just started a new business? I use programs built for how you actually earn — bank statement, 1099, P&L, asset-based, no-ratio. Tax returns aren\u2019t the only story, and I know how to tell the rest of it.',
+  },
+  {
+    icon: 'compass',
+    title: 'You Finally Understand What You\u2019re Doing',
+    text: 'No jargon, no \u201ctrust me.\u201d You\u2019ll know what your payment is, what it\u2019s made of, what it costs to buy the rate down, and why one option beats another. Confident decisions come from clear information — that\u2019s the whole job.',
+  },
+  {
+    icon: 'dumbbell',
+    title: 'You Compete and Win in a Tough Market',
+    text: 'Strong preapprovals sellers take seriously. Non-contingent offers through Buy Before You Sell. Fast closings that hold your contract together. Fewer surprises means fewer deals falling apart at the finish line.',
+  },
+];
+---
+
+<Section bg="white">
+  <SectionHeading
+    eyebrow="What This Actually Means For You"
+    title="You Came for a Loan. You Leave With a Plan."
+    align="center"
+    class="mb-12"
+  />
+
+  <div class="grid gap-6 lg:grid-cols-3">
+    {
+      benefits.map((benefit, index) => (
+        <BenefitCard
+          icon={benefit.icon}
+          title={benefit.title}
+          text={benefit.text}
+          number={index + 1}
+          class="reveal"
+        />
+      ))
+    }
+  </div>
+
+  <div class="mt-12 text-center">
+    <Button
+      href={site.applyUrl}
+      variant="primary"
+      size="lg"
+      icon="arrow-right"
+      external
+      track="begin_application"
+      trackParams={{ cta_location: 'home_benefits' }}
+    >
+      Start Your Application
+    </Button>
+    <p class="mt-4 text-sm text-graytext">Takes about 12 minutes. No credit impact to get started.</p>
+  </div>
+</Section>

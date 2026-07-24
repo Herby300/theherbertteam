@@ -1,0 +1,47 @@
+---
+import Container from '../Container.astro';
+import TestimonialCard from '../ui/TestimonialCard.astro';
+import Icon from '../ui/Icon.astro';
+import { testimonials, testimonialDisclaimer, type Testimonial } from '../../data/testimonials';
+
+interface Props {
+  items?: Testimonial[];
+  title?: string;
+  bg?: 'white' | 'offwhite' | 'navy';
+  class?: string;
+}
+
+const {
+  items = testimonials,
+  title = 'What Clients Say',
+  bg = 'offwhite',
+  class: className = '',
+} = Astro.props;
+
+const backgrounds: Record<string, string> = {
+  white: 'bg-white',
+  offwhite: 'bg-offwhite',
+  navy: 'bg-navy',
+};
+
+const invert = bg === 'navy';
+---
+
+<section class={`${backgrounds[bg]} py-14 md:py-16 ${className}`}>
+  <Container>
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <h2 class:list={['text-h3 font-bold', invert ? 'text-white' : 'text-navy']}>{title}</h2>
+      <a
+        href="/reviews"
+        class="inline-flex min-h-[44px] items-center gap-1.5 font-heading text-sm font-semibold text-brandblue hover:text-brandblue-hover"
+      >
+        Read all reviews
+        <Icon name="arrow-right" size={16} />
+      </a>
+    </div>
+    <div class="mt-8 grid gap-6 md:grid-cols-3">
+      {items.slice(0, 3).map((item) => <TestimonialCard {...item} class="reveal" />)}
+    </div>
+    <p class:list={['mt-6 text-sm', invert ? 'text-silver' : 'text-graytext']}>{testimonialDisclaimer}</p>
+  </Container>
+</section>

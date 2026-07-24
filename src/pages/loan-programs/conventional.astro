@@ -1,0 +1,8 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import { getProgram } from '../../data/programs';
+
+const program = getProgram('conventional');
+---
+
+<ProgramLayout program={program} kind="program" />

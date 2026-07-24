@@ -1,0 +1,30 @@
+---
+import { site } from '../../data/site';
+
+interface Props {
+  height?: string;
+  class?: string;
+}
+
+const { height = '700', class: className = '' } = Astro.props;
+const bookingId = site.calendlyUrl.split('/').pop() ?? 'booking';
+const title = 'Schedule a Free Mortgage Strategy Consultation';
+---
+
+<div class={`ghl-booking-wrap ${className}`} data-ghl-active="booking">
+  <iframe
+    src={site.calendlyUrl}
+    style={`width:100%; height:${height}px; border:none; border-radius:0.875rem;`}
+    id={`${bookingId}_booking`}
+    data-layout="{'id':'BOOKING'}"
+    data-trigger-type="alwaysShow"
+    data-activation-type="alwaysActivated"
+    data-deactivation-type="neverDeactivate"
+    data-form-name={title}
+    data-height={height}
+    data-layout-iframe-id={`${bookingId}_booking`}
+    data-form-id={bookingId}
+    title={title}
+    scrolling="no"
+    loading="lazy"></iframe>
+</div>

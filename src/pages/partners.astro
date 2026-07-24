@@ -1,0 +1,203 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import GhlForm from '../components/forms/GhlForm.astro';
+import TestimonialCard from '../components/ui/TestimonialCard.astro';
+import Icon from '../components/ui/Icon.astro';
+import { formIds } from '../data/site';
+import { breadcrumbSchema } from '../utils/seo';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Partners', href: '/partners' },
+];
+
+const commitments = [
+  { icon: 'phone', title: 'I answer the phone', text: 'Evenings and weekends included. Deals do not fall apart on a schedule.' },
+  { icon: 'clock', title: 'Same-day preapprovals', text: 'Usually within hours, fully underwritten, not a template letter.' },
+  { icon: 'message-circle', title: 'Proactive updates', text: 'You hear about a problem from me before you hear about it from your client.' },
+  { icon: 'shield-check', title: 'Straight answers', text: 'If a file will not work, I say so immediately instead of letting it die slowly.' },
+];
+
+const tracks = [
+  {
+    id: 'realtors',
+    icon: 'home',
+    title: 'Realtors',
+    formId: formIds.realtor,
+    formType: 'realtor',
+    intro:
+      'Your reputation rides on whether the deal closes on time. Mine rides on the same thing. I treat your client like my client and your closing date like a commitment rather than a target.',
+    benefits: [
+      'Fully underwritten preapprovals, usually within 24 hours',
+      'I call listing agents directly to back up your buyer’s offer',
+      'Deal rescue — send me the file another lender is about to blow up',
+      'Co-branded marketing materials and single-property flyers with payment scenarios',
+      'Client education events and first-time buyer seminars I will run for your database',
+      'Programs your competition does not have: bank statement, DSCR, non-contingent purchase',
+    ],
+  },
+  {
+    id: 'financial-advisors',
+    icon: 'trending-up',
+    title: 'Financial Advisors',
+    formId: formIds.financialAdvisor,
+    formType: 'financial_advisor',
+    intro:
+      'Home equity is usually the largest asset on your client’s balance sheet and the one least often optimized. I work alongside advisors rather than around them, and I never touch the investment relationship.',
+    benefits: [
+      'Cash-out and equity strategies that create liquidity without selling appreciated assets',
+      'Debt restructuring analysis that improves monthly cash flow',
+      'Reverse mortgage guidance for clients aged 62 and older',
+      'Investment property and DSCR financing for clients expanding into real estate',
+      'First-lien HELOC structures for high-cash-flow households',
+      'Written scenario analysis you can put in front of a client with your name on it',
+    ],
+  },
+  {
+    id: 'divorce-attorneys',
+    icon: 'scale',
+    title: 'Divorce Attorneys',
+    formId: formIds.divorceAttorney,
+    formType: 'divorce_attorney',
+    intro:
+      'The marital home is frequently the largest contested asset and the one with the most financing complexity. Getting the mortgage structure right during the decree saves everyone a second problem eighteen months later.',
+    benefits: [
+      'Owelty lien structuring so one party can buy out the other’s equity',
+      'Refinance qualification analysis for the retaining spouse, before the decree is finalized',
+      'Clear timelines on what is possible and when, so settlement terms are realistic',
+      'Guidance on how support income is treated in mortgage underwriting',
+      'Post-decree purchase financing for the departing spouse',
+      'Plain-English explanations your client can actually understand during a hard season',
+    ],
+  },
+  {
+    id: 'builders',
+    icon: 'hammer',
+    title: 'Builders',
+    formId: formIds.builder,
+    formType: 'builder',
+    intro:
+      'Standing inventory costs you money every month. A lender who preapproves your traffic quickly and closes on schedule is worth more than one who advertises a rate you cannot verify.',
+    benefits: [
+      'One-time close construction financing for custom builds',
+      'Rapid buyer preapprovals so your sales team knows who is real',
+      'On-site support during launch weekends and model home events',
+      'Extended rate locks and buydown structures that move standing inventory',
+      'Draw coordination that keeps trades paid and schedules intact',
+      'Weekly pipeline reporting so you always know where every buyer stands',
+    ],
+  },
+];
+---
+
+<PageLayout
+  title="Partner With The Herbert Team"
+  description="Referral partnerships for realtors, financial advisors, divorce attorneys, and builders in Texas. Fast preapprovals, creative financing, and communication that protects your reputation."
+  heroEyebrow="Referral Partners"
+  heroTitle="I Make My Partners Look Good."
+  heroSubtitle="Every referral you send is a bet on your own reputation. I take that seriously, which mostly means I answer the phone, tell the truth early, and close when I said I would."
+  heroImage="/images/hero/contact-hero.jpg"
+  heroImageAlt="Professionals shaking hands at a closing table"
+  crumbs={crumbs}
+  showHeroCtas={false}
+  schema={breadcrumbSchema(crumbs)}
+>
+  <Section bg="white">
+    <div class="grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+      <div>
+        <SectionHeading eyebrow="Referral Philosophy" title="Your Name Goes on This Too" align="left" class="mb-7" />
+        <div class="space-y-5 text-body-lg text-graytext">
+          <p>
+            When you refer a client to a lender, you are lending them your credibility. If the loan falls apart, the
+            client does not blame the lender they had never heard of — they blame the person who sent them there.
+          </p>
+          <p>
+            I have built a twenty-year practice mostly on referrals, which only works if the people sending them never
+            regret it. That means being honest with you about a file that will not work, flagging problems the week they
+            appear rather than the week before closing, and being reachable when a deal needs an answer right now.
+          </p>
+          <p>
+            It also means I will occasionally tell your client that now is not the right time to buy. That costs me a
+            transaction and earns you a client for life. I am fine with that trade.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid gap-5 sm:grid-cols-2">
+        {
+          commitments.map((item) => (
+            <div class="rounded-card border border-silver-light bg-offwhite p-6">
+              <span class="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+                <Icon name={item.icon} size={22} />
+              </span>
+              <h3 class="mt-4 font-heading text-base font-bold text-navy">{item.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-graytext">{item.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Section>
+
+  {
+    tracks.map((track, index) => (
+      <Section bg={index % 2 === 0 ? 'offwhite' : 'white'} id={track.id}>
+        <div class="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
+          <div>
+            <span class="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-brandblue-soft text-brandblue">
+              <Icon name={track.icon} size={26} />
+            </span>
+            <h2 class="mt-5 text-h2 text-navy">{track.title}</h2>
+            <p class="mt-4 text-body-lg text-graytext">{track.intro}</p>
+            <ul class="mt-7 space-y-3.5">
+              {track.benefits.map((benefit) => (
+                <li class="flex items-start gap-3">
+                  <Icon name="check-circle" size={20} class="mt-0.5 shrink-0 text-success" />
+                  <span class="text-[0.9375rem] leading-relaxed text-charcoal">{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="rounded-card border border-silver-light bg-white p-4 shadow-card md:p-6">
+            <h3 class="mb-4 font-heading text-lg font-bold text-navy">Start a conversation</h3>
+            <GhlForm
+              formId={track.formId}
+              title={`${track.title} Partnership Inquiry`}
+              formType={track.formType}
+              height="600"
+            />
+          </div>
+        </div>
+      </Section>
+    ))
+  }
+
+  <Section bg="navy">
+    <SectionHeading
+      eyebrow="From Partners"
+      title="What Referral Partners Say"
+      align="center"
+      invert
+      eyebrowColor="gold"
+      class="mb-10"
+    />
+    <div class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+      <TestimonialCard
+        quote="Jason answers the phone. That sounds like a low bar until you have had three deals nearly fall apart because a lender went dark during the option period."
+        author="Real Estate Agent"
+        role="Williamson County"
+      />
+      <TestimonialCard
+        quote="I refer clients to Jason when the financing question is complicated. He explains the options to them clearly enough that they come back to me able to make a decision."
+        author="Financial Advisor"
+        role="Austin, TX"
+      />
+    </div>
+    <p class="mx-auto mt-8 max-w-3xl text-center text-sm text-silver">
+      Testimonials reflect individual experiences. Results vary and are not a guarantee of future outcomes.
+    </p>
+  </Section>
+</PageLayout>

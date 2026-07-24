@@ -1,0 +1,46 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  align?: 'left' | 'center';
+  invert?: boolean;
+  as?: 'h1' | 'h2' | 'h3';
+  id?: string;
+  class?: string;
+  eyebrowColor?: 'blue' | 'gold';
+}
+
+const {
+  eyebrow,
+  title,
+  subtitle,
+  align = 'center',
+  invert = false,
+  as: Tag = 'h2',
+  id,
+  class: className = '',
+  eyebrowColor = 'blue',
+} = Astro.props;
+
+const alignment = align === 'center' ? 'text-center mx-auto' : 'text-left';
+const titleSize = Tag === 'h1' ? 'text-display' : 'text-h2';
+const eyebrowTone = eyebrowColor === 'gold' ? 'text-gold' : invert ? 'text-brandblue' : 'text-brandblue';
+---
+
+<div class={`${alignment} max-w-3xl ${className}`}>
+  {
+    eyebrow && (
+      <p class={`text-eyebrow font-heading font-semibold uppercase ${eyebrowTone}`}>{eyebrow}</p>
+    )
+  }
+  <Tag id={id} class={`${titleSize} ${eyebrow ? 'mt-3' : ''} ${invert ? 'text-white' : 'text-navy'}`}>
+    {title}
+  </Tag>
+  {
+    subtitle && (
+      <p class={`mt-5 text-body-lg ${invert ? 'text-silver-light' : 'text-graytext'}`}>{subtitle}</p>
+    )
+  }
+  <slot />
+</div>

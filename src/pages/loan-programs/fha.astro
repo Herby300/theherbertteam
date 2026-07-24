@@ -1,0 +1,40 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ComparisonTable from '../../components/ui/ComparisonTable.astro';
+import { getProgram } from '../../data/programs';
+
+const program = getProgram('fha');
+---
+
+<ProgramLayout program={program} kind="program">
+  <Section slot="after-benefits" bg="white">
+    <SectionHeading
+      eyebrow="FHA vs. Conventional"
+      title="Which One Actually Costs You Less?"
+      subtitle="There is no universal winner. Credit score and down payment decide it, and the difference over five years can run into five figures."
+      align="center"
+      class="mb-10"
+    />
+    <ComparisonTable
+      headers={['Factor', 'FHA', 'Conventional']}
+      rows={[
+        ['Minimum down payment', '3.5% with a 580 score', '3% for eligible first-time buyers, 5% standard'],
+        ['Minimum credit score', '580 (500 with 10% down)', '620'],
+        ['Mortgage insurance', 'Upfront premium plus annual MIP, generally for the life of the loan', 'PMI only under 20% down, cancels at 20% equity'],
+        ['Debt-to-income flexibility', 'Higher ratios routinely approved', 'Generally capped near 45%'],
+        ['Gift funds', '100% of down payment allowed', 'Allowed on primary residences'],
+        ['Property standards', 'FHA minimum property requirements apply', 'Standard appraisal'],
+        ['Occupancy', 'Primary residence only', 'Primary, second home, or investment'],
+        ['Assumable by a future buyer', 'Yes', 'No'],
+      ]}
+      highlightColumn={1}
+    />
+    <p class="mx-auto mt-6 max-w-3xl text-center text-sm text-graytext">
+      Rule of thumb: above roughly a 680 score with money down, conventional usually wins on total cost. Below that, or
+      with a thin file, FHA often wins on the monthly payment. I run both side by side with your actual numbers before
+      you choose.
+    </p>
+  </Section>
+</ProgramLayout>

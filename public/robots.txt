@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Disallow: /thank-you
+
+Sitemap: https://www.theherbertteam.com/sitemap-index.xml

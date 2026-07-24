@@ -1,0 +1,238 @@
+---
+import '../styles/global.css';
+import SEO from '../components/SEO.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import { financialServiceSchema } from '../utils/seo';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonical?: string;
+  type?: 'website' | 'article' | 'profile';
+  noindex?: boolean;
+  schema?: object;
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description,
+  image,
+  canonical,
+  type,
+  noindex = false,
+  schema,
+  bodyClass = '',
+} = Astro.props;
+
+const { metaPixel, ga4, gtm } = site.analytics;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      canonical={canonical}
+      type={type}
+      noindex={noindex}
+      schema={schema}
+    />
+
+    {
+      metaPixel && (
+        <Fragment>
+          <script is:inline define:vars={{ pixelId: metaPixel }}>
+            !(function (f, b, e, v, n, t, s) {
+              if (f.fbq) return;
+              n = f.fbq = function () {
+                n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+              };
+              if (!f._fbq) f._fbq = n;
+              n.push = n;
+              n.loaded = !0;
+              n.version = '2.0';
+              n.queue = [];
+              t = b.createElement(e);
+              t.async = !0;
+              t.src = v;
+              s = b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t, s);
+            })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', pixelId);
+            fbq('track', 'PageView');
+          </script>
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style="display:none"
+              alt=""
+              src={`https://www.facebook.com/tr?id=${metaPixel}&ev=PageView&noscript=1`}
+            />
+          </noscript>
+        </Fragment>
+      )
+    }
+
+    {
+      ga4 && (
+        <Fragment>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4}`} />
+          <script is:inline define:vars={{ ga4Id: ga4 }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', ga4Id);
+          </script>
+        </Fragment>
+      )
+    }
+
+    {
+      gtm && (
+        <script is:inline define:vars={{ gtmId: gtm }}>
+          (function (w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+            var f = d.getElementsByTagName(s)[0],
+              j = d.createElement(s),
+              dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+          })(window, document, 'script', 'dataLayer', gtmId);
+        </script>
+      )
+    }
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/images/logo.svg" />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(financialServiceSchema)} />
+  </head>
+
+  <body class={`font-body text-charcoal bg-white antialiased ${bodyClass}`}>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-navy focus:px-5 focus:py-3 focus:font-heading focus:text-white"
+      >Skip to content</a
+    >
+
+    <Header />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      // ---------------------------------------------------------- scroll reveal
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealItems = document.querySelectorAll<HTMLElement>('.reveal');
+
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        revealItems.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry, index) => {
+              if (!entry.isIntersecting) return;
+              const el = entry.target as HTMLElement;
+              const stagger = Number(el.dataset.revealDelay ?? index * 60);
+              window.setTimeout(() => el.classList.add('is-visible'), stagger);
+              observer.unobserve(el);
+            });
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
+        );
+        revealItems.forEach((el) => observer.observe(el));
+      }
+    </script>
+
+    <script>
+      // ---------------------------------------------------------- tracking
+      import { track, type TrackEvent } from '../utils/tracking';
+
+      window.herbertTrack = track;
+
+      const sourcePage = window.location.pathname;
+
+      document.addEventListener(
+        'click',
+        (event) => {
+          const target = event.target as HTMLElement | null;
+          if (!target) return;
+
+          const tracked = target.closest<HTMLElement>('[data-track]');
+          if (tracked) {
+            const name = tracked.dataset.track as TrackEvent;
+            let params: Record<string, unknown> = { source_page: sourcePage };
+            const raw = tracked.dataset.trackParams;
+            if (raw) {
+              try {
+                params = { ...params, ...JSON.parse(raw) };
+              } catch {
+                /* malformed params must not block the click */
+              }
+            }
+            track(name, params);
+            return;
+          }
+
+          const link = target.closest<HTMLAnchorElement>('a[href^="tel:"], a[href^="mailto:"]');
+          if (link) {
+            const isPhone = link.getAttribute('href')?.startsWith('tel:');
+            track(isPhone ? 'phone_click' : 'email_click', { source_page: sourcePage });
+          }
+        },
+        { passive: true }
+      );
+
+      // Program and solution pages announce themselves for ViewContent.
+      const programMeta = document.querySelector<HTMLElement>('[data-program-name]');
+      if (programMeta) {
+        track('view_loan_program', {
+          program_name: programMeta.dataset.programName,
+          program_type: programMeta.dataset.programType,
+        });
+      }
+
+      // GoHighLevel iframes post a message on submit. The payload shape varies by
+      // GHL release, so match loosely and log unknown shapes for verification.
+      window.addEventListener('message', (event) => {
+        if (event.origin !== 'https://link.pivotpointcrm.com') return;
+        const data = event.data as unknown;
+        const asString = typeof data === 'string' ? data : JSON.stringify(data ?? '');
+        if (/submit|submission|form_submitted|onFormSubmit/i.test(asString)) {
+          const formType = document.querySelector<HTMLElement>('[data-ghl-active]')?.dataset.ghlActive;
+          track('form_submit', { form_type: formType ?? 'unknown', source_page: sourcePage });
+        }
+      });
+    </script>
+
+    <script is:inline src="https://link.pivotpointcrm.com/js/form_embed.js"></script>
+    <script is:inline defer src="https://cdn.commoninja.com/sdk/latest/commonninja.js"></script>
+  </body>
+</html>

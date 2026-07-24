@@ -1,0 +1,234 @@
+---
+import Container from './Container.astro';
+import Icon from './ui/Icon.astro';
+import GhlForm from './forms/GhlForm.astro';
+import { site, formIds, hours } from '../data/site';
+import { loanProgramLinks, solutionLinks, resourceLinks, footerLegalLinks } from '../data/nav';
+
+const year = new Date().getFullYear();
+
+const socials = [
+  { name: 'YouTube', icon: 'youtube', href: site.social.youtube },
+  { name: 'Facebook', icon: 'facebook', href: site.social.facebook },
+  { name: 'Instagram', icon: 'instagram', href: site.social.instagram },
+  { name: 'TikTok', icon: 'tiktok', href: site.social.tiktok },
+  { name: 'LinkedIn', icon: 'linkedin', href: site.social.linkedin },
+].filter((item) => Boolean(item.href));
+---
+
+<footer class="bg-navy text-silver-light">
+  <Container class="py-14 md:py-16">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <div>
+        <img
+          src="/images/logo-white.svg"
+          alt={`${site.name} logo`}
+          width="220"
+          height="52"
+          class="h-11 w-auto"
+          loading="lazy"
+          decoding="async"
+        />
+        <p class="mt-5 text-sm leading-relaxed text-silver-light">
+          {site.advisor} is a mortgage advisor with more than 20 years of experience, helping buyers and homeowners
+          across Texas and nationwide find financing solutions other lenders miss.
+        </p>
+        <p class="mt-5 font-heading text-sm font-semibold text-white">Follow {site.socialHandle}</p>
+        <ul class="mt-3 flex flex-wrap gap-2">
+          {
+            socials.map((social) => (
+              <li>
+                <a
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/20 text-white transition-colors hover:border-brandblue hover:bg-brandblue"
+                  aria-label={`${site.name} on ${social.name}`}
+                >
+                  <Icon name={social.icon} size={19} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <nav aria-labelledby="footer-programs">
+        <h2 id="footer-programs" class="font-heading text-sm font-semibold uppercase tracking-wider text-white">
+          Loan Programs
+        </h2>
+        <ul class="mt-4 space-y-2.5">
+          {
+            loanProgramLinks.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-silver-light transition-colors hover:text-brandblue">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="footer-solutions">
+        <h2 id="footer-solutions" class="font-heading text-sm font-semibold uppercase tracking-wider text-white">
+          Solutions
+        </h2>
+        <ul class="mt-4 space-y-2.5">
+          {
+            solutionLinks.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-silver-light transition-colors hover:text-brandblue">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+        <h2 class="mt-8 font-heading text-sm font-semibold uppercase tracking-wider text-white">Resources</h2>
+        <ul class="mt-4 space-y-2.5">
+          {
+            resourceLinks.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-silver-light transition-colors hover:text-brandblue">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div>
+        <h2 class="font-heading text-sm font-semibold uppercase tracking-wider text-white">Contact</h2>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li>
+            <a href={site.phoneHref} class="flex items-center gap-2.5 text-silver-light hover:text-brandblue">
+              <Icon name="phone" size={17} class="shrink-0 text-brandblue" />
+              <span class="tabular">{site.phone}</span>
+            </a>
+          </li>
+          <li>
+            <a href={site.emailHref} class="flex items-center gap-2.5 break-all text-silver-light hover:text-brandblue">
+              <Icon name="mail" size={17} class="shrink-0 text-brandblue" />
+              {site.email}
+            </a>
+          </li>
+          <li>
+            <a href="/schedule" class="flex items-center gap-2.5 text-silver-light hover:text-brandblue">
+              <Icon name="calendar" size={17} class="shrink-0 text-brandblue" />
+              Book a free strategy call
+            </a>
+          </li>
+          <li class="flex items-center gap-2.5">
+            <Icon name="map-pin" size={17} class="shrink-0 text-brandblue" />
+            {site.address}
+          </li>
+        </ul>
+
+        <h3 class="mt-7 font-heading text-sm font-semibold uppercase tracking-wider text-white">Hours</h3>
+        <ul class="mt-3 space-y-1.5 text-sm">
+          {
+            hours.map((entry) => (
+              <li class="flex flex-wrap justify-between gap-x-4">
+                <span>{entry.day}</span>
+                <span class="text-white">{entry.time}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 rounded-card border border-white/15 bg-navy-light/40 p-6 md:p-8">
+      <div class="grid items-center gap-6 md:grid-cols-2">
+        <div>
+          <h2 class="font-heading text-lg font-bold text-white">Mortgage insight worth reading</h2>
+          <p class="mt-2 text-sm text-silver-light">
+            Occasional emails on rates, programs, and the Central Texas market. No spam, and one click unsubscribes.
+          </p>
+        </div>
+        <GhlForm
+          formId={formIds.newsletter}
+          title="Newsletter Signup"
+          formType="newsletter"
+          height="320"
+          class="overflow-hidden rounded-card bg-white"
+        />
+      </div>
+    </div>
+
+    <div class="mt-12 border-t border-white/15 pt-8">
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <img
+          src="/images/badges/equal-housing.svg"
+          alt="Equal Housing Lender"
+          width="48"
+          height="48"
+          class="h-11 w-auto"
+          loading="lazy"
+          decoding="async"
+        />
+        <img
+          src="/images/badges/fdic.svg"
+          alt="Member FDIC"
+          width="96"
+          height="48"
+          class="h-11 w-auto"
+          loading="lazy"
+          decoding="async"
+        />
+        <img
+          src="/images/badges/google-reviews.svg"
+          alt="5 star Google Reviews rating"
+          width="120"
+          height="48"
+          class="h-11 w-auto"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div class="mt-6 space-y-3 text-[0.8125rem] leading-relaxed text-silver">
+        <p>
+          {site.advisor} |{' '}
+          <a
+            href={site.nmlsLookup}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="underline underline-offset-2 hover:text-brandblue">{site.nmls}</a
+          > | {site.institution} |{' '}
+          <a
+            href={site.institutionNmlsLookup}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="underline underline-offset-2 hover:text-brandblue">{site.institutionNmls}</a
+          >
+        </p>
+        <p>Equal Housing Lender · Member FDIC</p>
+        <p>
+          This is not a commitment to lend. All loans subject to credit approval, income verification, and property
+          appraisal. Rates and terms are subject to change without notice. Program availability varies by state and
+          borrower eligibility. Not all applicants will qualify.
+        </p>
+      </div>
+    </div>
+  </Container>
+
+  <div class="border-t border-white/15">
+    <Container class="flex flex-col items-center justify-between gap-3 py-5 text-[0.8125rem] sm:flex-row">
+      <p>© {year} {site.name}</p>
+      <ul class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+        {
+          footerLegalLinks.map((link) => (
+            <li>
+              <a href={link.href} class="transition-colors hover:text-brandblue">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </Container>
+  </div>
+</footer>

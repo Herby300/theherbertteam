@@ -1,0 +1,18 @@
+---
+import { site } from '../../data/site';
+
+interface Props {
+  class?: string;
+  minHeight?: string;
+}
+
+const { class: className = '', minHeight = '420px' } = Astro.props;
+---
+
+<div
+  class={`google-reviews-embed ${className}`}
+  style={`min-height:${minHeight}`}
+  aria-label="Google Reviews for The Herbert Team"
+>
+  <div class={`commonninja_component pid-${site.googleReviewsWidgetId}`}></div>
+</div>

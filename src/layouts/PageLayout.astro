@@ -1,0 +1,65 @@
+---
+import Layout from './Layout.astro';
+import PageHero from '../components/sections/PageHero.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  heroTitle: string;
+  heroEyebrow?: string;
+  heroSubtitle?: string;
+  heroImage?: string;
+  heroImageAlt?: string;
+  crumbs?: { label: string; href: string }[];
+  showHeroCtas?: boolean;
+  heroAlign?: 'left' | 'center';
+  heroSize?: 'sm' | 'md';
+  ctaTitle?: string;
+  ctaSubtitle?: string;
+  showCta?: boolean;
+  image?: string;
+  noindex?: boolean;
+  schema?: object;
+  type?: 'website' | 'article' | 'profile';
+}
+
+const {
+  title,
+  description,
+  heroTitle,
+  heroEyebrow,
+  heroSubtitle,
+  heroImage,
+  heroImageAlt = '',
+  crumbs,
+  showHeroCtas = true,
+  heroAlign = 'left',
+  heroSize = 'md',
+  ctaTitle,
+  ctaSubtitle,
+  showCta = true,
+  image,
+  noindex = false,
+  schema,
+  type = 'website',
+} = Astro.props;
+---
+
+<Layout title={title} description={description} image={image} noindex={noindex} schema={schema} type={type}>
+  <PageHero
+    eyebrow={heroEyebrow}
+    title={heroTitle}
+    subtitle={heroSubtitle}
+    image={heroImage}
+    imageAlt={heroImageAlt}
+    crumbs={crumbs}
+    showCtas={showHeroCtas}
+    align={heroAlign}
+    size={heroSize}
+  />
+
+  <slot />
+
+  {showCta && <CtaBand title={ctaTitle} subtitle={ctaSubtitle} />}
+</Layout>

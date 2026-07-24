@@ -1,0 +1,151 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/Section.astro';
+import Container from '../components/Container.astro';
+import ResourceCard from '../components/ui/ResourceCard.astro';
+import Icon from '../components/ui/Icon.astro';
+import Button from '../components/Button.astro';
+import { site } from '../data/site';
+import { resources } from '../data/resources';
+
+const timeline = [
+  {
+    time: 'Within a few minutes',
+    title: 'Confirmation email',
+    text: 'A confirmation lands in your inbox. If you do not see it, check your spam folder and mark it as safe so future updates reach you.',
+  },
+  {
+    time: 'Within 24 hours',
+    title: 'I review your file personally',
+    text: 'Not an automated underwriting decision — I look at your situation, identify which program produces the best result, and note any questions I need answered.',
+  },
+  {
+    time: 'Within 24 hours',
+    title: 'A real conversation',
+    text: 'I call you with an actual answer: what you qualify for, what your payment looks like, and what the next step is. If I need more information first, I will tell you exactly what.',
+  },
+  {
+    time: 'From there',
+    title: 'Preapproval letter in hand',
+    text: 'Once documents are in, you get a fully underwritten preapproval your agent can send with an offer that same day.',
+  },
+];
+
+const socials = [
+  { name: 'YouTube', icon: 'youtube', href: site.social.youtube },
+  { name: 'Facebook', icon: 'facebook', href: site.social.facebook },
+  { name: 'Instagram', icon: 'instagram', href: site.social.instagram },
+  { name: 'TikTok', icon: 'tiktok', href: site.social.tiktok },
+  { name: 'LinkedIn', icon: 'linkedin', href: site.social.linkedin },
+];
+
+const featuredResources = resources.slice(0, 3);
+---
+
+<Layout
+  title="Thank You"
+  description="Thanks for reaching out to The Herbert Team. Here is what happens next, plus a few free resources while you wait."
+  noindex
+>
+  <section class="bg-navy py-16 md:py-24">
+    <Container>
+      <div class="mx-auto max-w-3xl text-center">
+        <span class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-success/20 text-success">
+          <Icon name="check-circle" size={40} />
+        </span>
+        <h1 class="mt-7 text-display text-white">Got It. Thank You.</h1>
+        <p class="mt-6 text-body-lg text-silver-light">
+          Your information came through and is on my desk. You will hear from me personally — not from a call center,
+          not from an autoresponder pretending to be me.
+        </p>
+        <div class="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Button href={site.phoneHref} variant="primary" size="lg" icon="phone" iconPosition="left">
+            Call Me Directly
+          </Button>
+          <Button href="/resources" variant="outline-white" size="lg">Browse Free Guides</Button>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <Section bg="white">
+    <div class="mx-auto max-w-3xl">
+      <h2 class="text-h2 text-navy">What Happens Next</h2>
+      <ol class="mt-8 space-y-6">
+        {
+          timeline.map((item, index) => (
+            <li class="flex gap-5">
+              <div class="flex flex-col items-center">
+                <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-navy font-heading font-bold text-white tabular">
+                  {index + 1}
+                </span>
+                {index < timeline.length - 1 && <span class="mt-2 w-px flex-1 bg-silver-light" aria-hidden="true" />}
+              </div>
+              <div class="pb-2">
+                <span class="text-eyebrow font-heading font-semibold uppercase text-brandblue">{item.time}</span>
+                <h3 class="mt-1 font-heading text-lg font-bold text-navy">{item.title}</h3>
+                <p class="mt-2 leading-relaxed text-graytext">{item.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </Section>
+
+  <Section bg="offwhite">
+    <h2 class="text-h2 text-navy">While You Wait</h2>
+    <p class="mt-3 max-w-2xl text-body-lg text-graytext">
+      These are the three guides most people find useful in the first week. All free, no additional forms.
+    </p>
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        featuredResources.map((resource) => (
+          <ResourceCard
+            title={resource.title}
+            description={resource.description}
+            image={resource.image}
+            slug={`thanks-${resource.slug}`}
+            icon={resource.icon}
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section bg="white" padding="sm">
+    <div class="mx-auto max-w-3xl rounded-card border border-silver-light bg-offwhite p-7 text-center shadow-card md:p-9">
+      <h2 class="text-h3 font-bold text-navy">Follow Along in the Meantime</h2>
+      <p class="mt-3 text-graytext">
+        {site.socialHandle} — short, useful explanations of the things people ask me about most.
+      </p>
+      <ul class="mt-6 flex flex-wrap justify-center gap-3">
+        {
+          socials.map((social) => (
+            <li>
+              <a
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex h-12 w-12 items-center justify-center rounded-lg border border-silver-light bg-white text-navy transition-colors hover:border-brandblue hover:bg-brandblue hover:text-white"
+                aria-label={`${site.name} on ${social.name}`}
+              >
+                <Icon name={social.icon} size={20} />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Section>
+</Layout>
+
+<script>
+  // The external apply portal returns here, so the conversion fires on arrival.
+  import { track } from '../utils/tracking';
+
+  track('form_submit', {
+    form_type: 'thank_you_page',
+    source_page: window.location.pathname,
+  });
+</script>

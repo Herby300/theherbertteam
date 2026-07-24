@@ -1,0 +1,131 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import MortgageCalculator from '../../components/tools/MortgageCalculator.astro';
+import ProgramCard from '../../components/ui/ProgramCard.astro';
+import Icon from '../../components/ui/Icon.astro';
+import Button from '../../components/Button.astro';
+import { site } from '../../data/site';
+import { breadcrumbSchema, faqSchema, combineSchema } from '../../utils/seo';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Resources', href: '/resources' },
+  { label: 'Mortgage Calculator', href: '/resources/calculator' },
+];
+
+const calculatorFaqs = [
+  {
+    q: 'Why is my estimated payment higher than what I see advertised?',
+    a: 'Advertised payments usually show principal and interest only. This calculator includes property taxes, homeowners insurance, HOA dues, and mortgage insurance, which is what actually leaves your bank account each month. In Texas, taxes alone often add 30% or more to the payment.',
+  },
+  {
+    q: 'What property tax rate should I use for Texas?',
+    a: 'Most Central Texas districts fall between 1.8% and 2.5% of assessed value. Williamson and Travis County rates vary by city, school district, and MUD. Use 2.1% as a working estimate and we will pull the exact rate for any specific address.',
+  },
+  {
+    q: 'How is the PMI figure calculated?',
+    a: 'It applies automatically when your down payment is under 20%, using an annual rate against the loan amount. Real PMI pricing depends on your credit score, loan-to-value, and loan type, and can be lower or higher than the default shown here.',
+  },
+  {
+    q: 'Is this an official quote?',
+    a: 'No. This is an educational estimate. An actual quote requires your credit profile, income documentation, and a specific property, and comes to you as a formal Loan Estimate.',
+  },
+];
+
+const schema = combineSchema(breadcrumbSchema(crumbs), faqSchema(calculatorFaqs));
+
+const relatedPrograms = [
+  { title: 'Conventional Loans', text: 'Down payments from 3% with mortgage insurance that cancels.', href: '/loan-programs/conventional', icon: 'home' },
+  { title: 'FHA Loans', text: '3.5% down with more forgiving credit guidelines.', href: '/loan-programs/fha', icon: 'key-round' },
+  { title: 'VA Loans', text: 'Zero down and no monthly mortgage insurance at all.', href: '/loan-programs/va-loans', icon: 'shield-check' },
+  { title: 'Refinance', text: 'Run your break-even before you refinance anything.', href: '/loan-programs/refinance', icon: 'refresh-cw' },
+];
+---
+
+<PageLayout
+  title="Mortgage Calculator for Texas Buyers"
+  description="Estimate your full monthly mortgage payment including Texas property taxes, insurance, HOA dues, and PMI. See the amortization schedule and total interest behind the number."
+  heroEyebrow="Free Tool"
+  heroTitle="Run Your Real Numbers."
+  heroSubtitle="Most calculators show principal and interest and call it a payment. This one includes Texas property taxes, insurance, HOA dues, and mortgage insurance — the number that actually hits your account."
+  heroImage="/images/hero/resources-hero.jpg"
+  heroImageAlt="Homebuyer reviewing mortgage numbers on a laptop"
+  crumbs={crumbs}
+  showHeroCtas={false}
+  schema={schema}
+>
+  <Section bg="offwhite">
+    <MortgageCalculator />
+
+    <div class="mt-8 flex gap-4 rounded-card border-l-4 border-gold bg-white p-6 shadow-card md:p-7">
+      <Icon name="info" size={24} class="mt-0.5 shrink-0 text-gold" />
+      <div>
+        <h2 class="font-heading text-lg font-bold text-navy">This is an estimate, not a quote</h2>
+        <p class="mt-2 leading-relaxed text-graytext">
+          Results are for educational purposes only and do not constitute a commitment to lend or an offer of credit.
+          Actual payment depends on your credit profile, verified income, the specific property, current market pricing,
+          and full underwriting approval. Property tax and insurance figures vary significantly by address. Rates and
+          terms are subject to change without notice.
+        </p>
+      </div>
+    </div>
+  </Section>
+
+  <Section bg="navy" padding="sm">
+    <div class="grid items-center gap-8 lg:grid-cols-[1.3fr_1fr]">
+      <div>
+        <h2 class="text-h2 text-white">Now Get a Real Number</h2>
+        <p class="mt-4 text-body-lg text-silver-light">
+          A calculator uses assumptions. I use your actual credit, your actual income, and current pricing on the
+          programs you qualify for. That conversation takes twenty minutes and costs nothing.
+        </p>
+      </div>
+      <div class="flex flex-col gap-3">
+        <Button
+          href={site.applyUrl}
+          variant="primary"
+          size="lg"
+          icon="arrow-right"
+          external
+          fullWidth
+          track="begin_application"
+          trackParams={{ cta_location: 'calculator' }}
+        >
+          Get My Real Number
+        </Button>
+        <Button href="/schedule" variant="outline-white" size="lg" fullWidth track="schedule">
+          Book a Free Strategy Call
+        </Button>
+      </div>
+    </div>
+  </Section>
+
+  <Section bg="white">
+    <SectionHeading
+      eyebrow="Related Programs"
+      title="The Down Payment Field Changes Everything"
+      subtitle="Different programs let you put down very different amounts. Here is where to look next."
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {relatedPrograms.map((program) => <ProgramCard {...program} class="reveal" />)}
+    </div>
+  </Section>
+
+  <Section bg="offwhite">
+    <SectionHeading eyebrow="Calculator Questions" title="About These Numbers" align="center" class="mb-10" />
+    <div class="mx-auto max-w-3xl space-y-5">
+      {
+        calculatorFaqs.map((faq) => (
+          <div class="rounded-card border border-silver-light bg-white p-6 shadow-card">
+            <h3 class="font-heading text-lg font-bold text-navy">{faq.q}</h3>
+            <p class="mt-2 leading-relaxed text-graytext">{faq.a}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+</PageLayout>

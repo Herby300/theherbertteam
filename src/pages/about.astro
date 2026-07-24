@@ -1,0 +1,303 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import Section from '../components/Section.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import TestimonialStrip from '../components/sections/TestimonialStrip.astro';
+import Icon from '../components/ui/Icon.astro';
+import Button from '../components/Button.astro';
+import { site } from '../data/site';
+import { breadcrumbSchema, combineSchema } from '../utils/seo';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+];
+
+const philosophy = [
+  {
+    icon: 'book-open',
+    title: 'Education first',
+    text: 'Nobody should sign a thirty-year obligation they do not understand. Before you commit to anything, you will know what your payment is made of, what each option costs, and why I am recommending one over another. If you cannot explain your loan to your spouse, I have not finished my job.',
+  },
+  {
+    icon: 'compass',
+    title: 'Creative structuring',
+    text: 'A denial is almost always a program mismatch, not a verdict. Bank statement, 1099, P&L, asset depletion, DSCR, non-contingent purchase, first-lien HELOC — knowing which tool fits which situation is the skill that took twenty years to build, and it is the entire value I bring.',
+  },
+  {
+    icon: 'heart',
+    title: 'Advisor for life',
+    text: 'A mortgage is a transaction. A mortgage advisor is a relationship. I want the call when rates move, when you are thinking about a rental property, when your kid is buying their first house. That standard changes how I handle every file, because I expect to still be your lender in fifteen years.',
+  },
+];
+
+const clients = [
+  { icon: 'graduation-cap', title: 'First-time buyers', text: 'Guided from budget to keys with every step explained before it happens.' },
+  { icon: 'arrow-up-right', title: 'Move-up buyers', text: 'Non-contingent offers so you buy the next home without selling first.' },
+  { icon: 'briefcase', title: 'Self-employed owners', text: 'Bank statement, 1099, P&L, and no-ratio programs built for how you actually earn.' },
+  { icon: 'shield-check', title: 'Veterans', text: 'Full entitlement, funding fee exemptions, and every benefit you earned.' },
+  { icon: 'stethoscope', title: 'Physicians', text: 'Programs that account for residency income, student debt, and a signed contract.' },
+  { icon: 'trending-up', title: 'Real estate investors', text: 'DSCR financing, LLC vesting, and portfolio scaling past conventional limits.' },
+  { icon: 'gem', title: 'Luxury buyers', text: 'Jumbo structures including 5% down, no-MI, and asset depletion qualifying.' },
+  { icon: 'truck', title: 'Texas relocations', text: 'Out-of-state buyers moving into Central Texas on a compressed timeline.' },
+];
+
+const credentials = [
+  { label: 'Licensed mortgage advisor', value: site.nmls, href: site.nmlsLookup },
+  { label: 'Institution', value: `${site.institution} · ${site.institutionNmls}`, href: site.institutionNmlsLookup },
+  { label: 'Experience', value: '20+ years originating residential mortgages' },
+  { label: 'Licensed to serve', value: 'Texas and clients nationwide' },
+  { label: 'Based in', value: 'Georgetown, Texas — Williamson County' },
+  { label: 'Regulatory standing', value: 'Equal Housing Lender · Member FDIC' },
+];
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.advisor,
+  jobTitle: 'Mortgage Advisor',
+  description: `${site.advisor} is a licensed mortgage advisor with more than 20 years of experience, serving Texas and clients nationwide through ${site.institution}.`,
+  url: new URL('/about', site.url).toString(),
+  image: new URL('/images/jason-headshot-large.jpg', site.url).toString(),
+  telephone: '+1-760-715-3434',
+  email: site.email,
+  worksFor: {
+    '@type': 'Organization',
+    name: site.institution,
+  },
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: site.city,
+    addressRegion: site.state,
+    addressCountry: 'US',
+  },
+};
+
+const schema = combineSchema(personSchema, breadcrumbSchema(crumbs));
+---
+
+<PageLayout
+  title="About Jason Herbert, Mortgage Advisor"
+  description="Meet Jason Herbert, a Georgetown, TX mortgage advisor with 20+ years of experience solving financing problems for self-employed buyers, veterans, investors, and first-time homeowners."
+  heroEyebrow="About"
+  heroTitle="20 Years of Saying “Here’s How We Do It” Instead of “No.”"
+  heroSubtitle="I am not the lender with the flashiest rate ad. I am the one people call after somebody else turned them down — and the one smart buyers call first so they never hear no in the first place."
+  heroImage="/images/hero/about-hero.jpg"
+  heroImageAlt="Jason Herbert meeting with clients in Georgetown, Texas"
+  crumbs={crumbs}
+  schema={schema}
+>
+  <!-- ---------------------------------------------------------------- my story -->
+  <Section bg="white">
+    <div class="grid gap-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
+      <div>
+        <SectionHeading eyebrow="My Story" title="How I Ended Up Doing This" align="left" class="mb-7" />
+        <div class="space-y-5 text-body-lg text-graytext">
+          <p>
+            I did not set out to be a mortgage guy. Like a lot of people in this industry, I found it sideways — and
+            then discovered that the part I liked most was the part everyone else seemed to treat as an obstacle. The
+            complicated files. The self-employed borrower with fourteen deposits a month. The veteran whose entitlement
+            nobody had bothered to calculate correctly. The couple who had been told no somewhere else and had no idea
+            why.
+          </p>
+          <p>
+            Twenty years in, I have watched the industry cycle through a housing boom, a collapse, a recovery, a
+            historic run of low rates, and a sharp correction back to reality. That cycle teaches you something you
+            cannot learn any other way: rates are temporary and structure is permanent. The borrowers who got hurt in
+            2008 were not the ones with a quarter point too much on their rate. They were the ones in a product nobody
+            had explained to them.
+          </p>
+          <p>
+            So I built my practice around the opposite. I diagnose before I prescribe. I say no to deals that do not
+            serve the client. And I explain everything, in plain English, until the person across from me can repeat it
+            back.
+          </p>
+        </div>
+
+        <SectionHeading
+          eyebrow="Why “Solution Expert” Is Not a Slogan"
+          title="Because a Denial Is Usually Just a Program Gap"
+          align="left"
+          class="mb-7 mt-12"
+        />
+        <div class="space-y-5 text-body-lg text-graytext">
+          <p>
+            Most lenders offer a narrow menu. If your file fits the menu, you get approved. If it does not, you get a
+            letter. Nobody at that company is doing anything wrong exactly — they just do not have the tool your
+            situation requires, and there is no incentive to tell you that the tool exists elsewhere.
+          </p>
+          <p>
+            I keep a wide menu on purpose. Conventional, FHA, VA, jumbo, construction, DSCR, bank statement, 1099, P&amp;L,
+            no-ratio, asset depletion, first-lien HELOC, non-contingent purchase programs. Not because variety is
+            impressive, but because the twelfth option is sometimes the one that gets a family into a house.
+          </p>
+          <p>
+            When I say I solve mortgage problems rather than quote rates, that is what I mean. Bring me the situation
+            that stumped somebody else. That is genuinely the work I enjoy most.
+          </p>
+        </div>
+      </div>
+
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <img
+          src="/images/jason-headshot-large.jpg"
+          alt={`${site.advisor}, ${site.positioning}`}
+          width="900"
+          height="1100"
+          loading="lazy"
+          decoding="async"
+          class="aspect-[9/11] w-full rounded-card object-cover shadow-card-hover"
+        />
+        <div class="mt-6 rounded-card border border-silver-light bg-offwhite p-6">
+          <p class="font-heading text-lg font-bold text-navy">{site.advisor}</p>
+          <p class="mt-1 text-sm text-graytext">{site.positioning}</p>
+          <p class="mt-4 text-sm text-graytext">{site.nmls} · {site.institution}</p>
+          <div class="mt-5 flex flex-col gap-3">
+            <Button href="/schedule" variant="primary" size="sm" icon="arrow-right" fullWidth track="schedule">
+              Book a Free Strategy Call
+            </Button>
+            <Button href={site.phoneHref} variant="secondary" size="sm" fullWidth>
+              Call {site.phone}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- ---------------------------------------------------------------- philosophy -->
+  <Section bg="offwhite">
+    <SectionHeading
+      eyebrow="My Philosophy"
+      title="Three Commitments I Do Not Compromise On"
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid gap-6 lg:grid-cols-3">
+      {
+        philosophy.map((item) => (
+          <div class="reveal flex h-full flex-col rounded-card border border-silver-light bg-white p-7 shadow-card">
+            <span class="inline-flex h-14 w-14 items-center justify-center rounded-xl bg-brandblue-soft text-brandblue">
+              <Icon name={item.icon} size={26} />
+            </span>
+            <h3 class="mt-5 font-heading text-h3 text-navy">{item.title}</h3>
+            <p class="mt-3 flex-1 leading-relaxed text-graytext">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- ---------------------------------------------------------------- who I work with -->
+  <Section bg="white">
+    <SectionHeading
+      eyebrow="Who I Work With"
+      title="Eight Situations I See Constantly"
+      subtitle="If you recognize yourself in one of these, there is a good chance I have solved your exact problem before."
+      align="center"
+      class="mb-12"
+    />
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        clients.map((client) => (
+          <div class="reveal flex h-full flex-col rounded-card border border-silver-light bg-white p-6 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover">
+            <span class="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+              <Icon name={client.icon} size={22} />
+            </span>
+            <h3 class="mt-4 font-heading text-base font-bold text-navy">{client.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-graytext">{client.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- ---------------------------------------------------------------- credentials -->
+  <Section bg="navy">
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
+      <div>
+        <SectionHeading
+          eyebrow="Credentials"
+          title="Licensed, Regulated, and Bank-Backed"
+          align="left"
+          invert
+          eyebrowColor="gold"
+          subtitle="I originate through Primis Mortgage Company, the mortgage arm of Primis Bank. That means a federally regulated, FDIC-insured institution stands behind your loan — a genuine difference from a broker-only shop."
+        />
+      </div>
+      <dl class="overflow-hidden rounded-card border border-white/15 bg-white/5">
+        {
+          credentials.map((item, index) => (
+            <div class:list={['flex flex-col gap-1 px-6 py-5 sm:flex-row sm:items-baseline sm:gap-6', index % 2 === 1 ? 'bg-white/5' : '']}>
+              <dt class="font-heading text-sm font-semibold uppercase tracking-wide text-silver sm:w-2/5">
+                {item.label}
+              </dt>
+              <dd class="flex-1 font-medium text-white">
+                {item.href ? (
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" class="underline underline-offset-2 hover:text-brandblue">
+                    {item.value}
+                  </a>
+                ) : (
+                  item.value
+                )}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </Section>
+
+  <!-- ---------------------------------------------------------------- beyond the loan -->
+  <Section bg="offwhite">
+    <div class="grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <SectionHeading eyebrow="Beyond the Loan" title="Life in Georgetown" align="left" class="mb-7" />
+        <div class="space-y-5 text-body-lg text-graytext">
+          <p>
+            Georgetown is home. It is the kind of place where you run into your clients at the grocery store, which is
+            an excellent accountability system for anyone in a service business. I have financed homes for neighbors,
+            for their kids, and in a few cases for their parents.
+          </p>
+          <p>
+            Outside of work, most of my time goes to family. I also spend a fair amount of it making mortgage education
+            videos, which started as a way to answer the same question once instead of forty times and turned into
+            something people actually watch. If you would rather learn from a five-minute video than a phone call, a lot
+            of that is already published.
+          </p>
+          <p>
+            The through line, at work and otherwise, is that I would rather be useful than impressive. Twenty years in a
+            relationship business will teach you that the two are not the same thing.
+          </p>
+        </div>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <Button href={site.social.youtube} variant="secondary" external icon="play" iconPosition="left">
+            Watch on YouTube
+          </Button>
+          <Button href="/contact" variant="tertiary" icon="arrow-right">Get in touch</Button>
+        </div>
+      </div>
+
+      <div>
+        <div
+          class="flex aspect-video w-full flex-col items-center justify-center rounded-card border-2 border-dashed border-silver bg-white p-8 text-center"
+        >
+          <span class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-brandblue-soft text-brandblue">
+            <Icon name="play" size={30} />
+          </span>
+          <p class="mt-5 font-heading text-lg font-bold text-navy">Video introduction</p>
+          <p class="mt-2 max-w-sm text-sm text-graytext">
+            {/* TODO: Replace with the embedded YouTube introduction video once final footage is available. */}
+            A short introduction video will live here. Until then, the YouTube channel has dozens of full-length
+            mortgage explainers.
+          </p>
+          <Button href={site.social.youtube} variant="primary" size="sm" class="mt-5" external icon="arrow-right">
+            Visit the channel
+          </Button>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <TestimonialStrip title="What Clients Say About Working With Me" bg="white" />
+</PageLayout>

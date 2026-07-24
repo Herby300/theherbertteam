@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/home/Hero.astro';
+import ProblemSolution from '../components/home/ProblemSolution.astro';
+import Benefits from '../components/home/Benefits.astro';
+import Testimonials from '../components/home/Testimonials.astro';
+import Services from '../components/home/Services.astro';
+import TwoFutures from '../components/home/TwoFutures.astro';
+import FaqCta from '../components/home/FaqCta.astro';
+import { homepageFaqs } from '../data/faqs';
+import { faqSchema } from '../utils/seo';
+
+const schema = faqSchema(homepageFaqs.map((faq) => ({ q: faq.q, a: faq.a })));
+---
+
+<Layout
+  title="Mortgage Lender in Georgetown, TX"
+  description="Jason Herbert is a Georgetown, TX mortgage advisor with 20+ years of experience. Self-employed, VA, jumbo, DSCR, and first-time buyer solutions across Texas and nationwide."
+  schema={schema}
+>
+  <Hero />
+  <ProblemSolution />
+  <Benefits />
+  <Testimonials />
+  <Services />
+  <TwoFutures />
+  <FaqCta />
+</Layout>

@@ -1,0 +1,55 @@
+---
+import ProgramLayout from '../../layouts/ProgramLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ComparisonTable from '../../components/ui/ComparisonTable.astro';
+import { getProgram } from '../../data/programs';
+
+const program = getProgram('jumbo');
+---
+
+<ProgramLayout program={program} kind="program">
+  <Section slot="after-benefits" bg="white">
+    <SectionHeading
+      eyebrow="Structures Available"
+      title="Four Ways to Finance Above the Conforming Limit"
+      subtitle="Jumbo guidelines are set by individual investors rather than by Fannie Mae or Freddie Mac, which is why the same borrower gets four different answers from four different lenders."
+      align="center"
+      class="mb-10"
+    />
+    <ComparisonTable
+      headers={['Structure', 'Best for', 'Typical down payment', 'Notes']}
+      rows={[
+        [
+          'Standard full-doc jumbo',
+          'W-2 executives and salaried professionals',
+          '10%–20%',
+          'Sharpest pricing, strictest documentation and reserve requirements.',
+        ],
+        [
+          'Low-down jumbo',
+          'High earners early in wealth accumulation',
+          '5%–10%',
+          'Available to strong credit profiles; no monthly MI on many structures.',
+        ],
+        [
+          'Asset depletion jumbo',
+          'Retirees, founders, and borrowers between liquidity events',
+          '20%–30%',
+          'Qualifying income derived from liquid assets rather than employment.',
+        ],
+        [
+          'Bank statement jumbo',
+          'Business owners with significant write-offs',
+          '15%–25%',
+          '12 or 24 months of deposits establish income instead of tax returns.',
+        ],
+      ]}
+      highlightColumn={0}
+    />
+    <p class="mx-auto mt-6 max-w-3xl text-center text-sm text-graytext">
+      Down payment ranges are typical rather than guaranteed. Final terms depend on credit, reserves, property type, and
+      full underwriting approval.
+    </p>
+  </Section>
+</ProgramLayout>

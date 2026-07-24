@@ -1,0 +1,53 @@
+---
+import Container from './Container.astro';
+
+interface Props {
+  bg?: 'white' | 'offwhite' | 'navy' | 'soft' | 'silver' | 'transparent';
+  id?: string;
+  class?: string;
+  innerClass?: string;
+  padding?: 'none' | 'sm' | 'default' | 'lg';
+  as?: 'section' | 'div' | 'article' | 'aside';
+  contained?: boolean;
+  labelledby?: string;
+}
+
+const {
+  bg = 'white',
+  id,
+  class: className = '',
+  innerClass = '',
+  padding = 'default',
+  as: Tag = 'section',
+  contained = true,
+  labelledby,
+} = Astro.props;
+
+const backgrounds: Record<string, string> = {
+  white: 'bg-white text-charcoal',
+  offwhite: 'bg-offwhite text-charcoal',
+  navy: 'bg-navy text-white',
+  soft: 'bg-brandblue-soft text-charcoal',
+  silver: 'bg-silver-light text-charcoal',
+  transparent: '',
+};
+
+const paddings: Record<string, string> = {
+  none: '',
+  sm: 'py-10 md:py-12',
+  default: 'py-16 md:py-20 lg:py-24',
+  lg: 'py-20 md:py-28 lg:py-32',
+};
+---
+
+<Tag id={id} aria-labelledby={labelledby} class={`${backgrounds[bg]} ${paddings[padding]} ${className}`}>
+  {
+    contained ? (
+      <Container class={innerClass}>
+        <slot />
+      </Container>
+    ) : (
+      <slot />
+    )
+  }
+</Tag>

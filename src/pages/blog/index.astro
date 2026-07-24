@@ -1,0 +1,159 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Section from '../../components/Section.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import BlogCard from '../../components/ui/BlogCard.astro';
+import GhlForm from '../../components/forms/GhlForm.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { formIds } from '../../data/site';
+import { readTime } from '../../utils/format';
+import { breadcrumbSchema } from '../../utils/seo';
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog', href: '/blog' },
+];
+
+const allPosts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const featured = allPosts.find((post) => post.data.featured) ?? allPosts[0];
+const rest = allPosts.filter((post) => post.slug !== featured?.slug);
+
+const categories = ['All', ...Array.from(new Set(allPosts.map((post) => post.data.category)))];
+---
+
+<PageLayout
+  title="Mortgage Blog & Market Insight"
+  description="Plain-English mortgage education from Jason Herbert: bank statement loans, VA entitlement, DSCR math, buying points, first-time buyer mistakes, and the Austin housing market."
+  heroEyebrow="Mortgage Education"
+  heroTitle="Mortgage Education That Actually Helps."
+  heroSubtitle="No rate-bait headlines and no recycled national filler. These are the explanations I find myself giving on the phone every week, written down properly."
+  heroImage="/images/hero/blog-hero.jpg"
+  heroImageAlt="Desk with a laptop and mortgage documents"
+  crumbs={crumbs}
+  showHeroCtas={false}
+  schema={breadcrumbSchema(crumbs)}
+>
+  {
+    featured && (
+      <Section bg="white">
+        <div class="mb-8 flex items-center gap-3">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+            <Icon name="sparkles" size={19} />
+          </span>
+          <h2 class="font-heading text-lg font-bold uppercase tracking-wide text-navy">Featured</h2>
+        </div>
+        <BlogCard
+          title={featured.data.title}
+          description={featured.data.description}
+          image={featured.data.image}
+          slug={featured.slug}
+          category={featured.data.category}
+          date={featured.data.pubDate}
+          readTime={readTime(featured.body)}
+          featured
+        />
+      </Section>
+    )
+  }
+
+  <Section bg="offwhite">
+    <SectionHeading eyebrow="All Articles" title="Browse by Topic" align="center" class="mb-8" />
+
+    <div class="mb-10 flex flex-wrap justify-center gap-2.5" role="group" aria-label="Filter articles by category">
+      {
+        categories.map((category, index) => (
+          <button
+            type="button"
+            class:list={[
+              'min-h-[44px] rounded-full border px-5 py-2.5 font-heading text-sm font-semibold transition-colors',
+              index === 0
+                ? 'border-navy bg-navy text-white'
+                : 'border-silver bg-white text-navy hover:border-brandblue hover:text-brandblue',
+            ]}
+            data-category-filter={category}
+            aria-pressed={index === 0 ? 'true' : 'false'}
+          >
+            {category}
+          </button>
+        ))
+      }
+    </div>
+
+    <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-post-grid>
+      {
+        rest.map((post) => (
+          <li data-post-category={post.data.category}>
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              image={post.data.image}
+              slug={post.slug}
+              category={post.data.category}
+              date={post.data.pubDate}
+              readTime={readTime(post.body)}
+              class="h-full"
+            />
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="mt-8 hidden text-center text-graytext" data-post-empty>
+      No articles in that category yet. Check back soon, or browse everything.
+    </p>
+  </Section>
+
+  <Section bg="white">
+    <div class="grid items-center gap-8 rounded-card border border-silver-light bg-offwhite p-7 shadow-card md:p-9 lg:grid-cols-2 lg:gap-12">
+      <div>
+        <span class="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+          <Icon name="mail" size={24} />
+        </span>
+        <h2 class="mt-5 text-h3 font-bold text-navy">New Articles, Straight to Your Inbox</h2>
+        <p class="mt-3 leading-relaxed text-graytext">
+          Occasional emails when something worth knowing changes — a guideline update, a market shift, or a program that
+          solves a problem people keep asking me about.
+        </p>
+      </div>
+      <div class="overflow-hidden rounded-card border border-silver-light bg-white">
+        <GhlForm formId={formIds.newsletter} title="Blog Newsletter Signup" formType="newsletter" height="320" />
+      </div>
+    </div>
+  </Section>
+</PageLayout>
+
+<script>
+  const filters = document.querySelectorAll<HTMLButtonElement>('[data-category-filter]');
+  const items = document.querySelectorAll<HTMLElement>('[data-post-category]');
+  const empty = document.querySelector<HTMLElement>('[data-post-empty]');
+
+  filters.forEach((button) => {
+    button.addEventListener('click', () => {
+      const selected = button.dataset.categoryFilter;
+
+      filters.forEach((other) => {
+        const active = other === button;
+        other.setAttribute('aria-pressed', String(active));
+        other.classList.toggle('bg-navy', active);
+        other.classList.toggle('text-white', active);
+        other.classList.toggle('border-navy', active);
+        other.classList.toggle('bg-white', !active);
+        other.classList.toggle('text-navy', !active);
+        other.classList.toggle('border-silver', !active);
+      });
+
+      let visible = 0;
+      items.forEach((item) => {
+        const show = selected === 'All' || item.dataset.postCategory === selected;
+        item.classList.toggle('hidden', !show);
+        if (show) visible += 1;
+      });
+
+      empty?.classList.toggle('hidden', visible > 0);
+    });
+  });
+</script>

@@ -1,0 +1,85 @@
+---
+import Icon from './Icon.astro';
+import GhlForm from '../forms/GhlForm.astro';
+import { formIds } from '../../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  image: string;
+  slug: string;
+  icon?: string;
+  /** Calculator card links out instead of gating behind the download form. */
+  href?: string;
+  class?: string;
+}
+
+const { title, description, image, slug, icon = 'file-text', href, class: className = '' } = Astro.props;
+const panelId = `resource-${slug}`;
+---
+
+<article
+  class={`flex h-full flex-col overflow-hidden rounded-card border border-silver-light bg-white shadow-card transition-shadow duration-200 hover:shadow-card-hover ${className}`}
+>
+  <img
+    src={image}
+    alt={`Cover of the ${title} from The Herbert Team`}
+    width="800"
+    height="500"
+    loading="lazy"
+    decoding="async"
+    class="aspect-[8/5] w-full object-cover"
+  />
+  <div class="flex flex-1 flex-col p-6">
+    <span class="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-brandblue-soft text-brandblue">
+      <Icon name={icon} size={22} />
+    </span>
+    <h3 class="mt-4 font-heading text-lg font-bold text-navy">{title}</h3>
+    <p class="mt-2 flex-1 text-[0.9375rem] leading-relaxed text-graytext">{description}</p>
+
+    {
+      href ? (
+        <a
+          href={href}
+          class="mt-5 inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg bg-brandblue px-6 py-3 font-heading text-sm font-semibold text-white shadow-cta transition-all duration-200 hover:-translate-y-0.5 hover:bg-brandblue-hover"
+        >
+          Open the calculator
+          <Icon name="arrow-right" size={16} />
+        </a>
+      ) : (
+        <div class="mt-5">
+          <button
+            type="button"
+            class="inline-flex min-h-[48px] w-full items-center justify-center gap-2 rounded-lg bg-brandblue px-6 py-3 font-heading text-sm font-semibold text-white shadow-cta transition-all duration-200 hover:-translate-y-0.5 hover:bg-brandblue-hover"
+            aria-expanded="false"
+            aria-controls={panelId}
+            data-resource-trigger
+            data-track="download_guide"
+            data-track-params={JSON.stringify({ guide_name: title })}
+          >
+            <Icon name="download" size={16} />
+            Get the free guide
+          </button>
+          <div id={panelId} class="hidden pt-4" data-resource-panel>
+            <p class="mb-3 text-sm text-graytext">
+              Enter your email and the {title} is sent straight to your inbox.
+            </p>
+            <GhlForm formId={formIds.guideDownload} title={`${title} Download`} formType="guide_download" height="480" />
+          </div>
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-resource-trigger]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const panel = trigger.parentElement?.querySelector<HTMLElement>('[data-resource-panel]');
+      if (!panel) return;
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      trigger.setAttribute('aria-expanded', String(!expanded));
+      panel.classList.toggle('hidden', expanded);
+    });
+  });
+</script>
